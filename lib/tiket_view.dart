@@ -38,7 +38,8 @@ class _QrCodeScreenState extends State<QrCodeScreen> { // Update the state class
               widget.qrData, // Access the qrData property using widget
               style: TextStyle(fontSize: 16),
             ),
-            
+            SizedBox(height: 10),
+            ElevatedButton(onPressed: (){}, child: Text("Przedłuż karnet", style: TextStyle(color: Colors.lightGreenAccent),))
           ],
         ),
       ),
