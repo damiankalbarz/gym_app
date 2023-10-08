@@ -65,18 +65,18 @@ class _ProfilPageState extends State<ProfilPage> {
             Center(
               child: Text(
                 'Witaj Damian!',
-                style: TextStyle(fontSize: 32),
+                style: TextStyle(fontFamily: "Bellota-Regular" ,fontSize: 32),
               ),
             ),
             SizedBox(height: 10),
             Center(
               child: Text(
                 'OTO LISTA TWOICH CELÓW!',
-                style: TextStyle(fontSize: 24),
+                style: TextStyle(fontFamily: "Bellota-Regular",fontSize: 22),
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(10.0),
               child: Row(
                 children: [
                   Expanded(

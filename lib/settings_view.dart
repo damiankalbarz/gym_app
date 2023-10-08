@@ -13,8 +13,46 @@ class SettingsView extends StatelessWidget {
       appBar: AppBar(
         title: Text('Ustawienia'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              width: 0.9*MediaQuery.of(context).size.width,
+              height: 0.2*MediaQuery.of(context).size.height,
+              child:  ElevatedButton(
+                onPressed: () {
+                  themeProvider.toggleTheme(); // Przełącz motyw
+                },
+                child: Text('Przełącz motyw', style: TextStyle(fontSize: 0.04 * MediaQuery.of(context).size.height, fontFamily: "Bellota-Regular"),),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Container(
+              width: 0.9*MediaQuery.of(context).size.width,
+              height: 0.2*MediaQuery.of(context).size.height,
+              child:  ElevatedButton(
+                onPressed: () {
+                },
+                child: Text('Edytuj dane osobiste',style: TextStyle(fontSize: 0.04 * MediaQuery.of(context).size.height, fontFamily: "Bellota-Regular")),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Container(
+              width: 0.9*MediaQuery.of(context).size.width,
+              height: 0.2*MediaQuery.of(context).size.height,
+              child:  ElevatedButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()),);},
+                  style: ElevatedButton.styleFrom(primary: Colors.red),
+                  child: Text("Wyloguj się", style: TextStyle(fontSize: 0.05 * MediaQuery.of(context).size.height, fontFamily: "Bellota-Regular"))),
+
+            ),
+          ],
+        )
+      )
+
+    /*Padding(
+       padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -39,7 +77,7 @@ class SettingsView extends StatelessWidget {
 
           ],
         )
-      ),
+      ),*/
     );
   }
 }

@@ -24,14 +24,15 @@ class _QrCodeScreenState extends State<QrCodeScreen> { // Update the state class
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             QrImageView(
+              backgroundColor: Colors.white,
               data: widget.qrData, // Access the qrData property using widget
               version: QrVersions.auto,
               size: 200.0,
             ),
             SizedBox(height: 20),
             Text(
-              'Twój karnet jest wazny do:',
-              style: TextStyle(fontSize: 20),
+              'Twój karnet jest ważny do:',
+              style: TextStyle(fontSize: 20, fontFamily: "Bellota-Regular"),
             ),
             SizedBox(height: 10),
             SelectableText(
@@ -39,7 +40,7 @@ class _QrCodeScreenState extends State<QrCodeScreen> { // Update the state class
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 10),
-            ElevatedButton(onPressed: (){}, child: Text("Przedłuż karnet", style: TextStyle(color: Colors.lightGreenAccent),))
+            ElevatedButton(onPressed: (){}, child: Text("Przedłuż karnet", style: TextStyle(fontFamily: "Bellota-Regular"),))
           ],
         ),
       ),
