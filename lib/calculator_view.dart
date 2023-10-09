@@ -22,16 +22,44 @@ class _CalculatorPageState extends State<CalculatorPage> {
   double carbohydrates = 0;
   double fats = 0;
   int _currentIndex = 1;
+  late List<double> list;
+
+
+  List<dynamic> calculateBMI(double weight,double height){
+    bmi = weight / ((height * height)/10000);
+    if(bmi<16) ratingBmi = 'wygłodzenie';
+    else if(bmi<17) ratingBmi = "wychudzenie";
+    else if(bmi<18.49) ratingBmi = "niedowaga";
+    else if(bmi<25) ratingBmi = "waga prawidłowa";
+    else if(bmi<30) ratingBmi = "nadwaga";
+    else if(bmi<35) ratingBmi = "I stopień otyłości";
+    else if(bmi<40) ratingBmi = "II stopień otyłości";
+    else ratingBmi = "otyłość skrajna";
+    return [bmi,ratingBmi];
+  }
+
+  List<double> calculate(double weight,double height, double age, Gender gender){
+    if(selectedGender == Gender.male)
+      macronutrients = weight * 9.99 + ((6.25 * height)-(4.92*age))+5;
+    else
+      macronutrients = weight * 9.99 + ((6.25 * height)-(4.92*age))-161;
+    protein = 2 * weight;
+    fats = 0.225 * macronutrients/9;
+    carbohydrates = (macronutrients - (protein * 4 + fats * 9))/4;
+    return [macronutrients,protein,fats,carbohydrates];
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('Kalkulator',style: TextStyle(fontSize: 28)
+            const Text('Kalkulator',style: TextStyle(fontSize: 28, fontFamily: "Bellota-Regular")
             ),
 
             Row(
@@ -46,7 +74,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                     });
                   },
                 ),
-                Text('Kobieta'),
+                Text('Kobieta', style: TextStyle(fontFamily: "Bellota-Regular"),),
                 SizedBox(width: 20), // Odstęp między przyciskami
                 Radio<Gender>(
                   value: Gender.male,
@@ -57,10 +85,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
                     });
                   },
                 ),
-                Text('Mężczyzna'),
+                Text('Mężczyzna',style: TextStyle(fontFamily: "Bellota-Regular")),
               ],
             ),
-            Text('Waga: ${weight.toStringAsFixed(0)} kg'),
+            Text('Waga: ${weight.toStringAsFixed(0)} kg', style: TextStyle(fontFamily: "Bellota-Regular"),),
             Slider(
               value: weight,
               onChanged: (newValue) {
@@ -72,7 +100,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
               max: 200.0,
               divisions: 200,
             ),
-            Text('Wzrost: ${height.toStringAsFixed(0)} cm'),
+            Text('Wzrost: ${height.toStringAsFixed(0)} cm', style: TextStyle(fontFamily: "Bellota-Regular"),),
             Slider(
               value: height,
               onChanged: (newValue) {
@@ -84,7 +112,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
               max: 250,
               divisions: 250,
             ),
-            Text('Wiek: ${age.toStringAsFixed(0)}'),
+            Text('Wiek: ${age.toStringAsFixed(0)}',style: TextStyle(fontFamily: "Bellota-Regular"),),
             Slider(
               value: age,
               onChanged: (newValue) {
@@ -98,54 +126,33 @@ class _CalculatorPageState extends State<CalculatorPage> {
             ),
             ElevatedButton(onPressed: (){
               setState(() {
-                bmi = weight / ((height * height)/10000);
-                if(selectedGender == Gender.male)
-                  macronutrients = weight * 9.99 + ((6.25 * height)-(4.92*age))+5;
-                else
-                  macronutrients = weight * 9.99 + ((6.25 * height)-(4.92*age))-161;
-
-                protein = 2 * weight;
-                fats = 0.225 * macronutrients/9;
-                carbohydrates = (macronutrients - (protein * 4 + fats * 9))/4;
+                list = calculate(weight, height, age, selectedGender!);
                 istextVisable = true;
-
-                if(bmi<16) ratingBmi = 'wygłodzenie';
-                else if(bmi<17) ratingBmi = "wychudzenie";
-                else if(bmi<18.49) ratingBmi = "niedowaga";
-                else if(bmi<25) ratingBmi = "waga prawidłowa";
-                else if(bmi<30) ratingBmi = "nadwaga";
-                else if(bmi<35) ratingBmi = "I stopień otyłości";
-                else if(bmi<40) ratingBmi = "II stopień otyłości";
-                else ratingBmi = "otyłość skrajna";
               });
-            }, child: Text('Oblicz BMI i Makroskładniki')
+            }, child: Text('Oblicz BMI i Makroskładniki', style: TextStyle(fontFamily: 'Bellota-Regular'))
             ),
+            SizedBox(height: 30),
             if(istextVisable)
-              Padding(
-                  padding: EdgeInsets.all(16.0),
+              Container(
+                  padding: EdgeInsets.all(7.0),
+                  width: 0.9*MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(10.0)),
                 child: Text(
-                  ' Bmi: ${bmi.toStringAsFixed(2)} - ${ratingBmi}\n'
-                      ' Twoje zapotrzebowanie energetyczne wynosi: ${macronutrients.toStringAsFixed(0)} kcal\n'
-                      ' Białko: ${protein.toStringAsFixed(0)} g\n'
-                      ' Tłuszcze: ${fats.toStringAsFixed(0)} g\n'
-                      ' Węglowodany: ${carbohydrates.toStringAsFixed(0)} g',
+                  ' Bmi: ${calculateBMI(weight as double, height as double).first.toStringAsFixed(2)} - ${calculateBMI(weight as double, height as double).last}\n'
+                      ' Zapotrzebowanie energetyczne: ${list[0].toStringAsFixed(0)} kcal\n'
+                      ' Białko: ${list[1].toStringAsFixed(0)} g\n'
+                      ' Tłuszcze: ${list[2].toStringAsFixed(0)} g\n'
+                      ' Węglowodany: ${list[3].toStringAsFixed(0)} g',
                   style: TextStyle(
                     fontSize: 16, // Rozmiar czcionki
                     fontStyle: FontStyle.italic, // Styl kursywy
                     fontWeight: FontWeight.bold, // Pogrubienie tekstu
-                    letterSpacing: 1.0, // Rozstawienie między literami
+                    fontFamily: "Bellota-Regular",// Rozstawienie między literami
                     // Możesz także ustawić więcej właściwości stylu, takie jak fontFamily, decoration itp.
                   ),
                 )
               )
-
-            /*
-              Text(' Bmi: ${bmi.toStringAsFixed(2)} - ${ratingBmi}  \n Twoje zapotrzebowanie energetyczne wynosi: ${macronutrients.toStringAsFixed(0)} kcal \n '
-                  'Białko: ${protein.toStringAsFixed(0)} g  \n Tłuszcze: ${fats.toStringAsFixed(0)} g \n Węglowodowany: ${carbohydrates.toStringAsFixed(0)} g',
-                  style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),*/
-
           ],
-
         ),
       ),
       bottomNavigationBar: BottomNavigationWidget(

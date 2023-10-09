@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
-class RegisterPage extends StatelessWidget {
-  bool? _acceptTerms = false;
+
+class RegisterPage extends StatefulWidget{
+  _RegisterPageState createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  bool isChecked = false;
 
 @override
 Widget build(BuildContext context) {
@@ -15,41 +20,41 @@ Widget build(BuildContext context) {
           SizedBox(height: 26.0),
           const Text('REJESTRACJA', style: TextStyle(
             fontSize: 28.0,
-            fontWeight: FontWeight.bold)),
+            fontWeight: FontWeight.bold,
+              fontFamily: "Bellota-Regular")),
           SizedBox(height: 26.0),
           TextFormField(
-            decoration: InputDecoration(labelText: 'IMIĘ'),
+            decoration: InputDecoration(labelText: 'Imię', labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
           ),
           SizedBox(height: 16.0),
           TextFormField(
-            decoration: InputDecoration(labelText: 'NAZWISKO'),
+            decoration: InputDecoration(labelText: 'Nazwisko', labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
           ),
           SizedBox(height: 16.0),
           TextFormField(
-            decoration: InputDecoration(labelText: 'E-MAIL'),
+            decoration: InputDecoration(labelText: 'E-mail', labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
           ),
           SizedBox(height: 16.0),
           TextFormField(
-            decoration: InputDecoration(labelText: 'TELEFON'),
+            decoration: InputDecoration(labelText: 'Telefon', labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
           ),
           SizedBox(height: 16.0),
           TextFormField(
-            decoration: InputDecoration(labelText: 'HASŁO'),
+            decoration: InputDecoration(labelText: 'Hasło', labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
             obscureText: true,
           ),
           Row(
             children: [
               Checkbox(
-                value: _acceptTerms,
+                value: isChecked,
                 activeColor: Colors.lightGreenAccent,
-                tristate: true,
-                onChanged: (newValue) {
+                onChanged: (bool? value) {
                   setState(() {
-                    _acceptTerms = newValue!;
+                    isChecked = value!;
                   });
                 },
               ),
-              Text('Akceptuję regulamin'),
+              Text('Akceptuję regulamin', style: TextStyle(fontFamily: "Bellota-Regular" ),),
             ],
           ),
           SizedBox(height: 32.0),
@@ -57,14 +62,14 @@ Widget build(BuildContext context) {
             onPressed: () {
               // Tutaj można dodać logikę rejestracji
             },
-            child: Text('Zarejestruj się'),
+            child: Text('Zarejestruj się', style: TextStyle(fontFamily: "Bellota-Regular" )),
           ),
           SizedBox(height: 16.0),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text('Masz już konto? Zaloguj się'),
+            child: Text('Masz już konto? Zaloguj się', style: TextStyle(fontFamily: "Bellota-Regular" )),
           ),
         ],
       ),
@@ -72,5 +77,5 @@ Widget build(BuildContext context) {
   );
 }
 
-  void setState(Null Function() param0) {}
+
 }
