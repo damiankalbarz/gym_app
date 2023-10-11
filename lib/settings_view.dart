@@ -1,3 +1,4 @@
+import 'package:firstproject/editData_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +35,7 @@ class SettingsView extends StatelessWidget {
               height: 0.2*MediaQuery.of(context).size.height,
               child:  ElevatedButton(
                 onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder:(context) => EditDataPage()));
                 },
                 child: Text('Edytuj dane osobiste',style: TextStyle(fontSize: 0.04 * MediaQuery.of(context).size.height, fontFamily: "Bellota-Regular")),
               ),
