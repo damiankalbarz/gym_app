@@ -33,6 +33,10 @@ Widget build(BuildContext context) {
           SizedBox(height: 16.0),
           TextFormField(
             decoration: InputDecoration(labelText: 'E-mail', labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(context),
+              FormBuilderValidators.email(context),
+            ]),
           ),
           SizedBox(height: 16.0),
           TextFormField(
