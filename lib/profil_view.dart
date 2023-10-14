@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Goal {
   String name;
   bool isChecked;
-
   Goal({required this.name, this.isChecked = false});
 }
 
@@ -19,6 +18,7 @@ class _ProfilPageState extends State<ProfilPage> {
   int _currentIndex = 0;
   List<Goal> goals = [];
   TextEditingController goalController = TextEditingController();
+  Map<String, bool> checkedGoals = {};
 
   @override
   void initState() {
@@ -31,9 +31,11 @@ class _ProfilPageState extends State<ProfilPage> {
     List<String>? goalsData = prefs.getStringList('goals');
     if (goalsData != null) {
       setState(() {
-        goals = goalsData
-            .map((goalData) => Goal(name: goalData, isChecked: false))
-            .toList();
+        goals = goalsData.map((goalData) {
+          bool isChecked = prefs.getBool(goalData) ?? false;
+          checkedGoals[goalData] = isChecked;
+          return Goal(name: goalData, isChecked: isChecked);
+        }).toList();
       });
     }
   }
@@ -41,8 +43,13 @@ class _ProfilPageState extends State<ProfilPage> {
   _saveGoals() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> goalsData = goals.map((goal) => goal.name).toList();
+    for(var goal in goals){
+      prefs.setBool(goal.name, goal.isChecked);
+    }
     prefs.setStringList('goals', goalsData);
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +122,7 @@ class _ProfilPageState extends State<ProfilPage> {
               height: 0.2*MediaQuery.of(context).size.height,
               decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(10.0)),
               child: ListView.builder(
+                padding: EdgeInsets.zero,
                 itemCount: goals.length,
                 itemBuilder: (context, index) {
                   return ListTile(
