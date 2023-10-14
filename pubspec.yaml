@@ -44,6 +44,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_form_builder: ^8.0.0
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -61,7 +62,9 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - assets/logo.jpg
+    - assets/logo.png
+    - assets/images/app_icon.png
+
   fonts:
     - family: Bellota-Regular
       fonts:
