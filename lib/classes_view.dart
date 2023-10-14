@@ -46,9 +46,9 @@ class _ClassesState extends State<Classes> {
             SizedBox(height: 20),
             zapisano
                 ? Text(
-              'Zapisano na zajęcia!',
-              style: TextStyle(fontSize: 18, color: Colors.green),
-            )
+                    'Zapisano na zajęcia!',
+                    style: TextStyle(fontSize: 18, color: Colors.green),
+                  )
                 : Container(),
           ],
         ),

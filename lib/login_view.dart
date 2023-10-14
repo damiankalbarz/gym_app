@@ -6,7 +6,6 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -18,11 +17,15 @@ class LoginPage extends StatelessWidget {
               height: 200.0,
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Adres email', labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
+              decoration: InputDecoration(
+                  labelText: 'Adres email',
+                  labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
             ),
             SizedBox(height: 16.0),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Hasło', labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
+              decoration: InputDecoration(
+                  labelText: 'Hasło',
+                  labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
               obscureText: true,
             ),
             SizedBox(height: 32.0),
@@ -36,7 +39,8 @@ class LoginPage extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('Zaloguj się', style: TextStyle(fontFamily: "Bellota-Regular")),
+              child: Text('Zaloguj się',
+                  style: TextStyle(fontFamily: "Bellota-Regular")),
             ),
             SizedBox(height: 16.0),
             TextButton(
@@ -48,7 +52,11 @@ class LoginPage extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('Nie masz jeszcze konta? Zarejestruj się', style: TextStyle(fontFamily: "Bellota-Regular", fontWeight: FontWeight.w600),),
+              child: Text(
+                'Nie masz jeszcze konta? Zarejestruj się',
+                style: TextStyle(
+                    fontFamily: "Bellota-Regular", fontWeight: FontWeight.w600),
+              ),
             ),
           ],
         ),

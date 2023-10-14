@@ -26,8 +26,10 @@ class _StatisticPageState extends State<StatisticPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Twoje Statystyki',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Text(
+                      'Twoje Statystyki',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10),
                     Text('Ilość treningów: 20'),
@@ -46,7 +48,8 @@ class _StatisticPageState extends State<StatisticPage> {
                   children: [
                     Text(
                       'Najlepsze Wyniki',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10),
                     ListTile(

@@ -8,13 +8,16 @@ import 'navigation.dart';
 class QrCodeScreen extends StatefulWidget {
   final String qrData; // Move the property declaration here
 
-  QrCodeScreen({required this.qrData}); // Initialize the property in the constructor
+  QrCodeScreen(
+      {required this.qrData}); // Initialize the property in the constructor
 
   @override
-  State<StatefulWidget> createState() => _QrCodeScreenState(); // Update the state class name
+  State<StatefulWidget> createState() =>
+      _QrCodeScreenState(); // Update the state class name
 }
 
-class _QrCodeScreenState extends State<QrCodeScreen> { // Update the state class name
+class _QrCodeScreenState extends State<QrCodeScreen> {
+  // Update the state class name
   int _currentIndex = 2;
   double _buttonWidth = 200.0;
   Color _buttonColor = Colors.blue; // Początkowy kolor przycisku
@@ -33,10 +36,10 @@ class _QrCodeScreenState extends State<QrCodeScreen> { // Update the state class
       _toggleButton();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -44,7 +47,7 @@ class _QrCodeScreenState extends State<QrCodeScreen> { // Update the state class
             Center(
               child: Text(
                 'TWÓJ KARNET',
-                style: TextStyle(fontFamily: "Bellota-Regular" ,fontSize: 32),
+                style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 32),
               ),
             ),
             SizedBox(height: 30),
@@ -65,19 +68,25 @@ class _QrCodeScreenState extends State<QrCodeScreen> { // Update the state class
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 10),
-            AnimatedContainer(duration: Duration(seconds: 1),
-              width: _buttonWidth,
-              child: ElevatedButton(onPressed: (){}, child: Text("Przedłuż karnet", style: TextStyle(fontFamily: "Bellota-Regular"),),
-                style: ElevatedButton.styleFrom(
-                primary: _buttonColor, // Zmienny kolor tła przycisku
-                onPrimary: Colors.white, // Kolor tekstu na przycisku
-                padding: EdgeInsets.all(16.0), // Wielkość przycisku
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0), // Zaokrąglenie brzegów
-                ), ),
-
-            )
-            ),
+            AnimatedContainer(
+                duration: Duration(seconds: 1),
+                width: _buttonWidth,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Przedłuż karnet",
+                    style: TextStyle(fontFamily: "Bellota-Regular"),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: _buttonColor, // Zmienny kolor tła przycisku
+                    onPrimary: Colors.white, // Kolor tekstu na przycisku
+                    padding: EdgeInsets.all(16.0), // Wielkość przycisku
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(10.0), // Zaokrąglenie brzegów
+                    ),
+                  ),
+                )),
           ],
         ),
       ),

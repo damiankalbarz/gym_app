@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Goal {
   String name;
   bool isChecked;
+
   Goal({required this.name, this.isChecked = false});
 }
 
@@ -43,13 +44,11 @@ class _ProfilPageState extends State<ProfilPage> {
   _saveGoals() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> goalsData = goals.map((goal) => goal.name).toList();
-    for(var goal in goals){
+    for (var goal in goals) {
       prefs.setBool(goal.name, goal.isChecked);
     }
     prefs.setStringList('goals', goalsData);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,40 +59,45 @@ class _ProfilPageState extends State<ProfilPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(height: 30),
-             Align(  alignment: Alignment.topRight,
-               child: IconButton(onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingsView()),
-              );
-            },
-                icon: Icon(Icons.settings)),
-             ),
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SettingsView()),
+                    );
+                  },
+                  icon: Icon(Icons.settings)),
+            ),
             Center(
               child: Text(
                 'Witaj Damian!',
-                style: TextStyle(fontFamily: "Bellota-Regular" ,fontSize: 32),
+                style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 32),
               ),
             ),
             SizedBox(height: 10),
             Center(
               child: Text(
                 'OTO LISTA TWOICH CELÓW!',
-                style: TextStyle(fontFamily: "Bellota-Regular",fontSize: 22),
+                style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 22),
               ),
             ),
             SizedBox(height: 20),
             Container(
-              width: 0.9*MediaQuery.of(context).size.width,
+              width: 0.9 * MediaQuery.of(context).size.width,
               //height: 0.2*MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(10.0)),
+              decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(10.0)),
               child: Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: goalController,
                       decoration: InputDecoration(
-                        hintText: 'Dodaj nowy cel', hintStyle: TextStyle(fontFamily: 'Bellota-Regular'),
+                        hintText: 'Dodaj nowy cel',
+                        hintStyle: TextStyle(fontFamily: 'Bellota-Regular'),
                         labelStyle: TextStyle(fontFamily: 'Bellota-Regular'),
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.only(left: 16.0),
@@ -116,17 +120,22 @@ class _ProfilPageState extends State<ProfilPage> {
                 ],
               ),
             ),
-           SizedBox(height: 2),
-           Container(
-              width: 0.9*MediaQuery.of(context).size.width,
-              height: 0.2*MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(10.0)),
+            SizedBox(height: 2),
+            Container(
+              width: 0.9 * MediaQuery.of(context).size.width,
+              height: 0.2 * MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(10.0)),
               child: ListView.builder(
                 padding: EdgeInsets.zero,
                 itemCount: goals.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(goals[index].name, style: TextStyle(fontFamily: 'Bellota-Regular'),),
+                    title: Text(
+                      goals[index].name,
+                      style: TextStyle(fontFamily: 'Bellota-Regular'),
+                    ),
                     leading: Checkbox(
                       value: goals[index].isChecked,
                       onChanged: (value) {
@@ -149,14 +158,16 @@ class _ProfilPageState extends State<ProfilPage> {
                 },
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Center(
               child: Text(
                 'TWOJE ZAJĘCIA:',
-                style: TextStyle(fontFamily: "Bellota-Regular",fontSize: 22),
+                style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 22),
               ),
             ),
-      ],
+          ],
         ),
       ),
       bottomNavigationBar: BottomNavigationWidget(
