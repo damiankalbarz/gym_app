@@ -33,6 +33,7 @@ dependencies:
   qr_flutter: ^4.1.0
   shared_preferences: ^2.0.10
   provider: ^5.0.0
+  http: ^0.13.3
 
 
 

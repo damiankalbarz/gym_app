@@ -23,7 +23,7 @@ class SettingsView extends StatelessWidget {
               height: 0.2 * MediaQuery.of(context).size.height,
               child: ElevatedButton(
                 onPressed: () {
-                  themeProvider.toggleTheme(); // Przełącz motyw
+                  Provider.of<ThemeProvider>(context, listen: false).toggleTheme(); // Przełącz motyw
                 },
                 child: Text(
                   'Przełącz motyw',

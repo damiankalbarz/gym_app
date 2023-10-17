@@ -2,12 +2,18 @@ import 'package:firstproject/ThemeProvider.dart';
 import 'package:firstproject/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'login_view.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Upewnij się, że Flutter został zainicjalizowany
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isDarkMode = prefs.getBool('isDarkMode') ?? false; // Odczytaj stan motywu
+
+
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+    ChangeNotifierProvider<ThemeProvider>(
+      create: (context) => ThemeProvider(isDarkMode),
       child: MyApp(),
     ),
   );
