@@ -39,4 +39,3 @@ class LoginBloc {
     await prefs.setString('token', token);
   }
 }
-

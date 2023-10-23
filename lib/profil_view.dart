@@ -1,16 +1,22 @@
+import 'dart:convert';
+
+import 'package:firstproject/profilPage_bloc.dart';
 import 'package:flutter/material.dart';
+import 'User.dart';
 import 'navigation.dart';
 import 'settings_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
 
 class Goal {
   String name;
   bool isChecked;
-
   Goal({required this.name, this.isChecked = false});
 }
 
 class ProfilPage extends StatefulWidget {
+  final ProfilPageBloc bloc = ProfilPageBloc();
   @override
   _ProfilPageState createState() => _ProfilPageState();
 }
@@ -20,12 +26,6 @@ class _ProfilPageState extends State<ProfilPage> {
   List<Goal> goals = [];
   TextEditingController goalController = TextEditingController();
   Map<String, bool> checkedGoals = {};
-
-  @override
-  void initState() {
-    super.initState();
-    _loadGoals();
-  }
 
   _loadGoals() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -50,6 +50,20 @@ class _ProfilPageState extends State<ProfilPage> {
     prefs.setStringList('goals', goalsData);
   }
 
+
+  @override
+  void dispose() {
+    widget.bloc.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.bloc.getUser();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,12 +84,27 @@ class _ProfilPageState extends State<ProfilPage> {
                   },
                   icon: Icon(Icons.settings)),
             ),
-            Center(
-              child: Text(
-                'Witaj Damian!',
-                style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 32),
-              ),
+            StreamBuilder<User>(
+              stream: widget.bloc.userStream,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Center(
+                    child: Text(
+                      'Witaj ${snapshot.data!.userName}',
+                      style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 32),
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Błąd pobierania danych użytkownika'),
+                  );
+                }
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
+
             SizedBox(height: 10),
             Center(
               child: Text(
@@ -83,7 +112,11 @@ class _ProfilPageState extends State<ProfilPage> {
                 style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 22),
               ),
             ),
+
+
             SizedBox(height: 20),
+
+
             Container(
               width: 0.9 * MediaQuery.of(context).size.width,
               //height: 0.2*MediaQuery.of(context).size.height,
@@ -158,6 +191,7 @@ class _ProfilPageState extends State<ProfilPage> {
                 },
               ),
             ),
+
             SizedBox(
               height: 20,
             ),
