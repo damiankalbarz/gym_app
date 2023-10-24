@@ -19,8 +19,9 @@ class ProfilPageBloc {
       final String? token = prefs.getString('token'); // Zmiana na typ String?
 
       if (token != null && token.isNotEmpty) {
+        //print("$token");
         final response = await http.get(
-          Uri.parse('https://localhost:7286/api/Authentication/profile'),
+          Uri.parse('https://localhost:7286/api/User/profile'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': 'Bearer $token',
@@ -28,8 +29,8 @@ class ProfilPageBloc {
         );
         if (response.statusCode == 200) {
           var jsonResponse = json.decode(response.body);
+          //print('Dane z serwera: $jsonResponse');
           var user = User.fromJson(jsonResponse);
-          print('Dane z serwera: $jsonResponse');
           _userController.sink.add(user);
         } else {
           print("Błąd");

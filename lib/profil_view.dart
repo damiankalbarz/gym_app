@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:firstproject/profilPage_bloc.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,20 @@ import 'User.dart';
 import 'navigation.dart';
 import 'settings_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
+
+
+Image imageFromBase64String(String base64String) {
+  try {
+    Uint8List bytes = base64Decode(base64String);
+    //print(bytes);
+    //print(base64String);
+    Uint8List _byteImage = base64.decode(base64String);
+    return Image.memory(_byteImage);
+  } catch (e) {
+    print('Error loading image: $e');
+    return Image.asset('path_to_error_image');
+  }
+}
 
 
 class Goal {
@@ -26,6 +40,7 @@ class _ProfilPageState extends State<ProfilPage> {
   List<Goal> goals = [];
   TextEditingController goalController = TextEditingController();
   Map<String, bool> checkedGoals = {};
+
 
   _loadGoals() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -73,26 +88,57 @@ class _ProfilPageState extends State<ProfilPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(height: 30),
-            Align(
-              alignment: Alignment.topRight,
-              child: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SettingsView()),
-                    );
-                  },
-                  icon: Icon(Icons.settings)),
-            ),
+
             StreamBuilder<User>(
               stream: widget.bloc.userStream,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return Center(
-                    child: Text(
-                      'Witaj ${snapshot.data!.userName}',
+                  return Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blue, // Kolor tła kontenera
+                          borderRadius: BorderRadius.circular(30.0), // Zaokrąglenie brzegów
+                        ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.1,
+                            height: MediaQuery.of(context).size.width * 0.1,
+                            child: ClipOval( clipBehavior: Clip.antiAlias,
+                              child: Image.memory(snapshot.data!.profilePicture.content),
+                              //child: imageFromBase64String(snapshot.data!.profilePicture.content),
+                          ),
+                          ),
+                          SizedBox(width: 20,),
+                          Column(
+                            children: [
+                              Text('${snapshot.data!.userName}', style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 18)),
+                              Text('${snapshot.data!.fullName}', style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 12)),
+                            ],
+                          ),
+
+                          Spacer(),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => SettingsView()),
+                                  );
+                                },
+                                icon: Icon(Icons.settings)),
+                          ),
+                        ],
+                      ),
+                      ),
+                      Text('Witaj ${snapshot.data!.userName}!',
                       style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 32),
-                    ),
+                   ),
+
+
+                  ],
                   );
                 } else if (snapshot.hasError) {
                   return Center(
@@ -104,6 +150,7 @@ class _ProfilPageState extends State<ProfilPage> {
                 );
               },
             ),
+
 
             SizedBox(height: 10),
             Center(

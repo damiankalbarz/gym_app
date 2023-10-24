@@ -9,7 +9,6 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-
     return Scaffold(
         appBar: AppBar(
           title: Text('Ustawienia'),

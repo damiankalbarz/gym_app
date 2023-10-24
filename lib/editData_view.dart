@@ -1,21 +1,177 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:http/http.dart' as http;
 
-class EditDataPage extends StatefulWidget{
+import 'package:firstproject/ThemeProvider.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class EditDataPage extends StatefulWidget {
   @override
   _EditDataPageState createState() => _EditDataPageState();
 }
 
-class _EditDataPageState extends State<EditDataPage>{
+class _EditDataPageState extends State<EditDataPage> {
+  File? _image;
+  Uint8List? _imageBytes;
+  final _passwordController = TextEditingController();
+
+  void deleteUserAccount() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+      var response = await http.delete(
+        Uri.parse('https://localhost:7286/api/User/delete-account'),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(_passwordController.text),
+      );
+
+      if (response.statusCode == 200) {
+        print('Account deleted successfully');
+        // Tutaj możesz dodać nawigację lub inne działania po usunięciu konta
+      } else {
+        print('Account deletion failed with status: ${response.statusCode}');
+        // Tutaj możesz dodać obsługę błędów
+      }
+    } catch (e) {
+      print('Error during account deletion: $e');
+      // Tutaj możesz dodać bardziej szczegółową obsługę błędów
+    }
+  }
+
+  Future getImage() async {
+    var image = await ImagePicker().getImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+        _imageBytes = _image!.readAsBytesSync();
+      });
+      print('${_imageBytes!.length} koniec');
+    }
+  }
+
+  void sendImageToServer(Uint8List imageBytes) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token'); // Zmiana na typ String?
+      //print(byteString.length);
+      var response = await http.put(
+        Uri.parse('https://localhost:7286/api/User/change-picture'),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(base64Encode(_imageBytes!)),
+      );
+
+      if (response.statusCode == 200) {
+        print('Image uploaded successfully');
+        // Tutaj można umieścić logikę obsługi sukcesu
+      } else {
+        print('Image upload failed with status: ${response.statusCode}');
+        // Tutaj można umieścić logikę obsługi błędu
+      }
+    } catch (e) {
+      print('Error during image upload: $e');
+      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Edycja dancych'),
+      ),
       body: Center(
-        child: Container(
-          child: Text("alicja"),
+    child:Column(
+        children: [
+          Container(
+            width: 0.3 * MediaQuery.of(context).size.width,
+            height: 0.3 * MediaQuery.of(context).size.height,
+            child: _image == null
+                ? Text('No image selected.')
+                : Image.file(_image!),
+          ),
+          Container(
+            width: 0.9 * MediaQuery.of(context).size.width,
+            height: 0.2 * MediaQuery.of(context).size.height,
+            child: ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Potwierdź"),
+                      content: Text(
+                          "Czy na pewno chcesz usunąć swoje konto? Ta operacja jest nieodwracalna."),
+                      actions: <Widget>[
+                        Text("Wprowadź hasło w celu usniecia konta", style: TextStyle(fontFamily: "Bellota-Regular")),
+                        TextFormField(
+                          controller: _passwordController,
+                        ),
+                        TextButton(
+                          child: Text("Anuluj"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: Text(
+                            "Usuń konto",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          onPressed: () {
+                            deleteUserAccount();
+                            Navigator.of(context)
+                                .pop(); // Zamknij okno dialogowe
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Text(
+                'Usuń konto',
+                style: TextStyle(color: Colors.white),
+              ),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Colors.red), // Kolor tła przycisku
+              ),
+            ),
+          ),
+          Container(
+            child: ElevatedButton(
+              onPressed: getImage,
+              child: Text('Dodaj zdjecie'),
+    ),
+          ),
+          Container(
+            width: 0.9 * MediaQuery.of(context).size.width,
+            height: 0.2 * MediaQuery.of(context).size.height,
+            child: ElevatedButton(
+              onPressed: () {
+                sendImageToServer(_imageBytes!);
+              },
+              child: Text('Wyślij zdjęcie na serwer'),
+            ),
+          ),
+        ],
+      ),
 
-        ),
       ),
     );
   }
-
 }

@@ -22,7 +22,7 @@ class LoginBloc {
       );
 
       if (response.statusCode == 200) {
-        var token = json.decode(response.body)['token'];
+        var token = json.decode(response.body)['data'];
         await saveToken(token);
         return true;
       } else {

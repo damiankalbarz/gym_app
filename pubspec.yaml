@@ -33,7 +33,11 @@ dependencies:
   qr_flutter: ^4.1.0
   shared_preferences: ^2.0.10
   provider: ^5.0.0
+  path_provider: ^2.0.5
   http: ^0.13.3
+  image_picker: ^0.8.4+4
+  permission_handler: ^8.1.2
+  image: ^3.0.1
 
 
 
