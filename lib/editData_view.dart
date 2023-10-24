@@ -17,10 +17,94 @@ class EditDataPage extends StatefulWidget {
   _EditDataPageState createState() => _EditDataPageState();
 }
 
+
+
 class _EditDataPageState extends State<EditDataPage> {
   File? _image;
   Uint8List? _imageBytes;
   final _passwordController = TextEditingController();
+  final _oldPasswordController = TextEditingController();
+  final _newPasswordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+
+  AlertDialog changePassword(BuildContext context){
+    return AlertDialog(
+      title: Text("Zmiana hasła"),
+      content: Text("Czy na pewno chcesz usunąć swoje konto? Ta operacja jest nieodwracalna."),
+      actions: <Widget>[
+        Text(""),
+        TextFormField(
+          controller: _oldPasswordController,
+          obscureText: true,
+          decoration: InputDecoration(
+              labelText: 'Obecne hasło',
+              labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
+        ),
+        TextFormField(
+          controller: _newPasswordController,
+          obscureText: true,
+          decoration: InputDecoration(
+              labelText: 'Nowe hasło',
+              labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
+        ),
+        TextFormField(
+          controller: _confirmPasswordController,
+          obscureText: true,
+          decoration: InputDecoration(
+              labelText: 'Potwierdź hasło',
+              labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
+        ),
+        TextButton(
+          child: Text("Anuluj"),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: Text(
+            "Usuń konto",
+            style: TextStyle(color: Colors.red),
+          ),
+          onPressed: () {
+            changePasswordApi();
+            Navigator.of(context)
+                .pop(); // Zamknij okno dialogowe
+          },
+        ),
+      ],
+
+    );
+  }
+
+  void changePasswordApi() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+      var response = await http.put(
+        Uri.parse('https://localhost:7286/api/User/change-password'),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode({
+        "currentPassword": _oldPasswordController.text,
+        "newPassword": _newPasswordController.text,
+        "confirmPassword": _confirmPasswordController.text}),
+      );
+
+      if (response.statusCode == 200) {
+        print('Password change successfully');
+        // Tutaj możesz dodać nawigację lub inne działania po usunięciu konta
+      } else {
+        print('Passwor change failed with status: ${response.statusCode}');
+        // Tutaj możesz dodać obsługę błędów
+      }
+    } catch (e) {
+      print('Error during account deletion: $e');
+      // Tutaj możesz dodać bardziej szczegółową obsługę błędów
+    }
+  }
 
   void deleteUserAccount() async {
     try {
@@ -102,6 +186,17 @@ class _EditDataPageState extends State<EditDataPage> {
             child: _image == null
                 ? Text('No image selected.')
                 : Image.file(_image!),
+          ),
+          Container(
+            child: ElevatedButton(
+              onPressed: () {
+                showDialog(context: context, builder: (BuildContext context){
+                  return changePassword(context);
+                }
+                );
+              },
+              child: Text("Zmień hasło"),
+            ),
           ),
           Container(
             width: 0.9 * MediaQuery.of(context).size.width,
