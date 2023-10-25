@@ -88,6 +88,17 @@ class _ProfilPageState extends State<ProfilPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(height: 30),
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SettingsView()),
+                    );
+                  },
+                  icon: Icon(Icons.settings)),
+            ),
 
             StreamBuilder<User>(
               stream: widget.bloc.userStream,
@@ -107,7 +118,6 @@ class _ProfilPageState extends State<ProfilPage> {
                             height: MediaQuery.of(context).size.width * 0.1,
                             child: ClipOval( clipBehavior: Clip.antiAlias,
                               child: Image.memory(snapshot.data!.profilePicture.content),
-                              //child: imageFromBase64String(snapshot.data!.profilePicture.content),
                           ),
                           ),
                           SizedBox(width: 20,),

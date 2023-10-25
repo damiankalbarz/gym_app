@@ -31,6 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Container(
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -48,6 +49,9 @@ class _RegisterPageState extends State<RegisterPage> {
               TextFormField(
                 controller: _userNameController,
                 decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
                     labelText: 'Nazwa użytkownika',
                     labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
                 validator: (value) {
@@ -61,6 +65,9 @@ class _RegisterPageState extends State<RegisterPage> {
               TextFormField(
                 controller: _fullNameController,
                 decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
                     labelText: 'Imie i Nazwisko',
                     labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
                 validator: (value) {
@@ -74,6 +81,9 @@ class _RegisterPageState extends State<RegisterPage> {
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
                     labelText: 'E-mail',
                     labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
                 validator: (value) {
@@ -89,7 +99,11 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(height: 16.0),
               TextFormField(
                 controller: _phoneController,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
                     labelText: 'Telefon',
                     labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
                 validator: (value) {
@@ -106,6 +120,9 @@ class _RegisterPageState extends State<RegisterPage> {
               TextFormField(
                 controller: _passwordController,
                 decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
                     labelText: 'Hasło',
                     labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
                 validator: (value) {
@@ -130,8 +147,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       });
                     },
                   ),
-                  Text(
-                    'Akceptuję regulamin',
+                  Text('Akceptuję regulamin',
                     style: TextStyle(fontFamily: "Bellota-Regular"),
                   ),
                 ],

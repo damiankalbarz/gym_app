@@ -7,17 +7,18 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_cropper/image_cropper.dart';
 
 import 'package:firstproject/ThemeProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image/image.dart' as img;
+import 'PersonalInformation_views/changePersonalInformation_view.dart';
 
 class EditDataPage extends StatefulWidget {
   @override
   _EditDataPageState createState() => _EditDataPageState();
 }
-
-
 
 class _EditDataPageState extends State<EditDataPage> {
   File? _image;
@@ -27,53 +28,73 @@ class _EditDataPageState extends State<EditDataPage> {
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-
-  AlertDialog changePassword(BuildContext context){
+  AlertDialog changePassword(BuildContext context) {
     return AlertDialog(
-      title: Text("Zmiana hasła"),
-      content: Text("Czy na pewno chcesz usunąć swoje konto? Ta operacja jest nieodwracalna."),
+      title: Text(
+        "Zmiana hasła",
+        style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 20),
+        textAlign: TextAlign.center,
+      ),
       actions: <Widget>[
         Text(""),
         TextFormField(
           controller: _oldPasswordController,
           obscureText: true,
           decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
               labelText: 'Obecne hasło',
               labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
+        ),
+        SizedBox(
+          height: 7,
         ),
         TextFormField(
           controller: _newPasswordController,
           obscureText: true,
           decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
               labelText: 'Nowe hasło',
               labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
+        ),
+        SizedBox(
+          height: 7,
         ),
         TextFormField(
           controller: _confirmPasswordController,
           obscureText: true,
           decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
               labelText: 'Potwierdź hasło',
               labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
         ),
-        TextButton(
-          child: Text("Anuluj"),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        TextButton(
-          child: Text(
-            "Usuń konto",
-            style: TextStyle(color: Colors.red),
-          ),
-          onPressed: () {
-            changePasswordApi();
-            Navigator.of(context)
-                .pop(); // Zamknij okno dialogowe
-          },
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              child: Text("Anuluj"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(
+                "Zmień hasło",
+                style: TextStyle(color: Colors.green),
+              ),
+              onPressed: () {
+                changePasswordApi();
+                Navigator.of(context).pop(); // Zamknij okno dialogowe
+              },
+            ),
+          ],
         ),
       ],
-
     );
   }
 
@@ -88,9 +109,10 @@ class _EditDataPageState extends State<EditDataPage> {
           'Content-Type': 'application/json; charset=UTF-8'
         },
         body: jsonEncode({
-        "currentPassword": _oldPasswordController.text,
-        "newPassword": _newPasswordController.text,
-        "confirmPassword": _confirmPasswordController.text}),
+          "currentPassword": _oldPasswordController.text,
+          "newPassword": _newPasswordController.text,
+          "confirmPassword": _confirmPasswordController.text
+        }),
       );
 
       if (response.statusCode == 200) {
@@ -132,6 +154,70 @@ class _EditDataPageState extends State<EditDataPage> {
     }
   }
 
+  /*
+
+  Future<File> compressAndGetFile(File file) async {
+    final tempDir = await getTemporaryDirectory();
+    final path = tempDir.path;
+    img.Image? image = img.decodeImage(file.readAsBytesSync());
+    img.Image smallerImage = img.copyResize(image!, width: 500); // Możesz zmienić szerokość na odpowiednią dla Twojego przypadku
+
+    File compressedFile = new File('$path/img.jpg')
+      ..writeAsBytesSync(img.encodeJpg(smallerImage, quality: 85)); // Możesz dostosować jakość w zależności od Twoich wymagań
+
+    return compressedFile;
+  }
+
+
+
+
+
+  Future<File?> _cropImage(File imageFile) async {
+    File? croppedFile = await ImageCropper().cropImage(
+      sourcePath: imageFile.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9
+      ],
+      androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'Cropper',
+          toolbarColor: Colors.deepOrange,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false),
+      iosUiSettings: IOSUiSettings(
+        title: 'Cropper',
+        aspectRatioLockEnabled: true,
+        aspectRatioPickerButtonHidden: true,
+        minimumAspectRatio: 1.0,
+      ),
+    );
+    return croppedFile;
+  }
+
+  Future getImage() async {
+    var image = await ImagePicker().getImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      File? croppedImage = await _cropImage(File(image.path));
+      if (croppedImage != null) {
+        File? compressedImage = await compressAndGetFile(File(image.path));
+        File? croppedImage = await _cropImage(compressedImage!);
+        if (croppedImage != null) {
+          setState(() {
+            _image = croppedImage;
+            _imageBytes = _image!.readAsBytesSync();
+          });
+          print('${_imageBytes!.length} koniec');
+        }
+      }
+    }
+  }
+
+*/
   Future getImage() async {
     var image = await ImagePicker().getImage(source: ImageSource.gallery);
 
@@ -177,95 +263,155 @@ class _EditDataPageState extends State<EditDataPage> {
       appBar: AppBar(
         title: Text('Edycja dancych'),
       ),
-      body: Center(
-    child:Column(
-        children: [
-          Container(
-            width: 0.3 * MediaQuery.of(context).size.width,
-            height: 0.3 * MediaQuery.of(context).size.height,
-            child: _image == null
-                ? Text('No image selected.')
-                : Image.file(_image!),
-          ),
-          Container(
-            child: ElevatedButton(
-              onPressed: () {
-                showDialog(context: context, builder: (BuildContext context){
-                  return changePassword(context);
-                }
-                );
-              },
-              child: Text("Zmień hasło"),
-            ),
-          ),
-          Container(
-            width: 0.9 * MediaQuery.of(context).size.width,
-            height: 0.2 * MediaQuery.of(context).size.height,
-            child: ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Potwierdź"),
-                      content: Text(
-                          "Czy na pewno chcesz usunąć swoje konto? Ta operacja jest nieodwracalna."),
-                      actions: <Widget>[
-                        Text("Wprowadź hasło w celu usniecia konta", style: TextStyle(fontFamily: "Bellota-Regular")),
-                        TextFormField(
-                          controller: _passwordController,
-                        ),
-                        TextButton(
-                          child: Text("Anuluj"),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: Text(
-                            "Usuń konto",
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          onPressed: () {
-                            deleteUserAccount();
-                            Navigator.of(context)
-                                .pop(); // Zamknij okno dialogowe
-                          },
-                        ),
-                      ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              Container(
+                  width: 0.9 * MediaQuery.of(context).size.width,
+                  height: 0.2 * MediaQuery.of(context).size.height,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return changePersonalInformation(context);
+                          });
+                    },
+                    child: Text("Dane personalne"),
+                  )),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: 0.9 * MediaQuery.of(context).size.width,
+                height: 0.2 * MediaQuery.of(context).size.height,
+                child: ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return changePassword(context);
+                        });
+                  },
+                  child: Text("Zmień hasło"),
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: 0.9 * MediaQuery.of(context).size.width,
+                height: 0.2 * MediaQuery.of(context).size.height,
+                child: ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Potwierdź usuniecie konta",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontFamily: "Bellota-Regular")),
+
+                          actions: <Widget>[
+                            Text(
+                                "Czy na pewno chcesz usunąć swoje konto? Ta operacja jest nieodwracalna.",
+                                style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 16), textAlign: TextAlign.center,),
+                            SizedBox(height: 10,),
+                            Text("Wprowadź hasło w celu usniecia konta",
+                                style:
+                                    TextStyle(fontFamily: "Bellota-Regular")),
+                            SizedBox(height: 5,),
+                            TextFormField(
+                              controller: _passwordController,
+                              decoration: InputDecoration(
+                                  alignLabelWithHint: true,
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black),
+                                  ),
+                                  labelText: 'Hasło',
+                                  labelStyle:
+                                      TextStyle(fontFamily: "Bellota-Regular")),
+                              obscureText: true,
+                            ),
+                            Row(
+                              children: [
+                                TextButton(
+                                  child: Text("Anuluj"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                Expanded(child:
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  child: Text(
+                                    "Usuń konto",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  onPressed: () {
+                                    deleteUserAccount();
+                                    Navigator.of(context)
+                                        .pop(); // Zamknij okno dialogowe
+                                  },
+                                ),
+                                ),
+                                ),
+                              ],
+                            )
+                          ],
+                        );
+                      },
                     );
                   },
-                );
-              },
-              child: Text(
-                'Usuń konto',
-                style: TextStyle(color: Colors.white),
+                  child: Text(
+                    'Usuń konto',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Colors.red), // Kolor tła przycisku
+                  ),
+                ),
               ),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    Colors.red), // Kolor tła przycisku
+              SizedBox(
+                height: 5,
               ),
-            ),
+              Container(
+                child: Row(
+                  children: [
+                    Container(
+                      width: 0.6 * MediaQuery.of(context).size.width,
+                      height: 0.3 * MediaQuery.of(context).size.height,
+                      child: ElevatedButton(
+                        onPressed: getImage,
+                        child: Text('Dodaj zdjecie'),
+                      ),
+                    ),
+                    Container(
+                      width: 0.3 * MediaQuery.of(context).size.width,
+                      height: 0.3 * MediaQuery.of(context).size.height,
+                      child: _image == null
+                          ? Text('No image selected.')
+                          : Image.file(_image!),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: 0.9 * MediaQuery.of(context).size.width,
+                height: 0.2 * MediaQuery.of(context).size.height,
+                child: ElevatedButton(
+                  onPressed: () {
+                    sendImageToServer(_imageBytes!);
+                  },
+                  child: Text('Wyślij zdjęcie na serwer'),
+                ),
+              ),
+            ],
           ),
-          Container(
-            child: ElevatedButton(
-              onPressed: getImage,
-              child: Text('Dodaj zdjecie'),
-    ),
-          ),
-          Container(
-            width: 0.9 * MediaQuery.of(context).size.width,
-            height: 0.2 * MediaQuery.of(context).size.height,
-            child: ElevatedButton(
-              onPressed: () {
-                sendImageToServer(_imageBytes!);
-              },
-              child: Text('Wyślij zdjęcie na serwer'),
-            ),
-          ),
-        ],
-      ),
-
+        ),
       ),
     );
   }
