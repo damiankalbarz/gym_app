@@ -1,11 +1,7 @@
-import 'dart:convert';
 
-import 'package:firstproject/profil_view.dart';
 import 'package:firstproject/register_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 import 'login_view.dart';
 
@@ -15,8 +11,6 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final RegisterBloc _registerBloc = RegisterBloc();
-  final _formKey = GlobalKey<FormState>();
-  bool _isLoading = false;
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _fullNameController = TextEditingController();
@@ -25,22 +19,19 @@ class _RegisterPageState extends State<RegisterPage> {
   bool isChecked = false;
 
 
-
-
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Container(
         padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(height: 26.0),
-              const Text('REJESTRACJA',
+              Text('REJESTRACJA',
                   style: TextStyle(
                       fontSize: 28.0,
                       fontWeight: FontWeight.bold,
@@ -153,16 +144,17 @@ class _RegisterPageState extends State<RegisterPage> {
                 ],
               ),
               SizedBox(height: 13.0),
-              Flexible(
+              Container(
                 child: ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
+                    if (_registerBloc.isValidEmail(_emailController.text)&& _registerBloc.isValidPhone(_phoneController.text)) {
                       _registerBloc.registerUser(
                         userName: _userNameController.text,
                         password: _passwordController.text,
                         fullName: _fullNameController.text,
                         email: _emailController.text,
                         phoneNumber: _phoneController.text,
+
                       ).then((success) {
                         if (success) {
                           Navigator.push(
@@ -182,8 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               SizedBox(height: 11.0),
-              Flexible(
-                child: TextButton(
+              TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -194,11 +185,11 @@ class _RegisterPageState extends State<RegisterPage> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-              ),
             ],
           ),
         ),
-      ),
+        ),
+   
     );
   }
 }

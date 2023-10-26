@@ -3,17 +3,21 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:image_cropper/image_cropper.dart';
 
 import 'package:firstproject/ThemeProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image/image.dart' as img;
+import 'PersonalInformation_views/changePassword_view.dart';
 import 'PersonalInformation_views/changePersonalInformation_view.dart';
+import 'PersonalInformation_views/deleteAccount_view.dart';
+
 
 class EditDataPage extends StatefulWidget {
   @override
@@ -24,135 +28,11 @@ class _EditDataPageState extends State<EditDataPage> {
   File? _image;
   Uint8List? _imageBytes;
   final _passwordController = TextEditingController();
-  final _oldPasswordController = TextEditingController();
-  final _newPasswordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
 
-  AlertDialog changePassword(BuildContext context) {
-    return AlertDialog(
-      title: Text(
-        "Zmiana hasła",
-        style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 20),
-        textAlign: TextAlign.center,
-      ),
-      actions: <Widget>[
-        Text(""),
-        TextFormField(
-          controller: _oldPasswordController,
-          obscureText: true,
-          decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black),
-              ),
-              labelText: 'Obecne hasło',
-              labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
-        ),
-        SizedBox(
-          height: 7,
-        ),
-        TextFormField(
-          controller: _newPasswordController,
-          obscureText: true,
-          decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black),
-              ),
-              labelText: 'Nowe hasło',
-              labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
-        ),
-        SizedBox(
-          height: 7,
-        ),
-        TextFormField(
-          controller: _confirmPasswordController,
-          obscureText: true,
-          decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black),
-              ),
-              labelText: 'Potwierdź hasło',
-              labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton(
-              child: Text("Anuluj"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text(
-                "Zmień hasło",
-                style: TextStyle(color: Colors.green),
-              ),
-              onPressed: () {
-                changePasswordApi();
-                Navigator.of(context).pop(); // Zamknij okno dialogowe
-              },
-            ),
-          ],
-        ),
-      ],
-    );
-  }
 
-  void changePasswordApi() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String? token = prefs.getString('token');
-      var response = await http.put(
-        Uri.parse('https://localhost:7286/api/User/change-password'),
-        headers: <String, String>{
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json; charset=UTF-8'
-        },
-        body: jsonEncode({
-          "currentPassword": _oldPasswordController.text,
-          "newPassword": _newPasswordController.text,
-          "confirmPassword": _confirmPasswordController.text
-        }),
-      );
 
-      if (response.statusCode == 200) {
-        print('Password change successfully');
-        // Tutaj możesz dodać nawigację lub inne działania po usunięciu konta
-      } else {
-        print('Passwor change failed with status: ${response.statusCode}');
-        // Tutaj możesz dodać obsługę błędów
-      }
-    } catch (e) {
-      print('Error during account deletion: $e');
-      // Tutaj możesz dodać bardziej szczegółową obsługę błędów
-    }
-  }
 
-  void deleteUserAccount() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String? token = prefs.getString('token');
-      var response = await http.delete(
-        Uri.parse('https://localhost:7286/api/User/delete-account'),
-        headers: <String, String>{
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json; charset=UTF-8'
-        },
-        body: jsonEncode(_passwordController.text),
-      );
 
-      if (response.statusCode == 200) {
-        print('Account deleted successfully');
-        // Tutaj możesz dodać nawigację lub inne działania po usunięciu konta
-      } else {
-        print('Account deletion failed with status: ${response.statusCode}');
-        // Tutaj możesz dodać obsługę błędów
-      }
-    } catch (e) {
-      print('Error during account deletion: $e');
-      // Tutaj możesz dodać bardziej szczegółową obsługę błędów
-    }
-  }
 
   /*
 
@@ -308,60 +188,7 @@ class _EditDataPageState extends State<EditDataPage> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text("Potwierdź usuniecie konta",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontFamily: "Bellota-Regular")),
-
-                          actions: <Widget>[
-                            Text(
-                                "Czy na pewno chcesz usunąć swoje konto? Ta operacja jest nieodwracalna.",
-                                style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 16), textAlign: TextAlign.center,),
-                            SizedBox(height: 10,),
-                            Text("Wprowadź hasło w celu usniecia konta",
-                                style:
-                                    TextStyle(fontFamily: "Bellota-Regular")),
-                            SizedBox(height: 5,),
-                            TextFormField(
-                              controller: _passwordController,
-                              decoration: InputDecoration(
-                                  alignLabelWithHint: true,
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.black),
-                                  ),
-                                  labelText: 'Hasło',
-                                  labelStyle:
-                                      TextStyle(fontFamily: "Bellota-Regular")),
-                              obscureText: true,
-                            ),
-                            Row(
-                              children: [
-                                TextButton(
-                                  child: Text("Anuluj"),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                Expanded(child:
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                child: TextButton(
-                                  child: Text(
-                                    "Usuń konto",
-                                    style: TextStyle(color: Colors.red),
-                                  ),
-                                  onPressed: () {
-                                    deleteUserAccount();
-                                    Navigator.of(context)
-                                        .pop(); // Zamknij okno dialogowe
-                                  },
-                                ),
-                                ),
-                                ),
-                              ],
-                            )
-                          ],
-                        );
+                        return deleteAccount(context);
                       },
                     );
                   },

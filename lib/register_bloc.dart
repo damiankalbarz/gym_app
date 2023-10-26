@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class RegisterBloc {
+
   Future<bool> registerUser({
     required String userName,
     required String password,
@@ -25,6 +26,7 @@ class RegisterBloc {
       );
 
       if (response.statusCode == 200) {
+        print("Success");
         return true;
       } else {
         print('Błąd podczas rejestracji. Kod stanu: ${response.statusCode}');
