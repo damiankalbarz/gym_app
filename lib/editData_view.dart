@@ -155,8 +155,9 @@ class _EditDataPageState extends State<EditDataPage> {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return changePersonalInformation(context);
-                          });
+                            return PersonalInformation();
+                      },
+                      );
                     },
                     child: Text("Dane personalne"),
                   )),
