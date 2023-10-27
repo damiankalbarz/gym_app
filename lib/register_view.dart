@@ -17,6 +17,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _passwordController = TextEditingController();
   final _userNameController = TextEditingController();
   bool isChecked = false;
+  final _formKey = GlobalKey<FormState>();
 
 
   
@@ -27,6 +28,8 @@ class _RegisterPageState extends State<RegisterPage> {
       body: Container(
         padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -147,7 +150,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Container(
                 child: ElevatedButton(
                   onPressed: () {
-                    if (_registerBloc.isValidEmail(_emailController.text)&& _registerBloc.isValidPhone(_phoneController.text)) {
+                    if (_formKey.currentState!.validate() && _registerBloc.isValidEmail(_emailController.text)&& _registerBloc.isValidPhone(_phoneController.text)) {
                       _registerBloc.registerUser(
                         userName: _userNameController.text,
                         password: _passwordController.text,
@@ -189,6 +192,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
         ),
+      ),
    
     );
   }

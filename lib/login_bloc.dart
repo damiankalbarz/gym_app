@@ -23,9 +23,11 @@ class LoginBloc {
 
       if (response.statusCode == 200) {
         var token = json.decode(response.body)['data'];
+        print("login success");
         await saveToken(token);
         return true;
       } else {
+        print(":(");
         return false;
       }
     } catch (e) {

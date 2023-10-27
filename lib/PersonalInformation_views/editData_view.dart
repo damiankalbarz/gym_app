@@ -14,9 +14,9 @@ import 'package:firstproject/ThemeProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image/image.dart' as img;
-import 'PersonalInformation_views/changePassword_view.dart';
-import 'PersonalInformation_views/changePersonalInformation_view.dart';
-import 'PersonalInformation_views/deleteAccount_view.dart';
+import 'changePassword_view.dart';
+import 'changePersonalInformation_view.dart';
+import 'deleteAccount_view.dart';
 
 
 class EditDataPage extends StatefulWidget {
@@ -149,7 +149,7 @@ class _EditDataPageState extends State<EditDataPage> {
             children: [
               Container(
                   width: 0.9 * MediaQuery.of(context).size.width,
-                  height: 0.2 * MediaQuery.of(context).size.height,
+                  height: 0.1 * MediaQuery.of(context).size.height,
                   child: ElevatedButton(
                     onPressed: () {
                       showDialog(
@@ -159,14 +159,14 @@ class _EditDataPageState extends State<EditDataPage> {
                       },
                       );
                     },
-                    child: Text("Dane personalne"),
+                    child: Text("Podgląd/Edycja danych osobistych", style: TextStyle(fontFamily: "Bellota-regular"),),
                   )),
               SizedBox(
                 height: 5,
               ),
               Container(
                 width: 0.9 * MediaQuery.of(context).size.width,
-                height: 0.2 * MediaQuery.of(context).size.height,
+                height: 0.1 * MediaQuery.of(context).size.height,
                 child: ElevatedButton(
                   onPressed: () {
                     showDialog(
@@ -175,7 +175,7 @@ class _EditDataPageState extends State<EditDataPage> {
                           return changePassword(context);
                         });
                   },
-                  child: Text("Zmień hasło"),
+                  child: Text("Zmień hasło",style: TextStyle(fontFamily: "Bellota-regular"),),
                 ),
               ),
               SizedBox(
@@ -183,7 +183,7 @@ class _EditDataPageState extends State<EditDataPage> {
               ),
               Container(
                 width: 0.9 * MediaQuery.of(context).size.width,
-                height: 0.2 * MediaQuery.of(context).size.height,
+                height: 0.1 * MediaQuery.of(context).size.height,
                 child: ElevatedButton(
                   onPressed: () {
                     showDialog(
@@ -195,7 +195,7 @@ class _EditDataPageState extends State<EditDataPage> {
                   },
                   child: Text(
                     'Usuń konto',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(fontFamily: "Bellota-regular"),
                   ),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
@@ -229,12 +229,12 @@ class _EditDataPageState extends State<EditDataPage> {
               ),
               Container(
                 width: 0.9 * MediaQuery.of(context).size.width,
-                height: 0.2 * MediaQuery.of(context).size.height,
+                height: 0.1 * MediaQuery.of(context).size.height,
                 child: ElevatedButton(
                   onPressed: () {
                     sendImageToServer(_imageBytes!);
                   },
-                  child: Text('Wyślij zdjęcie na serwer'),
+                  child: Text('Wyślij zdjęcie na serwer',style: TextStyle(fontFamily: "Bellota-regular"),),
                 ),
               ),
             ],

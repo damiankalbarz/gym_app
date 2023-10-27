@@ -3,11 +3,10 @@ import 'dart:typed_data';
 
 import 'package:firstproject/profilPage_bloc.dart';
 import 'package:flutter/material.dart';
-import 'User.dart';
+import 'Model/User.dart';
 import 'navigation.dart';
 import 'settings_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 Image imageFromBase64String(String base64String) {
   try {
@@ -22,15 +21,16 @@ Image imageFromBase64String(String base64String) {
   }
 }
 
-
 class Goal {
   String name;
   bool isChecked;
+
   Goal({required this.name, this.isChecked = false});
 }
 
 class ProfilPage extends StatefulWidget {
   final ProfilPageBloc bloc = ProfilPageBloc();
+
   @override
   _ProfilPageState createState() => _ProfilPageState();
 }
@@ -40,7 +40,6 @@ class _ProfilPageState extends State<ProfilPage> {
   List<Goal> goals = [];
   TextEditingController goalController = TextEditingController();
   Map<String, bool> checkedGoals = {};
-
 
   _loadGoals() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -65,7 +64,6 @@ class _ProfilPageState extends State<ProfilPage> {
     prefs.setStringList('goals', goalsData);
   }
 
-
   @override
   void dispose() {
     widget.bloc.dispose();
@@ -77,7 +75,6 @@ class _ProfilPageState extends State<ProfilPage> {
     super.initState();
     widget.bloc.getUser();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +96,6 @@ class _ProfilPageState extends State<ProfilPage> {
                   },
                   icon: Icon(Icons.settings)),
             ),
-
             StreamBuilder<User>(
               stream: widget.bloc.userStream,
               builder: (context, snapshot) {
@@ -107,48 +103,80 @@ class _ProfilPageState extends State<ProfilPage> {
                   return Column(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                          color: Colors.blue, // Kolor tła kontenera
-                          borderRadius: BorderRadius.circular(30.0), // Zaokrąglenie brzegów
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              top: 10, // dowolna wartość, aby przesunąć kontener w dół
+                              left: 10,
+                              right: 0,
+                              //child: Align(
+                              //alignment: AlignmentDirectional.center,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.75,
+                                height: MediaQuery.of(context).size.height * 0.1,
+                                decoration: BoxDecoration(
+                                  color: Colors.blue, // Kolor tła kontenera
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  border: Border.all(color: Colors.black, width: 2), // Zaokrąglenie brzegów
+                                ),
+                                child: Row(
+                                  children: [
+                                    SizedBox(width: 100,),
+                                    Column(
+                                      children: [
+                                        Text('${snapshot.data!.userName}',
+                                            style: TextStyle(
+                                                fontFamily: "Bellota-Regular",
+                                                fontSize: 18)),
+                                        Text('${snapshot.data!.fullName}',
+                                            style: TextStyle(
+                                                fontFamily: "Bellota-Regular",
+                                                fontSize: 12)),
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    Container(
+                                      child: IconButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SettingsView()),
+                                            );
+                                          },
+                                          icon: Icon(Icons.settings)),
+                                    ),
+                                  ],
+                                ),
+                              //),
+                            ),
+                            ),
+                            Positioned(
+                              child: ClipOval(
+                                clipBehavior: Clip.antiAlias,
+                              child:  Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: Colors.black, width: 2),
+                                ),
+                                //clipBehavior: Clip.antiAlias,
+                                child: Image.memory(
+                                  snapshot.data!.profilePicture.content,),
+                              ),
+                            ),
+                            ),
+                          ],
                         ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.1,
-                            height: MediaQuery.of(context).size.width * 0.1,
-                            child: ClipOval( clipBehavior: Clip.antiAlias,
-                              child: Image.memory(snapshot.data!.profilePicture.content),
-                          ),
-                          ),
-                          SizedBox(width: 20,),
-                          Column(
-                            children: [
-                              Text('${snapshot.data!.userName}', style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 18)),
-                              Text('${snapshot.data!.fullName}', style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 12)),
-                            ],
-                          ),
-
-                          Spacer(),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => SettingsView()),
-                                  );
-                                },
-                                icon: Icon(Icons.settings)),
-                          ),
-                        ],
                       ),
+                      Text(
+                        'Witaj ${snapshot.data!.userName}!',
+                        style: TextStyle(
+                            fontFamily: "Bellota-Regular", fontSize: 32),
                       ),
-                      Text('Witaj ${snapshot.data!.userName}!',
-                      style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 32),
-                   ),
-
-
-                  ],
+                    ],
                   );
                 } else if (snapshot.hasError) {
                   return Center(
@@ -160,8 +188,6 @@ class _ProfilPageState extends State<ProfilPage> {
                 );
               },
             ),
-
-
             SizedBox(height: 10),
             Center(
               child: Text(
@@ -169,11 +195,7 @@ class _ProfilPageState extends State<ProfilPage> {
                 style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 22),
               ),
             ),
-
-
             SizedBox(height: 20),
-
-
             Container(
               width: 0.9 * MediaQuery.of(context).size.width,
               //height: 0.2*MediaQuery.of(context).size.height,
@@ -248,7 +270,6 @@ class _ProfilPageState extends State<ProfilPage> {
                 },
               ),
             ),
-
             SizedBox(
               height: 20,
             ),

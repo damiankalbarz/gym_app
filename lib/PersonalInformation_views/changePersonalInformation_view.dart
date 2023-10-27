@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image/image.dart' as img;
 import 'package:firstproject/profilPage_bloc.dart';
 
-import '../User.dart';
+import '../Model/User.dart';
 
 
 

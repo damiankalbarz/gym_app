@@ -1,4 +1,4 @@
-import 'package:firstproject/editData_view.dart';
+import 'package:firstproject/PersonalInformation_views/editData_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
