@@ -154,13 +154,15 @@ class _ProfilPageState extends State<ProfilPage> {
                               //),
                             ),
                             ),
+                            /*
                             Positioned(
+
                               child: ClipOval(
-                                clipBehavior: Clip.antiAlias,
+                                //clipBehavior: Clip.antiAlias,
                               child:  Container(
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  border: Border.all(color: Colors.black, width: 2),
+                                  border: Border.all(color: Colors.black, width: 3),
                                 ),
                                 //clipBehavior: Clip.antiAlias,
                                 child: Image.memory(
@@ -168,6 +170,8 @@ class _ProfilPageState extends State<ProfilPage> {
                               ),
                             ),
                             ),
+
+                             */
                           ],
                         ),
                       ),

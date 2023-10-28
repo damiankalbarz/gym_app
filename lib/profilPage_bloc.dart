@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:convert';
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'Model/ProfilPictureDTO.dart';
 import 'Model/User.dart';
 import 'profil_view.dart';
 import 'package:http/http.dart' as http;
@@ -28,9 +31,12 @@ class ProfilPageBloc {
           },
         );
         if (response.statusCode == 200) {
+          print("xd");
           var jsonResponse = json.decode(response.body);
+          print("xdd");
           //print('Dane z serwera: $jsonResponse');
           var user = User.fromJson(jsonResponse);
+          //var profilePictureDTO = ProfilePictureDTO.fromJson(jsonResponse);
           _userController.sink.add(user);
         } else {
           print("Błąd");
@@ -44,5 +50,4 @@ class ProfilPageBloc {
       throw Exception('Failed to load user data');
     }
   }
-
 }

@@ -10,7 +10,7 @@ class User {
   final String fullName;
   final String email;
   final String phoneNumber;
-  final ProfilePictureDTO profilePicture;
+  //final ProfilePictureDTO profilePicture;
 
 
   User({
@@ -19,7 +19,7 @@ class User {
     required this.fullName,
     required this.email,
     required this.phoneNumber,
-    required this.profilePicture,
+    //required this.profilePicture,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -29,7 +29,7 @@ class User {
       fullName: json['data']['user']['fullName'],
       email: json['data']['user']['email'],
       phoneNumber: json['data']['user']['phoneNumber'],
-      profilePicture: ProfilePictureDTO.fromJson(json['data']['profilePictureDTO']),
+      //profilePicture: ProfilePictureDTO.fromJson(json['data']['profilePictureDTO']),
     );
   }
 }

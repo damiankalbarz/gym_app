@@ -58,7 +58,7 @@ class LoginPage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   bool success = await _loginBloc.login();
-                  if (success || 1 == 1) {
+                  if (success) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => ProfilPage()),
