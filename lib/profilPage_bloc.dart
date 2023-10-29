@@ -11,9 +11,13 @@ import 'package:http/http.dart' as http;
 class ProfilPageBloc {
   final _userController = StreamController<User>();
   Stream<User> get userStream => _userController.stream;
+  final _pictureController = StreamController<ProfilePictureDTO>();
+  Stream<ProfilePictureDTO> get pictureStream => _pictureController.stream;
+
 
   void dispose() {
     _userController.close();
+    _pictureController.close();
   }
 
   Future<void> getUser() async {
@@ -31,13 +35,12 @@ class ProfilPageBloc {
           },
         );
         if (response.statusCode == 200) {
-          print("xd");
           var jsonResponse = json.decode(response.body);
-          print("xdd");
           //print('Dane z serwera: $jsonResponse');
           var user = User.fromJson(jsonResponse);
-          //var profilePictureDTO = ProfilePictureDTO.fromJson(jsonResponse);
+          var profilePictureDTO = ProfilePictureDTO.fromJson(jsonResponse);
           _userController.sink.add(user);
+          _pictureController.sink.add(profilePictureDTO);
         } else {
           print("Błąd");
           throw Exception('Failed to load user data');

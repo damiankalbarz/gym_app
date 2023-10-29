@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:firstproject/Model/ProfilPictureDTO.dart';
 import 'package:firstproject/profilPage_bloc.dart';
 import 'package:flutter/material.dart';
 import 'Model/User.dart';
@@ -79,13 +80,14 @@ class _ProfilPageState extends State<ProfilPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+      body: SingleChildScrollView( child:
+        Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(height: 30),
-            Align(
+            /*Align(
               alignment: Alignment.topRight,
               child: IconButton(
                   onPressed: () {
@@ -95,45 +97,51 @@ class _ProfilPageState extends State<ProfilPage> {
                     );
                   },
                   icon: Icon(Icons.settings)),
-            ),
+            ),*/
             StreamBuilder<User>(
               stream: widget.bloc.userStream,
               builder: (context, snapshot) {
+                final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+                final borderColor = isDarkMode ? Colors.white : Colors.black;
                 if (snapshot.hasData) {
                   return Column(
                     children: [
                       Container(
                         width: MediaQuery.of(context).size.width * 0.8,
-                        height: MediaQuery.of(context).size.height * 0.2,
+                        height: MediaQuery.of(context).size.height * 0.1,
                         child: Stack(
                           children: [
                             Positioned(
-                              top: 10, // dowolna wartość, aby przesunąć kontener w dół
+                              top: 10,
+                              // dowolna wartość, aby przesunąć kontener w dół
                               left: 10,
                               right: 0,
                               //child: Align(
                               //alignment: AlignmentDirectional.center,
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.75,
-                                height: MediaQuery.of(context).size.height * 0.1,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.065,
                                 decoration: BoxDecoration(
                                   color: Colors.blue, // Kolor tła kontenera
                                   borderRadius: BorderRadius.circular(50.0),
-                                  border: Border.all(color: Colors.black, width: 2), // Zaokrąglenie brzegów
+                                  border: Border.all(color: borderColor, width: 2), // Zaokrąglenie brzegów
                                 ),
                                 child: Row(
                                   children: [
-                                    SizedBox(width: 100,),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.22,
+                                    ),
                                     Column(
                                       children: [
                                         Text('${snapshot.data!.userName}',
                                             style: TextStyle(
                                                 fontFamily: "Bellota-Regular",
-                                                fontSize: 18)),
+                                                fontSize: 15)),
                                         Text('${snapshot.data!.fullName}',
                                             style: TextStyle(
                                                 fontFamily: "Bellota-Regular",
-                                                fontSize: 12)),
+                                                fontSize: 10)),
                                       ],
                                     ),
                                     Spacer(),
@@ -151,34 +159,49 @@ class _ProfilPageState extends State<ProfilPage> {
                                     ),
                                   ],
                                 ),
-                              //),
-                            ),
-                            ),
-                            /*
-                            Positioned(
-
-                              child: ClipOval(
-                                //clipBehavior: Clip.antiAlias,
-                              child:  Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(color: Colors.black, width: 3),
-                                ),
-                                //clipBehavior: Clip.antiAlias,
-                                child: Image.memory(
-                                  snapshot.data!.profilePicture.content,),
+                                //),
                               ),
                             ),
+                            Positioned(
+                              child: StreamBuilder<ProfilePictureDTO>(
+                                stream: widget.bloc.pictureStream,
+                                builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: borderColor,
+                                          // dostosuj kolor obramowania
+                                          width: 2,
+                                        ),
+                                      ),
+                                      // dostosuj szerokość obramowania
+                                      child: ClipOval(
+                                        child: Image.memory(
+                                          snapshot.data!.content,
+                                          width: MediaQuery.of(context).size.width * 0.15,
+                                          height: MediaQuery.of(context).size.width * 0.15,
+                                          fit: BoxFit.cover, // dostosuj tryb dopasowania
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    return CircularProgressIndicator();
+                                  }
+                                },
+                              ),
                             ),
-
-                             */
                           ],
                         ),
                       ),
-                      Text(
+                      Padding(
+                        padding: EdgeInsets.only(top: 0.0),
+                      child: Text(
                         'Witaj ${snapshot.data!.userName}!',
                         style: TextStyle(
                             fontFamily: "Bellota-Regular", fontSize: 32),
+                      ),
                       ),
                     ],
                   );
@@ -192,7 +215,7 @@ class _ProfilPageState extends State<ProfilPage> {
                 );
               },
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 0),
             Center(
               child: Text(
                 'OTO LISTA TWOICH CELÓW!',
@@ -285,6 +308,7 @@ class _ProfilPageState extends State<ProfilPage> {
             ),
           ],
         ),
+      ),
       ),
       bottomNavigationBar: BottomNavigationWidget(
         currentIndex: _currentIndex,

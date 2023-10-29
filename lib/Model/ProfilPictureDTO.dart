@@ -16,10 +16,10 @@ class ProfilePictureDTO {
 
   factory ProfilePictureDTO.fromJson(Map<String, dynamic> json) {
     return ProfilePictureDTO(
-      id: json['id'],
-      content: base64Decode(json['content']),
-      createdOn: json['createdOn'] != null ? DateTime.parse(json['createdOn']) : null,
-      updatedOn: json['updatedOn'] != null ? DateTime.parse(json['updatedOn']) : null,
+      id: json['data']['profilePicture']['id'],
+      content: base64Decode(json['data']['profilePicture']['content']),
+      createdOn: json['data']['profilePicture']['createdOn'] != null ? DateTime.parse(json['data']['profilePicture']['createdOn']) : null,
+      updatedOn: json['data']['profilePicture']['updatedOn'] != null ? DateTime.parse(json['data']['profilePicture']['updatedOn']) : null,
     );
   }
 }
