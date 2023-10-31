@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:firstproject/Model/ProfilPictureDTO.dart';
 import 'package:firstproject/profilPage_bloc.dart';
 import 'package:flutter/material.dart';
+import 'Model/Goal.dart';
 import 'Model/User.dart';
 import 'navigation.dart';
 import 'settings_view.dart';
@@ -22,13 +23,6 @@ Image imageFromBase64String(String base64String) {
   }
 }
 
-class Goal {
-  String name;
-  bool isChecked;
-
-  Goal({required this.name, this.isChecked = false});
-}
-
 class ProfilPage extends StatefulWidget {
   final ProfilPageBloc bloc = ProfilPageBloc();
 
@@ -40,30 +34,16 @@ class _ProfilPageState extends State<ProfilPage> {
   int _currentIndex = 0;
   List<Goal> goals = [];
   TextEditingController goalController = TextEditingController();
-  Map<String, bool> checkedGoals = {};
 
   _loadGoals() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? goalsData = prefs.getStringList('goals');
-    if (goalsData != null) {
+    List<Goal>? fetchedGoals = await widget.bloc.getGoals();
+    if(fetchedGoals != null){
       setState(() {
-        goals = goalsData.map((goalData) {
-          bool isChecked = prefs.getBool(goalData) ?? false;
-          checkedGoals[goalData] = isChecked;
-          return Goal(name: goalData, isChecked: isChecked);
-        }).toList();
+        goals = fetchedGoals;
       });
     }
   }
 
-  _saveGoals() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> goalsData = goals.map((goal) => goal.name).toList();
-    for (var goal in goals) {
-      prefs.setBool(goal.name, goal.isChecked);
-    }
-    prefs.setStringList('goals', goalsData);
-  }
 
   @override
   void dispose() {
@@ -75,19 +55,20 @@ class _ProfilPageState extends State<ProfilPage> {
   void initState() {
     super.initState();
     widget.bloc.getUser();
+    _loadGoals();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView( child:
-        Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(height: 30),
-            /*Align(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(height: 30),
+              /*Align(
               alignment: Alignment.topRight,
               child: IconButton(
                   onPressed: () {
@@ -98,217 +79,231 @@ class _ProfilPageState extends State<ProfilPage> {
                   },
                   icon: Icon(Icons.settings)),
             ),*/
-            StreamBuilder<User>(
-              stream: widget.bloc.userStream,
-              builder: (context, snapshot) {
-                final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-                final borderColor = isDarkMode ? Colors.white : Colors.black;
-                if (snapshot.hasData) {
-                  return Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: MediaQuery.of(context).size.height * 0.1,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              top: 10,
-                              // dowolna wartość, aby przesunąć kontener w dół
-                              left: 10,
-                              right: 0,
-                              //child: Align(
-                              //alignment: AlignmentDirectional.center,
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.75,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.065,
-                                decoration: BoxDecoration(
-                                  color: Colors.blue, // Kolor tła kontenera
-                                  borderRadius: BorderRadius.circular(50.0),
-                                  border: Border.all(color: borderColor, width: 2), // Zaokrąglenie brzegów
+              StreamBuilder<User>(
+                stream: widget.bloc.userStream,
+                builder: (context, snapshot) {
+                  final isDarkMode =
+                      Theme.of(context).brightness == Brightness.dark;
+                  final borderColor = isDarkMode ? Colors.white : Colors.black;
+                  if (snapshot.hasData) {
+                    return Column(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                top: 10,
+                                // dowolna wartość, aby przesunąć kontener w dół
+                                left: 10,
+                                right: 0,
+                                //child: Align(
+                                //alignment: AlignmentDirectional.center,
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.75,
+                                  height: MediaQuery.of(context).size.height * 0.065,
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue, // Kolor tła kontenera
+                                    borderRadius: BorderRadius.circular(50.0),
+                                    border: Border.all(
+                                        color: borderColor,
+                                        width: 2), // Zaokrąglenie brzegów
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.22,
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text('${snapshot.data!.userName}',
+                                              style: TextStyle(
+                                                  fontFamily: "Bellota-Regular",
+                                                  fontSize: 15)),
+                                          Text('${snapshot.data!.fullName}',
+                                              style: TextStyle(
+                                                  fontFamily: "Bellota-Regular",
+                                                  fontSize: 10)),
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Container(
+                                        child: IconButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        SettingsView()),
+                                              );
+                                            },
+                                            icon: Icon(Icons.settings)),
+                                      ),
+                                    ],
+                                  ),
+                                  //),
                                 ),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.22,
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text('${snapshot.data!.userName}',
-                                            style: TextStyle(
-                                                fontFamily: "Bellota-Regular",
-                                                fontSize: 15)),
-                                        Text('${snapshot.data!.fullName}',
-                                            style: TextStyle(
-                                                fontFamily: "Bellota-Regular",
-                                                fontSize: 10)),
-                                      ],
-                                    ),
-                                    Spacer(),
-                                    Container(
-                                      child: IconButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      SettingsView()),
-                                            );
-                                          },
-                                          icon: Icon(Icons.settings)),
-                                    ),
-                                  ],
-                                ),
-                                //),
                               ),
-                            ),
-                            Positioned(
-                              child: StreamBuilder<ProfilePictureDTO>(
-                                stream: widget.bloc.pictureStream,
-                                builder: (context, snapshot) {
+                              Positioned(
+                                child: StreamBuilder<ProfilePictureDTO>(
+                                  stream: widget.bloc.pictureStream,
+                                  builder: (context, snapshot) {
                                     if (snapshot.hasData) {
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: borderColor,
-                                          // dostosuj kolor obramowania
-                                          width: 2,
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: borderColor,
+                                            // dostosuj kolor obramowania
+                                            width: 2,
+                                          ),
                                         ),
-                                      ),
-                                      // dostosuj szerokość obramowania
-                                      child: ClipOval(
-                                        child: Image.memory(
-                                          snapshot.data!.content,
-                                          width: MediaQuery.of(context).size.width * 0.15,
-                                          height: MediaQuery.of(context).size.width * 0.15,
-                                          fit: BoxFit.cover, // dostosuj tryb dopasowania
+                                        // dostosuj szerokość obramowania
+                                        child: ClipOval(
+                                          child: Image.memory(
+                                            snapshot.data!.content,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.15,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.15,
+                                            fit: BoxFit
+                                                .cover, // dostosuj tryb dopasowania
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  } else {
-                                    return CircularProgressIndicator();
-                                  }
-                                },
+                                      );
+                                    } else {
+                                      return CircularProgressIndicator();
+                                    }
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 0.0),
-                      child: Text(
-                        'Witaj ${snapshot.data!.userName}!',
-                        style: TextStyle(
-                            fontFamily: "Bellota-Regular", fontSize: 32),
-                      ),
-                      ),
-                    ],
-                  );
-                } else if (snapshot.hasError) {
+                        Padding(
+                          padding: EdgeInsets.only(top: 0.0),
+                          child: Text(
+                            'Witaj ${snapshot.data!.userName}!',
+                            style: TextStyle(
+                                fontFamily: "Bellota-Regular", fontSize: 32),
+                          ),
+                        ),
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Błąd pobierania danych użytkownika'),
+                    );
+                  }
                   return Center(
-                    child: Text('Błąd pobierania danych użytkownika'),
-                  );
-                }
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-            ),
-            SizedBox(height: 0),
-            Center(
-              child: Text(
-                'OTO LISTA TWOICH CELÓW!',
-                style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 22),
-              ),
-            ),
-            SizedBox(height: 20),
-            Container(
-              width: 0.9 * MediaQuery.of(context).size.width,
-              //height: 0.2*MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(10.0)),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: goalController,
-                      decoration: InputDecoration(
-                        hintText: 'Dodaj nowy cel',
-                        hintStyle: TextStyle(fontFamily: 'Bellota-Regular'),
-                        labelStyle: TextStyle(fontFamily: 'Bellota-Regular'),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(left: 16.0),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.add),
-                    onPressed: () {
-                      setState(() {
-                        String goalName = goalController.text;
-                        if (goalName.isNotEmpty) {
-                          goals.add(Goal(name: goalName));
-                          goalController.clear();
-                          _saveGoals(); // Zapisz cele po dodaniu
-                        }
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 2),
-            Container(
-              width: 0.9 * MediaQuery.of(context).size.width,
-              height: 0.2 * MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(10.0)),
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: goals.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(
-                      goals[index].name,
-                      style: TextStyle(fontFamily: 'Bellota-Regular'),
-                    ),
-                    leading: Checkbox(
-                      value: goals[index].isChecked,
-                      onChanged: (value) {
-                        setState(() {
-                          goals[index].isChecked = value!;
-                          _saveGoals(); // Zapisz cele po zmianie
-                        });
-                      },
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        setState(() {
-                          goals.removeAt(index);
-                          _saveGoals(); // Zapisz cele po usunięciu
-                        });
-                      },
-                    ),
+                    child: CircularProgressIndicator(),
                   );
                 },
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Center(
-              child: Text(
-                'TWOJE ZAJĘCIA:',
-                style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 22),
+              SizedBox(height: 0),
+              Center(
+                child: Text(
+                  'OTO LISTA TWOICH CELÓW!',
+                  style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 22),
+                ),
               ),
-            ),
-          ],
+              SizedBox(height: 20),
+              Container(
+                width: 0.9 * MediaQuery.of(context).size.width,
+                //height: 0.2*MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(10.0)),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: goalController,
+                        decoration: InputDecoration(
+                          hintText: 'Dodaj nowy cel',
+                          hintStyle: TextStyle(fontFamily: 'Bellota-Regular'),
+                          labelStyle: TextStyle(fontFamily: 'Bellota-Regular'),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.only(left: 16.0),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () {
+                        setState(() {
+                          String goalName = goalController.text;
+                          if (goalName.isNotEmpty) {
+                            widget.bloc.addGoals(goalController.text);
+                            goalController.clear();
+                            _loadGoals();
+                            }
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 2),
+              Container(
+                width: 0.9 * MediaQuery.of(context).size.width,
+                height: 0.2 * MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(10.0)),
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: goals.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(
+                        //goals[index].name,
+                        goals[index].content,
+                        style: TextStyle(fontFamily: 'Bellota-Regular'),
+                      ),
+                      leading: Checkbox(
+                      value: goals[index].finished,
+                      onChanged: (value) {
+                        setState(() {
+                          //goals[index].isChecked = value!;
+                          //saveGoals(); // Zapisz cele po zmianie
+                        });
+                      },
+                    ),
+
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          setState(() {
+                            //goals.removeAt(index);
+                            // _saveGoals(); // Zapisz cele po usunięciu
+                          });
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Center(
+                child: Text(
+                  'TWOJE ZAJĘCIA:',
+                  style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 22),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
       ),
       bottomNavigationBar: BottomNavigationWidget(
         currentIndex: _currentIndex,

@@ -16,6 +16,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final _fullNameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _userNameController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _surenameController = TextEditingController();
   bool isChecked = false;
   final _formKey = GlobalKey<FormState>();
 
@@ -57,12 +59,28 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               SizedBox(height: 16.0),
               TextFormField(
-                controller: _fullNameController,
+                controller: _nameController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
-                    labelText: 'Imie i Nazwisko',
+                    labelText: 'Imie',
+                    labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Pole "Nazwisko" jest wymagane.';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16.0),
+              TextFormField(
+                controller: _surenameController,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    labelText: 'Nazwisko',
                     labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -150,6 +168,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Container(
                 child: ElevatedButton(
                   onPressed: () {
+                    _fullNameController.text = _nameController.text + " " + _surenameController.text;
                     if (_formKey.currentState!.validate() && _registerBloc.isValidEmail(_emailController.text)&& _registerBloc.isValidPhone(_phoneController.text)) {
                       _registerBloc.registerUser(
                         userName: _userNameController.text,
@@ -157,7 +176,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         fullName: _fullNameController.text,
                         email: _emailController.text,
                         phoneNumber: _phoneController.text,
-
                       ).then((success) {
                         if (success) {
                           Navigator.push(
