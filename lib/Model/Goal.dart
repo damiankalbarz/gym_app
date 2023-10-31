@@ -1,7 +1,7 @@
 
 class Goal{
   final String content;
-  final bool finished;
+  bool finished;
 
   Goal({required this.content, required this.finished});
   

@@ -244,8 +244,8 @@ class _ProfilPageState extends State<ProfilPage> {
                           if (goalName.isNotEmpty) {
                             widget.bloc.addGoals(goalController.text);
                             goalController.clear();
-                            _loadGoals();
                             }
+                          _loadGoals();
                         });
                       },
                     ),
@@ -253,27 +253,39 @@ class _ProfilPageState extends State<ProfilPage> {
                 ),
               ),
               SizedBox(height: 2),
-              Container(
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.185,
+                ),
+              child: Container(
                 width: 0.9 * MediaQuery.of(context).size.width,
-                height: 0.2 * MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
+                //height: 0.2 * MediaQuery.of(context).size.height,
+                /*decoration: BoxDecoration(
                     color: Colors.green,
-                    borderRadius: BorderRadius.circular(10.0)),
-                child: ListView.builder(
+                    borderRadius: BorderRadius.circular(10.0)),*/
+                child: ListView.separated(
                   padding: EdgeInsets.zero,
                   itemCount: goals.length,
+                  separatorBuilder: (BuildContext context, int index) => SizedBox(height: 1),
                   itemBuilder: (context, index) {
-                    return ListTile(
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: goals[index].finished ? Colors.green : Colors.red,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: ListTile(
                       title: Text(
                         //goals[index].name,
                         goals[index].content,
-                        style: TextStyle(fontFamily: 'Bellota-Regular'),
+                        style: TextStyle(fontFamily: 'Bellota-Regular',decoration: goals[index].finished
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none),
                       ),
                       leading: Checkbox(
                       value: goals[index].finished,
                       onChanged: (value) {
                         setState(() {
-                          //goals[index].isChecked = value!;
+                          goals[index].finished = value!;
                           //saveGoals(); // Zapisz cele po zmianie
                         });
                       },
@@ -288,9 +300,11 @@ class _ProfilPageState extends State<ProfilPage> {
                           });
                         },
                       ),
+                      ),
                     );
                   },
                 ),
+              ),
               ),
               SizedBox(
                 height: 20,
