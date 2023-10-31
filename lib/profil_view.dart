@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:firstproject/Model/ProfilPictureDTO.dart';
@@ -37,11 +39,19 @@ class _ProfilPageState extends State<ProfilPage> {
 
   _loadGoals() async {
     List<Goal>? fetchedGoals = await widget.bloc.getGoals();
-    if(fetchedGoals != null){
-      setState(() {
+    setState(() {
+      if(fetchedGoals != null){
         goals = fetchedGoals;
-      });
-    }
+      }
+    });
+  }
+
+  _toggleGoal(int index, bool value) {
+    setState(() {
+      goals[index].finished = value;
+      widget.bloc.toggle(goals[index].id);
+      _loadGoals();
+    });
   }
 
 
@@ -56,7 +66,7 @@ class _ProfilPageState extends State<ProfilPage> {
     super.initState();
     widget.bloc.getUser();
     _loadGoals();
-  }
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -216,6 +226,12 @@ class _ProfilPageState extends State<ProfilPage> {
                 ),
               ),
               SizedBox(height: 20),
+              /*FutureBuilder(
+                future: _loadGoals(), // Wywołaj _loadGoals()
+                builder: (context, snapshot) {
+                  return Center();
+                }
+              ),*/
               Container(
                 width: 0.9 * MediaQuery.of(context).size.width,
                 //height: 0.2*MediaQuery.of(context).size.height,
@@ -244,9 +260,11 @@ class _ProfilPageState extends State<ProfilPage> {
                           if (goalName.isNotEmpty) {
                             widget.bloc.addGoals(goalController.text);
                             goalController.clear();
+                            Future.delayed(const Duration(milliseconds: 100), () {
+                              _loadGoals();
+                            });
                             }
-                          _loadGoals();
-                        });
+                          });
                       },
                     ),
                   ],
@@ -270,7 +288,7 @@ class _ProfilPageState extends State<ProfilPage> {
                   itemBuilder: (context, index) {
                     return Container(
                       decoration: BoxDecoration(
-                        color: goals[index].finished ? Colors.green : Colors.red,
+                        color: goals[index].finished ? Colors.lightBlueAccent : Colors.blue,
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: ListTile(
@@ -282,21 +300,27 @@ class _ProfilPageState extends State<ProfilPage> {
                         : TextDecoration.none),
                       ),
                       leading: Checkbox(
-                      value: goals[index].finished,
-                      onChanged: (value) {
-                        setState(() {
-                          goals[index].finished = value!;
-                          //saveGoals(); // Zapisz cele po zmianie
-                        });
-                      },
-                    ),
+                        value: goals[index].finished,
+                        onChanged: (value) {
+                          setState(() {
+                            goals[index].finished = value!;
+                            print("x${goals[index].finished}x");
+                            widget.bloc.toggle(goals[index].id);
+                            Future.delayed(const Duration(milliseconds: 100), () {
+                              _loadGoals();
+                            });
+                          });
+                        },
+                      ),
 
-                      trailing: IconButton(
+                        trailing: IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () {
                           setState(() {
-                            //goals.removeAt(index);
-                            // _saveGoals(); // Zapisz cele po usunięciu
+                            widget.bloc.deleteGoal(goals[index].id);
+                            Future.delayed(const Duration(milliseconds: 100), () {
+                              _loadGoals();
+                            });
                           });
                         },
                       ),

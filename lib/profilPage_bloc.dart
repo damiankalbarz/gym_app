@@ -20,6 +20,54 @@ class ProfilPageBloc {
     _pictureController.close();
   }
 
+  Future<void> toggle(String id) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+      var response = await http.put(
+        Uri.parse('https://localhost:7286/api/TrainingGoal/{$id}/toggle'),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+              );
+
+      if (response.statusCode == 200) {
+        print('toggle change successfully');
+      } else {
+        print('toggle added failed with status: ${response.statusCode}');
+        // Tutaj można umieścić logikę obsługi błędu
+      }
+    } catch (e) {
+      print('Error during change toggle: $e');
+      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
+    }
+  }
+
+  Future<void> deleteGoal(String id) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+      var response = await http.delete(
+        Uri.parse('https://localhost:7286/api/TrainingGoal/{$id}/delete'),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print('toggle delete successfully');
+      } else {
+        print('toggle added failed with status: ${response.statusCode}');
+        // Tutaj można umieścić logikę obsługi błędu
+      }
+    } catch (e) {
+      print('Error during change toggle: $e');
+      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
+    }
+  }
+
   Future<List<Goal>> getGoals() async {
     try {
       List<Goal> goals;
@@ -35,11 +83,10 @@ class ProfilPageBloc {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body)['data'];
-        print(jsonResponse);
-        goals =
-            List<Goal>.from(jsonResponse.map((item) => Goal.fromJson(item)));
+        goals = List<Goal>.from(jsonResponse.map((item) => Goal.fromJson(item)));
         print('Goal get successfully');
         //goals.forEach((element) => print(element.content));
+        goals.forEach((element) => print(element.finished));
         return goals;
       } else {
         print('Goal get failed with status: ${response.statusCode}');
