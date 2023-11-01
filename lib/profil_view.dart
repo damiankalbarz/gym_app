@@ -226,12 +226,6 @@ class _ProfilPageState extends State<ProfilPage> {
                 ),
               ),
               SizedBox(height: 20),
-              /*FutureBuilder(
-                future: _loadGoals(), // Wywołaj _loadGoals()
-                builder: (context, snapshot) {
-                  return Center();
-                }
-              ),*/
               Container(
                 width: 0.9 * MediaQuery.of(context).size.width,
                 //height: 0.2*MediaQuery.of(context).size.height,
