@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'Model/PersonalTrainer.dart';
 import 'classes_bloc.dart';
 import 'navigation.dart';
-import 'dart:convert';
-import 'dart:core';
+
+
 
 const List<String> daysOfWeek = <String>[
-  "Wszytkie",
+  "Wszystkie",
   "Poniedziałek",
   "Wtorek",
   "Środa",
@@ -17,8 +17,8 @@ const List<String> daysOfWeek = <String>[
   "Sobota",
   "Niedziela"
 ];
-List<String> fullNameList = <String>["Wszyscy"]; //Lista wyboru trenerow
-List<String> classesName = <String>["Wszystkie"];
+List<String> fullNameList = <String>['Wszyscy']; //Lista wyboru trenerow
+List<String> classesName = <String>['Wszystkie'];
 
 class Classes extends StatefulWidget {
   @override
@@ -36,16 +36,49 @@ class _ClassesState extends State<Classes> {
   String dropdownValue2 = fullNameList.first;
   String dropdownValue3 = classesName.first;
 
-  void sortowanie(String trainer, String sport, String day, List<ListClassModel> list) {
+  void sortowanie(String trainer, String sport, String day, List<ListClassModel> noSortedList){
     finishList=[];
+    print(trainer);/*
+    if(trainer == 'Wszyscy'){
+      print("www");
+    }
+    if(sport == 'Wszystkie'){
+      print("ddd");
+    }
+    if(day == 'Wszystkie'){
+      print("rrr");
+    }*/
+
     if (trainer == 'Wszyscy' && sport == 'Wszystkie' && day == 'Wszystkie') {
-      finishList = list;
+      finishList = noSortedList;
+      print("ggg");
     } else if (day == 'Wszystkie' && sport == 'Wszystkie') {
-      list.forEach((element) {
+      print("ddd");
+      noSortedList.forEach((element) {
         if(element.Trainer==trainer){
           finishList.add(element);
+          print("fdfd");
         }
       });
+    }
+    else if(trainer == 'Wszyscy' && day == 'Wszystkie'){
+      noSortedList.forEach((element) {
+        if(element.className==sport){
+          finishList.add(element);
+          print("sss");
+        }
+      });
+    }
+    else if(day == 'Wszystkie'){
+      noSortedList.forEach((element) {
+        if(element.className==sport && element.Trainer==trainer){
+          finishList.add(element);
+          print("sss");
+        }
+      });
+    }
+    else{
+      //finishList=noSortedList;
     }
   }
 
@@ -67,15 +100,16 @@ class _ClassesState extends State<Classes> {
           classesName.add(element.className);
         });
         classesName.toSet().toList();
-        trainers.forEach((element) {
-          element.sports.forEach((e) {
-            String formattedTimeStart = e.startTime.substring(0,16);
-            String formattedTimeEnd = e.endTime.substring(11,16);
-            list.add(ListClassModel(e.id, e.className, formattedTimeStart, formattedTimeEnd, e.dayOfWeek, ("${element.name} ${element.surname}")));
-          });
+      });
+      trainers.forEach((element) {
+        element.sports.forEach((e) {
+          String formattedTimeStart = e.startTime.substring(0,16);
+          String formattedTimeEnd = e.endTime.substring(11,16);
+          list.add(ListClassModel(e.id, e.className, formattedTimeStart, formattedTimeEnd, e.dayOfWeek, ("${element.name} ${element.surname}")));
         });
       });
-      print(fullNameList);
+      print(list);
+      finishList = list;
     });
   }
 
@@ -116,7 +150,9 @@ class _ClassesState extends State<Classes> {
                                   // This is called when the user selects an item.
                                   setState(() {
                                     dropdownValue2 = value!;
-                                    sortowanie(dropdownValue1, dropdownValue3, dropdownValue2, list);
+                                    sortowanie(dropdownValue2, dropdownValue3, dropdownValue1, list);
+                                    //list.forEach((element) { print(element.Trainer);});
+                                    print(dropdownValue2);
                                   });
                                 },
                                 items: fullNameList
@@ -150,6 +186,7 @@ class _ClassesState extends State<Classes> {
                                   // This is called when the user selects an item.
                                   setState(() {
                                     dropdownValue3 = value!;
+                                    sortowanie(dropdownValue2, dropdownValue3, dropdownValue1, list);
                                   });
                                 },
                                 items: classesName
@@ -183,6 +220,7 @@ class _ClassesState extends State<Classes> {
                                   // This is called when the user selects an item.
                                   setState(() {
                                     dropdownValue1 = value!;
+                                    sortowanie(dropdownValue2, dropdownValue3, dropdownValue1, list);
                                   });
                                 },
                                 items: daysOfWeek.map<DropdownMenuItem<String>>(
@@ -202,7 +240,7 @@ class _ClassesState extends State<Classes> {
                         width: 0.9 * MediaQuery.of(context).size.width,
                         child:  ListView.separated(
                             padding: EdgeInsets.zero,
-                            itemCount: list.length,
+                            itemCount: finishList.length,
                             separatorBuilder: (BuildContext context, int index) => SizedBox(height: 2),
                             itemBuilder: (context, index) {
                               return Container(
@@ -217,8 +255,8 @@ class _ClassesState extends State<Classes> {
                                     Column(
                                       children: [
                                         SizedBox(height: 10,),
-                                        Text("${list[index].className} - ${list[index].Trainer}", style: TextStyle(fontFamily: "Bellota-Regular",fontWeight: FontWeight.w600, fontSize: 16),),
-                                        Text("${list[index].dayOfWeek} ${list[index].startTime} - ${list[index].endTime}",  style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 14),),
+                                        Text("${finishList[index].className} - ${finishList[index].Trainer}", style: TextStyle(fontFamily: "Bellota-Regular",fontWeight: FontWeight.w600, fontSize: 16),),
+                                        Text("${finishList[index].dayOfWeek} ${finishList[index].startTime} - ${finishList[index].endTime}",  style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 14),),
                                       ],
                                     ),
 
