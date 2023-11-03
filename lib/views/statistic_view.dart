@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'navigation.dart';
+import '../navigation.dart';
 
 class StatisticPage extends StatefulWidget {
   @override

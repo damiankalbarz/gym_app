@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:firstproject/services/user_api.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
@@ -105,38 +106,13 @@ class _EditDataPageState extends State<EditDataPage> {
       setState(() {
         _image = File(image.path);
         _imageBytes = _image!.readAsBytesSync();
-        sendImageToServer(_imageBytes!);
+        UserApi().sendImageToServer(_imageBytes!);
       });
       //print('${_imageBytes!.length} koniec');
     }
   }
 
-  void sendImageToServer(Uint8List imageBytes) async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String? token = prefs.getString('token'); // Zmiana na typ String?
-      //print(byteString.length);
-      var response = await http.put(
-        Uri.parse('https://localhost:7286/api/User/change-picture'),
-        headers: <String, String>{
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json; charset=UTF-8'
-        },
-        body: jsonEncode(base64Encode(_imageBytes!)),
-      );
 
-      if (response.statusCode == 200) {
-        print('Image uploaded successfully');
-        // Tutaj można umieścić logikę obsługi sukcesu
-      } else {
-        print('Image upload failed with status: ${response.statusCode}');
-        // Tutaj można umieścić logikę obsługi błędu
-      }
-    } catch (e) {
-      print('Error during image upload: $e');
-      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

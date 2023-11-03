@@ -1,9 +1,9 @@
 import 'package:firstproject/Model/ListClassModel.dart';
+import 'package:firstproject/services/classes_api.dart';
 import 'package:flutter/material.dart';
 
-import 'Model/PersonalTrainer.dart';
-import 'classes_bloc.dart';
-import 'navigation.dart';
+import '../Model/PersonalTrainer.dart';
+import '../navigation.dart';
 
 const List<String> daysOfWeek = <String>[
   "Wszystkie",
@@ -135,7 +135,7 @@ class _ClassesState extends State<Classes> {
 
   void fetchData() async {
     List<PersonalTrainer> fetchedTrainers =
-        await getTrainer(); // Pobierz listę trenerów
+        await ClassesApi().getTrainer(); // Pobierz listę trenerów
     setState(() {
       trainers = fetchedTrainers; // Ustaw pobraną listę trenerów w stanie
       fullNameList = ["Wszyscy"];

@@ -1,10 +1,10 @@
-import 'package:firstproject/classes_view.dart';
-import 'package:firstproject/profil_view.dart';
-import 'package:firstproject/statistic_view.dart';
-import 'package:firstproject/tiket_view.dart';
+import 'package:firstproject/views/classes_view.dart';
+import 'package:firstproject/views/profil_view.dart';
+import 'package:firstproject/views/statistic_view.dart';
+import 'package:firstproject/views/tiket_view.dart';
 import 'package:flutter/material.dart';
 
-import 'calculator_view.dart';
+import 'views/calculator_view.dart';
 
 class BottomNavigationWidget extends StatelessWidget {
   final ValueChanged<int> onTabSelected;

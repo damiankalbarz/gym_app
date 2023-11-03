@@ -3,42 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:firstproject/login_view.dart';
+import 'package:firstproject/views/login_view.dart';
+
+import '../services/user_api.dart';
 
 final _passwordController = TextEditingController();
-
-void deleteUserAccount(BuildContext context) async {
-  try {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
-    var response = await http.delete(
-      Uri.parse('https://localhost:7286/api/User/delete-account'),
-      headers: <String, String>{
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json; charset=UTF-8'
-      },
-      body: jsonEncode(_passwordController.text),
-    );
-
-    if (response.statusCode == 200) {
-      print('Account deleted successfully');
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.remove('token');
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginPage(),
-        ),
-      );
-    } else {
-      print('Account deletion failed with status: ${response.statusCode}');
-      // Tutaj możesz dodać obsługę błędów
-    }
-  } catch (e) {
-    print('Error during account deletion: $e');
-    // Tutaj możesz dodać bardziej szczegółową obsługę błędów
-  }
-}
 
 AlertDialog deleteAccount(BuildContext context) {
   return AlertDialog(
@@ -89,7 +58,7 @@ AlertDialog deleteAccount(BuildContext context) {
                       style: TextStyle(color: Colors.red),
                     ),
                     onPressed: () {
-                      deleteUserAccount(context);
+                      UserApi().deleteUserAccount(context,_passwordController.text);
                       Navigator.of(context).pop(); // Zamknij okno dialogowe
                     },
                   ),

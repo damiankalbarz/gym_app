@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:firstproject/profil_view.dart';
-import 'package:firstproject/register_view.dart';
+import 'package:firstproject/views/profil_view.dart';
+import 'package:firstproject/views/register_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'login_bloc.dart';
+import '../Bloc/login_bloc.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();

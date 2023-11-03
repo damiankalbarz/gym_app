@@ -3,31 +3,22 @@ import 'dart:convert';
 
 import 'dart:typed_data';
 
+import 'package:firstproject/Model/ListClassModel.dart';
 import 'package:firstproject/Model/ProfilPictureDTO.dart';
-import 'package:firstproject/profilPage_bloc.dart';
+import 'package:firstproject/views/SavedClasses_widget.dart';
+import 'package:firstproject/Bloc/profilPage_bloc.dart';
+import 'package:firstproject/services/classes_api.dart';
+import 'package:firstproject/services/goals_api.dart';
+import 'package:firstproject/services/user_api.dart';
 import 'package:flutter/material.dart';
-import 'Model/Goal.dart';
-import 'Model/User.dart';
-import 'navigation.dart';
+import '../Model/Goal.dart';
+import '../Model/User.dart';
+import '../navigation.dart';
 import 'settings_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Image imageFromBase64String(String base64String) {
-  try {
-    Uint8List bytes = base64Decode(base64String);
-    //print(bytes);
-    //print(base64String);
-    Uint8List _byteImage = base64.decode(base64String);
-    return Image.memory(_byteImage);
-  } catch (e) {
-    print('Error loading image: $e');
-    return Image.asset('path_to_error_image');
-  }
-}
 
 class ProfilPage extends StatefulWidget {
-  final ProfilPageBloc bloc = ProfilPageBloc();
-
   @override
   _ProfilPageState createState() => _ProfilPageState();
 }
@@ -36,9 +27,13 @@ class _ProfilPageState extends State<ProfilPage> {
   int _currentIndex = 0;
   List<Goal> goals = [];
   TextEditingController goalController = TextEditingController();
+  final UserApi api = UserApi();
+
+
+
 
   _loadGoals() async {
-    List<Goal>? fetchedGoals = await widget.bloc.getGoals();
+    List<Goal>? fetchedGoals = await GoalsApi().getGoals();
     setState(() {
       if (fetchedGoals != null) {
         goals = fetchedGoals;
@@ -49,21 +44,21 @@ class _ProfilPageState extends State<ProfilPage> {
   _toggleGoal(int index, bool value) {
     setState(() {
       goals[index].finished = value;
-      widget.bloc.toggle(goals[index].id);
+      GoalsApi().toggle(goals[index].id);
       _loadGoals();
     });
   }
 
   @override
   void dispose() {
-    widget.bloc.dispose();
+    //widget.bloc.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    widget.bloc.getUser();
+    api.getUser();
     _loadGoals();
   }
 
@@ -89,7 +84,7 @@ class _ProfilPageState extends State<ProfilPage> {
                   icon: Icon(Icons.settings)),
             ),*/
               StreamBuilder<User>(
-                stream: widget.bloc.userStream,
+                stream: api.userStream,
                 builder: (context, snapshot) {
                   final isDarkMode =
                       Theme.of(context).brightness == Brightness.dark;
@@ -162,7 +157,7 @@ class _ProfilPageState extends State<ProfilPage> {
                               ),
                               Positioned(
                                 child: StreamBuilder<ProfilePictureDTO>(
-                                  stream: widget.bloc.pictureStream,
+                                  stream: api.pictureStream,
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
                                       return Container(
@@ -256,7 +251,7 @@ class _ProfilPageState extends State<ProfilPage> {
                         setState(() {
                           String goalName = goalController.text;
                           if (goalName.isNotEmpty) {
-                            widget.bloc.addGoals(goalController.text);
+                            GoalsApi().addGoals(goalController.text);
                             goalController.clear();
                             Future.delayed(const Duration(milliseconds: 100),
                                 () {
@@ -314,7 +309,7 @@ class _ProfilPageState extends State<ProfilPage> {
                               setState(() {
                                 goals[index].finished = value!;
                                 print("x${goals[index].finished}x");
-                                widget.bloc.toggle(goals[index].id);
+                                GoalsApi().toggle(goals[index].id);
                                 Future.delayed(
                                     const Duration(milliseconds: 100), () {
                                   _loadGoals();
@@ -326,7 +321,7 @@ class _ProfilPageState extends State<ProfilPage> {
                             icon: Icon(Icons.delete),
                             onPressed: () {
                               setState(() {
-                                widget.bloc.deleteGoal(goals[index].id);
+                                GoalsApi().deleteGoal(goals[index].id);
                                 Future.delayed(
                                     const Duration(milliseconds: 100), () {
                                   _loadGoals();
@@ -349,6 +344,7 @@ class _ProfilPageState extends State<ProfilPage> {
                   style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 22),
                 ),
               ),
+              SavedClassesWidget(),
             ],
           ),
         ),

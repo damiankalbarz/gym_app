@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'navigation.dart';
+import '../navigation.dart';
 
 class CalculatorPage extends StatefulWidget {
   @override

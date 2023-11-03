@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import '../services/user_api.dart';
+
 
 final _oldPasswordController = TextEditingController();
 final _newPasswordController = TextEditingController();
@@ -71,7 +73,7 @@ AlertDialog changePassword(BuildContext context) {
               style: TextStyle(color: Colors.green),
             ),
             onPressed: () {
-              changePasswordApi();
+              UserApi().changePasswordApi(_oldPasswordController.text,_newPasswordController.text,_confirmPasswordController.text);
               Navigator.of(context).pop(); // Zamknij okno dialogowe
             },
           ),
@@ -83,32 +85,3 @@ AlertDialog changePassword(BuildContext context) {
 
 
 
-void changePasswordApi() async {
-  try {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
-    var response = await http.put(
-      Uri.parse('https://localhost:7286/api/User/change-password'),
-      headers: <String, String>{
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json; charset=UTF-8'
-      },
-      body: jsonEncode({
-        "currentPassword": _oldPasswordController.text,
-        "newPassword": _newPasswordController.text,
-        "confirmPassword": _confirmPasswordController.text
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      print('Password change successfully');
-      // Tutaj możesz dodać nawigację lub inne działania po usunięciu konta
-    } else {
-      print('Passwor change failed with status: ${response.statusCode}');
-      // Tutaj możesz dodać obsługę błędów
-    }
-  } catch (e) {
-    print('Error during account deletion: $e');
-    // Tutaj możesz dodać bardziej szczegółową obsługę błędów
-  }
-}

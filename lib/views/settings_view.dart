@@ -2,7 +2,7 @@ import 'package:firstproject/PersonalInformation_views/editData_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'ThemeProvider.dart';
+import '../ThemeProvider.dart';
 import 'login_view.dart';
 
 class SettingsView extends StatelessWidget {
