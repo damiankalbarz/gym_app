@@ -12,9 +12,6 @@ class _StatisticPageState extends State<StatisticPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Statystyki'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -32,7 +29,7 @@ class _StatisticPageState extends State<StatisticPage> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10),
-                    Text('Ilość treningów: 20'),
+                    Text('Ilość treningów: 13'),
                     Text('Średni czas treningu: 45 minut'),
                     Text('Spalone kalorie: 1500 kcal'),
                   ],

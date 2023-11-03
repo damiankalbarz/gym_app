@@ -40,7 +40,7 @@ class _ProfilPageState extends State<ProfilPage> {
   _loadGoals() async {
     List<Goal>? fetchedGoals = await widget.bloc.getGoals();
     setState(() {
-      if(fetchedGoals != null){
+      if (fetchedGoals != null) {
         goals = fetchedGoals;
       }
     });
@@ -54,7 +54,6 @@ class _ProfilPageState extends State<ProfilPage> {
     });
   }
 
-
   @override
   void dispose() {
     widget.bloc.dispose();
@@ -66,7 +65,7 @@ class _ProfilPageState extends State<ProfilPage> {
     super.initState();
     widget.bloc.getUser();
     _loadGoals();
-    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,9 +112,12 @@ class _ProfilPageState extends State<ProfilPage> {
                                 child: Container(
                                   width:
                                       MediaQuery.of(context).size.width * 0.75,
-                                  height: MediaQuery.of(context).size.height * 0.065,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.065,
                                   decoration: BoxDecoration(
-                                    color: Colors.blue, // Kolor tła kontenera
+                                    color: Theme.of(context).brightness == Brightness.dark
+                                        ? Colors.black26
+                                        : Colors.blue, // Kolor tła kontenera
                                     borderRadius: BorderRadius.circular(50.0),
                                     border: Border.all(
                                         color: borderColor,
@@ -230,7 +232,9 @@ class _ProfilPageState extends State<ProfilPage> {
                 width: 0.9 * MediaQuery.of(context).size.width,
                 //height: 0.2*MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white12
+                        : Colors.blue,
                     borderRadius: BorderRadius.circular(10.0)),
                 child: Row(
                   children: [
@@ -254,11 +258,12 @@ class _ProfilPageState extends State<ProfilPage> {
                           if (goalName.isNotEmpty) {
                             widget.bloc.addGoals(goalController.text);
                             goalController.clear();
-                            Future.delayed(const Duration(milliseconds: 100), () {
+                            Future.delayed(const Duration(milliseconds: 100),
+                                () {
                               _loadGoals();
                             });
-                            }
-                          });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -269,60 +274,71 @@ class _ProfilPageState extends State<ProfilPage> {
                 constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height * 0.185,
                 ),
-              child: Container(
-                width: 0.9 * MediaQuery.of(context).size.width,
-                //height: 0.2 * MediaQuery.of(context).size.height,
-                /*decoration: BoxDecoration(
+                child: Container(
+                  width: 0.9 * MediaQuery.of(context).size.width,
+                  //height: 0.2 * MediaQuery.of(context).size.height,
+                  /*decoration: BoxDecoration(
                     color: Colors.green,
                     borderRadius: BorderRadius.circular(10.0)),*/
-                child: ListView.separated(
-                  padding: EdgeInsets.zero,
-                  itemCount: goals.length,
-                  separatorBuilder: (BuildContext context, int index) => SizedBox(height: 1),
-                  itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: goals[index].finished ? Colors.lightBlueAccent : Colors.blue,
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: ListTile(
-                      title: Text(
-                        //goals[index].name,
-                        goals[index].content,
-                        style: TextStyle(fontFamily: 'Bellota-Regular',decoration: goals[index].finished
-                        ? TextDecoration.lineThrough
-                        : TextDecoration.none),
-                      ),
-                      leading: Checkbox(
-                        value: goals[index].finished,
-                        onChanged: (value) {
-                          setState(() {
-                            goals[index].finished = value!;
-                            print("x${goals[index].finished}x");
-                            widget.bloc.toggle(goals[index].id);
-                            Future.delayed(const Duration(milliseconds: 100), () {
-                              _loadGoals();
-                            });
-                          });
-                        },
-                      ),
-
-                        trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          setState(() {
-                            widget.bloc.deleteGoal(goals[index].id);
-                            Future.delayed(const Duration(milliseconds: 100), () {
-                              _loadGoals();
-                            });
-                          });
-                        },
-                      ),
-                      ),
-                    );
-                  },
+                  child: ListView.separated(
+                    padding: EdgeInsets.zero,
+                    itemCount: goals.length,
+                    separatorBuilder: (BuildContext context, int index) =>
+                        SizedBox(height: 1),
+                    itemBuilder: (context, index) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white12
+                              : (goals[index].finished
+                              ? Colors.lightBlueAccent
+                              : Colors.blue),
+                          /*goals[index].finished
+                              ? Colors.lightBlueAccent
+                              : Colors.blue,*/
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: ListTile(
+                          title: Text(
+                            //goals[index].name,
+                            goals[index].content,
+                            style: TextStyle(
+                                fontFamily: 'Bellota-Regular',
+                                decoration: goals[index].finished
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none),
+                          ),
+                          leading: Checkbox(
+                            value: goals[index].finished,
+                            onChanged: (value) {
+                              setState(() {
+                                goals[index].finished = value!;
+                                print("x${goals[index].finished}x");
+                                widget.bloc.toggle(goals[index].id);
+                                Future.delayed(
+                                    const Duration(milliseconds: 100), () {
+                                  _loadGoals();
+                                });
+                              });
+                            },
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              setState(() {
+                                widget.bloc.deleteGoal(goals[index].id);
+                                Future.delayed(
+                                    const Duration(milliseconds: 100), () {
+                                  _loadGoals();
+                                });
+                              });
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
               ),
               SizedBox(
                 height: 20,

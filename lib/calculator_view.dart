@@ -62,94 +62,115 @@ class _CalculatorPageState extends State<CalculatorPage> {
     return Scaffold(
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            SizedBox(
+              height: 0.05 * MediaQuery.of(context).size.height,
+            ),
             const Text('Kalkulator',
-                style: TextStyle(fontSize: 28, fontFamily: "Bellota-Regular")),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Radio<Gender>(
-                  value: Gender.female,
-                  groupValue: selectedGender,
-                  onChanged: (Gender? value) {
-                    setState(() {
-                      selectedGender = value;
-                    });
-                  },
-                ),
-                Text(
-                  'Kobieta',
-                  style: TextStyle(fontFamily: "Bellota-Regular"),
-                ),
-                SizedBox(width: 20), // Odstęp między przyciskami
-                Radio<Gender>(
-                  value: Gender.male,
-                  groupValue: selectedGender,
-                  onChanged: (Gender? value) {
-                    setState(() {
-                      selectedGender = value;
-                    });
-                  },
-                ),
-                Text('Mężczyzna',
-                    style: TextStyle(fontFamily: "Bellota-Regular")),
-              ],
+                style: TextStyle(fontSize: 32, fontFamily: "Bellota-Regular")),
+            SizedBox(
+              height: 0.1 * MediaQuery.of(context).size.height,
             ),
-            Text(
-              'Waga: ${weight.toStringAsFixed(0)} kg',
-              style: TextStyle(fontFamily: "Bellota-Regular"),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.95,
+              //height: MediaQuery.of(context).size.height * 0.1,
+              //color: Colors.lightGreen,
+              decoration: BoxDecoration(
+                  color: Colors.amber,
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Column(
+                children: [
+                  SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Radio<Gender>(
+                        value: Gender.female,
+                        groupValue: selectedGender,
+                        onChanged: (Gender? value) {
+                          setState(() {
+                            selectedGender = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        'Kobieta',
+                        style: TextStyle(fontFamily: "Bellota-Regular"),
+                      ),
+                      SizedBox(width: 20), // Odstęp między przyciskami
+                      Radio<Gender>(
+                        value: Gender.male,
+                        groupValue: selectedGender,
+                        onChanged: (Gender? value) {
+                          setState(() {
+                            selectedGender = value;
+                          });
+                        },
+                      ),
+                      Text('Mężczyzna',
+                          style: TextStyle(fontFamily: "Bellota-Regular")),
+                    ],
+                  ),
+                  Text(
+                    'Waga: ${weight.toStringAsFixed(0)} kg',
+                    style: TextStyle(fontFamily: "Bellota-Regular"),
+                  ),
+                  Slider(
+                    value: weight,
+                    onChanged: (newValue) {
+                      setState(() {
+                        weight = newValue;
+                      });
+                    },
+                    min: 10.0,
+                    max: 200.0,
+                    divisions: 200,
+                  ),
+                  Text(
+                    'Wzrost: ${height.toStringAsFixed(0)} cm',
+                    style: TextStyle(fontFamily: "Bellota-Regular"),
+                  ),
+                  Slider(
+                    value: height,
+                    onChanged: (newValue) {
+                      setState(() {
+                        height = newValue;
+                      });
+                    },
+                    min: 100,
+                    max: 250,
+                    divisions: 250,
+                  ),
+                  Text(
+                    'Wiek: ${age.toStringAsFixed(0)}',
+                    style: TextStyle(fontFamily: "Bellota-Regular"),
+                  ),
+                  Slider(
+                    value: age,
+                    onChanged: (newValue) {
+                      setState(() {
+                        age = newValue;
+                      });
+                    },
+                    min: 1,
+                    max: 120,
+                    divisions: 120,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          list =
+                              calculate(weight, height, age, selectedGender!);
+                          istextVisable = true;
+                        });
+                      },
+                      child: Text('Oblicz BMI i Makroskładniki',
+                          style: TextStyle(fontFamily: 'Bellota-Regular'))),
+                  SizedBox(height: 10,),
+                ],
+              ),
             ),
-            Slider(
-              value: weight,
-              onChanged: (newValue) {
-                setState(() {
-                  weight = newValue;
-                });
-              },
-              min: 10.0,
-              max: 200.0,
-              divisions: 200,
-            ),
-            Text(
-              'Wzrost: ${height.toStringAsFixed(0)} cm',
-              style: TextStyle(fontFamily: "Bellota-Regular"),
-            ),
-            Slider(
-              value: height,
-              onChanged: (newValue) {
-                setState(() {
-                  height = newValue;
-                });
-              },
-              min: 100,
-              max: 250,
-              divisions: 250,
-            ),
-            Text(
-              'Wiek: ${age.toStringAsFixed(0)}',
-              style: TextStyle(fontFamily: "Bellota-Regular"),
-            ),
-            Slider(
-              value: age,
-              onChanged: (newValue) {
-                setState(() {
-                  age = newValue;
-                });
-              },
-              min: 1,
-              max: 120,
-              divisions: 120,
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    list = calculate(weight, height, age, selectedGender!);
-                    istextVisable = true;
-                  });
-                },
-                child: Text('Oblicz BMI i Makroskładniki',
-                    style: TextStyle(fontFamily: 'Bellota-Regular'))),
             SizedBox(height: 30),
             if (istextVisable)
               Container(

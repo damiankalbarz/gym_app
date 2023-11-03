@@ -105,8 +105,9 @@ class _EditDataPageState extends State<EditDataPage> {
       setState(() {
         _image = File(image.path);
         _imageBytes = _image!.readAsBytesSync();
+        sendImageToServer(_imageBytes!);
       });
-      print('${_imageBytes!.length} koniec');
+      //print('${_imageBytes!.length} koniec');
     }
   }
 
@@ -147,9 +148,12 @@ class _EditDataPageState extends State<EditDataPage> {
         child: Center(
           child: Column(
             children: [
+              SizedBox(
+                height: 5,
+              ),
               Container(
                   width: 0.9 * MediaQuery.of(context).size.width,
-                  height: 0.1 * MediaQuery.of(context).size.height,
+                  height: 0.2 * MediaQuery.of(context).size.height,
                   child: ElevatedButton(
                     onPressed: () {
                       showDialog(
@@ -159,6 +163,12 @@ class _EditDataPageState extends State<EditDataPage> {
                       },
                       );
                     },
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                        return Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white12
+                            : Colors.blue;
+                      },),),
                     child: Text("Podgląd/Edycja danych osobistych", style: TextStyle(fontFamily: "Bellota-regular"),),
                   )),
               SizedBox(
@@ -166,7 +176,7 @@ class _EditDataPageState extends State<EditDataPage> {
               ),
               Container(
                 width: 0.9 * MediaQuery.of(context).size.width,
-                height: 0.1 * MediaQuery.of(context).size.height,
+                height: 0.2 * MediaQuery.of(context).size.height,
                 child: ElevatedButton(
                   onPressed: () {
                     showDialog(
@@ -175,6 +185,12 @@ class _EditDataPageState extends State<EditDataPage> {
                           return changePassword(context);
                         });
                   },
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                      return Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white12
+                          : Colors.blue;
+                    },),),
                   child: Text("Zmień hasło",style: TextStyle(fontFamily: "Bellota-regular"),),
                 ),
               ),
@@ -183,7 +199,24 @@ class _EditDataPageState extends State<EditDataPage> {
               ),
               Container(
                 width: 0.9 * MediaQuery.of(context).size.width,
-                height: 0.1 * MediaQuery.of(context).size.height,
+                height: 0.2 * MediaQuery.of(context).size.height,
+                child: ElevatedButton(
+                  onPressed: getImage,
+                  child: Text('Zmień zdjęcie profilowe'),
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                      return Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white12
+                          : Colors.blue;
+                    },),),
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: 0.9 * MediaQuery.of(context).size.width,
+                height: 0.2 * MediaQuery.of(context).size.height,
                 child: ElevatedButton(
                   onPressed: () {
                     showDialog(
@@ -193,19 +226,19 @@ class _EditDataPageState extends State<EditDataPage> {
                       },
                     );
                   },
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                      return Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white12
+                          : Colors.blue;
+                    },),),
                   child: Text(
                     'Usuń konto',
                     style: TextStyle(fontFamily: "Bellota-regular"),
                   ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Colors.red), // Kolor tła przycisku
-                  ),
+
                 ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
+              ),/*
               Container(
                 child: Row(
                   children: [
@@ -214,9 +247,10 @@ class _EditDataPageState extends State<EditDataPage> {
                       height: 0.3 * MediaQuery.of(context).size.height,
                       child: ElevatedButton(
                         onPressed: getImage,
-                        child: Text('Dodaj zdjecie'),
+                        child: Text('Zmień zdjęcie profilowe'),
                       ),
                     ),
+
                     Container(
                       width: 0.3 * MediaQuery.of(context).size.width,
                       height: 0.3 * MediaQuery.of(context).size.height,
@@ -227,6 +261,7 @@ class _EditDataPageState extends State<EditDataPage> {
                   ],
                 ),
               ),
+
               Container(
                 width: 0.9 * MediaQuery.of(context).size.width,
                 height: 0.1 * MediaQuery.of(context).size.height,
@@ -236,7 +271,7 @@ class _EditDataPageState extends State<EditDataPage> {
                   },
                   child: Text('Wyślij zdjęcie na serwer',style: TextStyle(fontFamily: "Bellota-regular"),),
                 ),
-              ),
+              ),*/
             ],
           ),
         ),
