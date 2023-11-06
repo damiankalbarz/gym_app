@@ -1,6 +1,7 @@
 import 'package:firstproject/ThemeProvider.dart';
 import 'package:firstproject/views/splash_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,7 +10,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Upewnij się, że Flutter został zainicjalizowany
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isDarkMode = prefs.getBool('isDarkMode') ?? false; // Odczytaj stan motywu
-
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 
   runApp(
     ChangeNotifierProvider<ThemeProvider>(

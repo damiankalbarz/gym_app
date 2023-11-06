@@ -2,7 +2,7 @@ import 'package:firstproject/services/classes_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../Model/ListClassModel.dart';
+import '../../Model/ListClassModel.dart';
 
 class SavedClassesWidget extends StatefulWidget {
   _SavedClassesWidgetState createState() => _SavedClassesWidgetState();
@@ -22,10 +22,8 @@ class _SavedClassesWidgetState extends State<SavedClassesWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: 80,
-      child: ListView.separated(
+    return  ListView.separated(
+        shrinkWrap: true,
           padding: EdgeInsets.zero,
           itemCount: classes.length,
           separatorBuilder: (BuildContext context, int index) =>
@@ -33,7 +31,9 @@ class _SavedClassesWidgetState extends State<SavedClassesWidget> {
           itemBuilder: (context, index) {
             return Container(
               decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white12
+                      : Colors.blue,
                   borderRadius: BorderRadius.circular(10.0)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,7 +129,7 @@ class _SavedClassesWidgetState extends State<SavedClassesWidget> {
                 ],
               ),
             );
-          }),
-    );
+          });
+
   }
 }

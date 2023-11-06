@@ -95,35 +95,32 @@ class _ClassesState extends State<Classes> {
           print("sss");
         }
       });
-    }
-    else if (trainer == 'Wszyscy' && sport == 'Wszystkie') {
+    } else if (trainer == 'Wszyscy' && sport == 'Wszystkie') {
       noSortedList.forEach((element) {
-        if (element.dayOfWeek==day) {
+        if (element.dayOfWeek == day) {
           finishList.add(element);
         }
       });
-    }
-    else if (trainer == 'Wszyscy') {
+    } else if (trainer == 'Wszyscy') {
       noSortedList.forEach((element) {
-        if (element.dayOfWeek==day && element.className==sport) {
+        if (element.dayOfWeek == day && element.className == sport) {
           finishList.add(element);
         }
       });
-    }
-    else if ( sport == 'Wszystkie') {
+    } else if (sport == 'Wszystkie') {
       noSortedList.forEach((element) {
-        if (element.dayOfWeek==day && element.Trainer==trainer) {
+        if (element.dayOfWeek == day && element.Trainer == trainer) {
           finishList.add(element);
         }
       });
-    }
-      else
-   {
-     noSortedList.forEach((element) {
-       if (element.className == sport && element.Trainer == trainer && element.dayOfWeek==day) {
-         finishList.add(element);
-       }
-     });
+    } else {
+      noSortedList.forEach((element) {
+        if (element.className == sport &&
+            element.Trainer == trainer &&
+            element.dayOfWeek == day) {
+          finishList.add(element);
+        }
+      });
     }
   }
 
@@ -148,13 +145,13 @@ class _ClassesState extends State<Classes> {
       });
       trainers.forEach((element) {
         element.sports.forEach((e) {
-          String formattedTimeStart = e.startTime.substring(0, 16);
-          String formattedTimeEnd = e.endTime.substring(11, 16);
+          //String formattedTimeStart = e.startTime.substring(0, 16);
+          //String formattedTimeEnd = e.endTime.substring(11, 16);
           list.add(ListClassModel(
               e.id,
               e.className,
-              formattedTimeStart,
-              formattedTimeEnd,
+              e.startTime,
+              e.endTime,
               convertToPolishDay(e.dayOfWeek),
               ("${element.name} ${element.surname}")));
         });
@@ -173,7 +170,9 @@ class _ClassesState extends State<Classes> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 0.05 * MediaQuery.of(context).size.height,),
+                SizedBox(
+                  height: 0.05 * MediaQuery.of(context).size.height,
+                ),
                 Text(
                   "ZAPIS NA ZAJECIA",
                   style: TextStyle(fontFamily: 'Bellota-Regular', fontSize: 32),
@@ -184,43 +183,56 @@ class _ClassesState extends State<Classes> {
                   children: [
                     Column(
                       children: [
-                        Text("Trenerzy",style: TextStyle(fontSize: 14, fontFamily: "Bellota-Regular"),),
-                        Container(
-                        child: DropdownButton<String>(
-                          value: dropdownValue2,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.deepPurple,),
-                          underline: Container(
-                            height: 2,
-                            color: Colors.deepPurpleAccent,
-                          ),
-                          onChanged: (String? value) {
-                            // This is called when the user selects an item.
-                            setState(() {
-                              dropdownValue2 = value!;
-                              classFiltering(dropdownValue2, dropdownValue3,
-                                  dropdownValue1, list);
-                              print(dropdownValue2);
-                            });
-                          },
-                          items: fullNameList
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value,style: TextStyle(fontSize: 12, fontFamily: "Bellota-Regular"),),
-                            );
-                          }).toList(),
+                        Text(
+                          "Trenerzy",
+                          style: TextStyle(
+                              fontSize: 14, fontFamily: "Bellota-Regular"),
                         ),
+                        Container(
+                          child: DropdownButton<String>(
+                            value: dropdownValue2,
+                            icon: const Icon(Icons.arrow_drop_down),
+                            elevation: 16,
+                            style: const TextStyle(
+                              color: Colors.deepPurple,
+                            ),
+                            underline: Container(
+                              height: 2,
+                              color: Colors.deepPurpleAccent,
+                            ),
+                            onChanged: (String? value) {
+                              // This is called when the user selects an item.
+                              setState(() {
+                                dropdownValue2 = value!;
+                                classFiltering(dropdownValue2, dropdownValue3,
+                                    dropdownValue1, list);
+                                print(dropdownValue2);
+                              });
+                            },
+                            items: fullNameList
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: "Bellota-Regular"),
+                                ),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ],
                     ),
-                    SizedBox(
-                      width: 2
-                    ),
+                    SizedBox(width: 2),
                     Column(
                       children: [
-                        Text("Zajecia",style: TextStyle(fontSize: 14, fontFamily: "Bellota-Regular"),),
+                        Text(
+                          "Zajecia",
+                          style: TextStyle(
+                              fontSize: 14, fontFamily: "Bellota-Regular"),
+                        ),
                         DropdownButton<String>(
                           value: dropdownValue3,
                           icon: Icon(Icons.arrow_drop_down),
@@ -242,7 +254,12 @@ class _ClassesState extends State<Classes> {
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value, style: TextStyle(fontSize: 12, fontFamily: "Bellota-Regular"),),
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: "Bellota-Regular"),
+                              ),
                             );
                           }).toList(),
                         ),
@@ -253,7 +270,11 @@ class _ClassesState extends State<Classes> {
                     ),
                     Column(
                       children: [
-                        Text("Dzień ",style: TextStyle(fontSize: 14, fontFamily: "Bellota-Regular"),),
+                        Text(
+                          "Dzień ",
+                          style: TextStyle(
+                              fontSize: 14, fontFamily: "Bellota-Regular"),
+                        ),
                         DropdownButton<String>(
                           value: dropdownValue1,
                           icon: const Icon(Icons.arrow_drop_down),
@@ -275,7 +296,12 @@ class _ClassesState extends State<Classes> {
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value,style: TextStyle(fontSize: 12, fontFamily: "Bellota-Regular"),),
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: "Bellota-Regular"),
+                              ),
                             );
                           }).toList(),
                         ),
@@ -295,7 +321,10 @@ class _ClassesState extends State<Classes> {
                         return Container(
                             height: 0.12 * MediaQuery.of(context).size.height,
                             decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? Colors.white12
+                                    : Colors.blue,
                                 borderRadius: BorderRadius.circular(10.0)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -337,52 +366,84 @@ class _ClassesState extends State<Classes> {
                                       MediaQuery.of(context).size.height,
                                   margin: EdgeInsets.only(right: 5),
                                   child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Theme.of(context).brightness == Brightness.dark
+                                        ? Colors.white12
+                                        : Colors.blue,
+                                    ),
                                     onPressed: () {
-                                      showDialog(context: context, builder:  (BuildContext context){
-                                        return AlertDialog(
-                                            title: Text("Potwierdź zapis na zajęcia",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 20),
-                                              textAlign: TextAlign.center,),
-                                            actions: <Widget>[
-                                              Center(child:
-                                              Text(
-                                                "${finishList[index].className} -  ${finishList[index].Trainer}",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontFamily: "Bellota-Regular",
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 16,),
-                                              ),),
-                                              Center( child:Text("${finishList[index].dayOfWeek} ${finishList[index].startTime} - ${finishList[index].endTime}"),),
-                                              SizedBox(height: 20,),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  TextButton(
-                                                    child: Text("Anuluj"),
-                                                    onPressed: () {
-                                                      Navigator.of(context).pop();
-                                                    },
-                                                  ),
-                                                  TextButton(
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                                title: Text(
+                                                  "Potwierdź zapis na zajęcia",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                          "Bellota-Regular",
+                                                      fontSize: 20),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                actions: <Widget>[
+                                                  Center(
                                                     child: Text(
-                                                      "Potwierdzam",
-                                                      style: TextStyle(color: Colors.green),
+                                                      "${finishList[index].className} -  ${finishList[index].Trainer}",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            "Bellota-Regular",
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 16,
+                                                      ),
                                                     ),
-                                                    onPressed: () {
-                                                      Navigator.of(context).pop(); // Zamknij okno dialogowe
-                                                    },
                                                   ),
-                                                ],
-                                              ),
-                                            ]
-
-                                        );
-                                      });
-
+                                                  Center(
+                                                    child: Text(
+                                                        "${finishList[index].dayOfWeek} ${finishList[index].startTime} - ${finishList[index].endTime}"),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      TextButton(
+                                                        child: Text("Anuluj"),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                      TextButton(
+                                                        child: Text(
+                                                          "Potwierdzam",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.green),
+                                                        ),
+                                                        onPressed: () {
+                                                          ClassesApi()
+                                                              .addClasses(
+                                                                  finishList[
+                                                                          index]
+                                                                      .id);
+                                                          Navigator.of(context)
+                                                              .pop(); // Zamknij okno dialogowe
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ]);
+                                          });
                                     },
-                                    child:Icon(
+                                    child: Icon(
                                       Icons.add_circle_outline, // ikona zapisu
-                                      size: 25, // dostosuj rozmiar ikony według preferencji
+                                      size:
+                                          25, // dostosuj rozmiar ikony według preferencji
                                     ),
                                   ),
                                 ),
