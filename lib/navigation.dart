@@ -1,7 +1,7 @@
 import 'package:firstproject/views/classes_view.dart';
 import 'package:firstproject/views/profil_view.dart';
 import 'package:firstproject/views/statistic_view.dart';
-import 'package:firstproject/views/tiket_view.dart';
+import 'package:firstproject/views/gymPass_view.dart';
 import 'package:flutter/material.dart';
 
 import 'views/calculator_view.dart';
@@ -54,7 +54,7 @@ class BottomNavigationWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => QrCodeScreen(qrData: "sadsadsa"),
+                  builder: (context) => GymPassScreen(),
                 ),
               );
             }, // Indeks 2 dla przycisku "Add"
