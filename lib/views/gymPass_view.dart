@@ -6,8 +6,8 @@ import 'package:firstproject/Model/GymPass.dart';
 import 'package:firstproject/services/gymPass_api.dart';
 import 'package:flutter/material.dart';
 
-
 import '../navigation.dart';
+import '../services/gymEntry_api.dart';
 
 class GymPassScreen extends StatefulWidget {
   @override
@@ -16,20 +16,20 @@ class GymPassScreen extends StatefulWidget {
 }
 
 class _GymPassState extends State<GymPassScreen> {
-  // Update the state class name
   int _currentIndex = 2;
+  late Future<GymPass> gymPass;
+  late Uint8List qr;
   double _buttonWidth = 200.0;
   Color _buttonColor = Colors.blue; // Początkowy kolor przycisku
+  double ?sideLength;
+
+
   void _toggleButton() {
     setState(() {
-      // Zmiana szerokości i koloru przycisku
       _buttonWidth = _buttonWidth == 200.0 ? 300.0 : 200.0;
       _buttonColor = _buttonColor == Colors.blue ? Colors.green : Colors.blue;
     });
   }
-
-  late Future<GymPass> gymPass;
-  late Uint8List qr;
 
   void initState() {
     super.initState();
@@ -43,7 +43,8 @@ class _GymPassState extends State<GymPassScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: SingleChildScrollView(
+        child: Center(
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -64,21 +65,44 @@ class _GymPassState extends State<GymPassScreen> {
               future: gymPass,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  String formattedValidTillDay = snapshot.data!.validTill.substring(0, 10);
-                  String formattedValidTillHour = snapshot.data!.validTill.substring(11, 19);
+                  String formattedValidTillDay =
+                      snapshot.data!.validTill.substring(0, 10);
+                  String formattedValidTillHour =
+                      snapshot.data!.validTill.substring(11, 19);
                   return Container(
                     child: Column(
                       children: [
-                        Image.memory(base64Decode(snapshot.data!.qrCode),
-                            height: MediaQuery.of(context).size.width * 0.7,
-                            width: MediaQuery.of(context).size.width * 0.7),
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.03,),
+                        AnimatedContainer(
+                          height: sideLength,
+                          width: sideLength,
+                          duration: const Duration(milliseconds: 750),
+                        child: InkWell(
+                          onTap: (){
+                            GymEntryApi().addEntry();
+                            setState(() {
+                              sideLength == MediaQuery.of(context).size.width * 0.7 ? sideLength = MediaQuery.of(context).size.width * 0.85 : sideLength = MediaQuery.of(context).size.width * 0.7;
+                            });
+                          },
+                          child: Image.memory(
+                              base64Decode(snapshot.data!.qrCode),
+                              //height: MediaQuery.of(context).size.width * 0.7,
+                              //width: MediaQuery.of(context).size.width * 0.7
+                          ),
+                        ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03,
+                        ),
                         Text(
                           'Twój karnet jest ważny do:',
-                          style: TextStyle(fontSize: 20, fontFamily: "Bellota-Regular"),
+                          style: TextStyle(
+                              fontSize: 20, fontFamily: "Bellota-Regular"),
                         ),
-
-                        Text("$formattedValidTillDay $formattedValidTillHour", style: TextStyle(fontSize: 20, fontFamily: "Bellota-Regular"),),
+                        Text(
+                          "$formattedValidTillDay $formattedValidTillHour",
+                          style: TextStyle(
+                              fontSize: 20, fontFamily: "Bellota-Regular"),
+                        ),
                       ],
                     ),
                   );
@@ -112,6 +136,7 @@ class _GymPassState extends State<GymPassScreen> {
                 )),
           ],
         ),
+      ),
       ),
       bottomNavigationBar: BottomNavigationWidget(
         currentIndex: _currentIndex,
