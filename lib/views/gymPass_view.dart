@@ -42,6 +42,7 @@ class _GymPassState extends State<GymPassScreen> {
 
   @override
   Widget build(BuildContext context) {
+    sideLength ??= MediaQuery.of(context).size.width * 0.7;
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(

@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:firstproject/Model/GymEnteryRank.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,7 +16,7 @@ class GymEntryApi{
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json; charset=UTF-8'
         },
-        body: 0,
+        body: jsonEncode("20"),
       );
 
       if (response.statusCode == 200) {
@@ -26,6 +29,33 @@ class GymEntryApi{
       print('Error during added goal: $e');
       // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
     }
+  }
+
+  Future<List<GymEntryRank>> getEntryRank() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+      var response = await http.get(
+        Uri.parse('https://localhost:7286/api/GymEntry/get-rank'),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body)['data'];
+        List<GymEntryRank> rank = List<GymEntryRank>.from(jsonResponse.map((item) => GymEntryRank.fromJson(item)));
+        print('Rank get successfully');
+        return rank;
+      } else {
+        print('Rank get failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error during get rank: $e');
+      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
+    }
+    return [];
   }
 
 }
