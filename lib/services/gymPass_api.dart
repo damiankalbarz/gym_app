@@ -21,7 +21,7 @@ class GymPassApi{
         );
         if (response.statusCode == 200) {
           var jsonResponse = json.decode(response.body)['data'];
-          print('Dane z serwera: $jsonResponse');
+          //print('Dane z serwera: $jsonResponse');
           return GymPass.fromJson(jsonResponse);
 
         } else {

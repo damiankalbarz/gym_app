@@ -99,7 +99,7 @@ class GoalsApi {
         goals = List<Goal>.from(jsonResponse.map((item) => Goal.fromJson(item)));
         print('Goal get successfully');
         //goals.forEach((element) => print(element.content));
-        goals.forEach((element) => print(element.finished));
+        //goals.forEach((element) => print(element.finished));
         return goals;
       } else {
         print('Goal get failed with status: ${response.statusCode}');

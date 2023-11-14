@@ -25,9 +25,9 @@ class ClassesApi {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body)['data'];
-        trainer = List<PersonalTrainer>.from(jsonResponse.map((item) => PersonalTrainer.fromJson(item)));
+        trainer = List<PersonalTrainer>.from(
+            jsonResponse.map((item) => PersonalTrainer.fromJson(item)));
         print('Treiner get successfully');
-        print(jsonResponse);
         return trainer;
       } else {
         print('Treiner get failed with status: ${response.statusCode}');
@@ -96,5 +96,25 @@ class ClassesApi {
     }
   }
 
+  Future<void> deleteClasses(String id) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+      var response = await http.post(
+        Uri.parse('https://localhost:7286/api/Class/{$id}/unassign-from-user'),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+      );
 
+      if (response.statusCode == 200) {
+        print('classes delete successfully');
+      } else {
+        print('classes delete failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error during delete classes: $e');
+    }
+  }
 }

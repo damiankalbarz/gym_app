@@ -17,7 +17,10 @@ class _StatisticPageState extends State<StatisticPage> {
   @override
   void initState() {
     super.initState();
-    rank = GymEntryApi().getEntryRank();
+    rank = GymEntryApi().getEntryRank().then((list) {
+      list.sort((a, b) => b.numberOfEntries.compareTo(a.numberOfEntries));
+      return list;
+    });
   }
 
   @override
@@ -61,7 +64,6 @@ class _StatisticPageState extends State<StatisticPage> {
                                       : Colors.blue,
                                   borderRadius: BorderRadius.circular(10.0)),
                               child: Row(
-
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
@@ -80,22 +82,31 @@ class _StatisticPageState extends State<StatisticPage> {
                                   SizedBox(
                                     width: 20,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                  Text(rankList[index].userName, style: TextStyle(fontSize: 15, fontFamily: "Bellota-Regular",),),
-                                  SizedBox(
-                                    width: 10,
+                                  Text(
+                                    rankList[index].userName,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: "Bellota-Regular",
+                                    ),
                                   ),
-                                  Text(rankList[index]
-                                      .numberOfEntries
-                                      .toString(), style: TextStyle(fontSize: 15, fontFamily: "Bellota-Regular",),),
-                                  SizedBox(
-                                    width: 10,
+                                  Spacer(),
+                                  Text(
+                                    rankList[index].numberOfEntries.toString(),
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: "Bellota-Regular",
+                                    ),
                                   ),
-                                  Text(rankList[index].timeSpend, style: TextStyle(fontSize: 15, fontFamily: "Bellota-Regular",),),
-                           ],),
-                          ],
+                                  Spacer(),
+                                  Text(
+                                    rankList[index].timeSpend.substring(0, 5),
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: "Bellota-Regular",
+                                    ),
+                                  ),
+                                  Spacer(),
+                                ],
                               ),
                             ),
                             // Dodaj inne pola z obiektu MyObject, jeśli są

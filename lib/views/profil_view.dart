@@ -124,7 +124,7 @@ class _ProfilPageState extends State<ProfilPage> {
                           if (goalName.isNotEmpty) {
                             GoalsApi().addGoals(goalController.text);
                             goalController.clear();
-                            Future.delayed(const Duration(milliseconds: 100),
+                            Future.delayed(const Duration(milliseconds: 150),
                                 () {
                               _loadGoals();
                             });
@@ -184,7 +184,7 @@ class _ProfilPageState extends State<ProfilPage> {
                                 print("x${goals[index].finished}x");
                                 GoalsApi().toggle(goals[index].id);
                                 Future.delayed(
-                                    const Duration(milliseconds: 100), () {
+                                    const Duration(milliseconds: 150), () {
                                   _loadGoals();
                                 });
                               });
@@ -196,7 +196,7 @@ class _ProfilPageState extends State<ProfilPage> {
                               setState(() {
                                 GoalsApi().deleteGoal(goals[index].id);
                                 Future.delayed(
-                                    const Duration(milliseconds: 100), () {
+                                    const Duration(milliseconds: 150), () {
                                   _loadGoals();
                                 });
                               });

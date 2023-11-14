@@ -111,6 +111,7 @@ class _SavedClassesWidgetState extends State<SavedClassesWidget> {
                                                 TextStyle(color: Colors.green),
                                           ),
                                           onPressed: () {
+                                            ClassesApi().deleteClasses(classes[index].id);
                                             Navigator.of(context)
                                                 .pop(); // Zamknij okno dialogowe
                                           },
