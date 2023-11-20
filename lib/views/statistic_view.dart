@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:firstproject/Model/GymEnteryRank.dart';
 import 'package:firstproject/services/gymEntry_api.dart';
+import 'package:firstproject/views/widget/UserStatistic_widget.dart';
 import 'package:flutter/material.dart';
 import '../navigation.dart';
 
@@ -39,6 +40,14 @@ class _StatisticPageState extends State<StatisticPage> {
               SizedBox(
                 height: 0.05 * MediaQuery.of(context).size.height,
               ),
+              UserStatisticWidget(),
+              Center(
+                child: Text(
+                  'Ranking',
+                  style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 22),
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.015,),
               FutureBuilder<List<GymEntryRank>>(
                   future: rank,
                   builder: (context, snapshot) {
@@ -84,7 +93,7 @@ class _StatisticPageState extends State<StatisticPage> {
                                           ),
                                         ),
                                         child: Image.memory(
-                                          rankList[index].profilePicture,
+                                          rankList[index].profilePicture!,
                                           width: 40,
                                           height: 40,
                                           fit: BoxFit.cover,
@@ -102,7 +111,7 @@ class _StatisticPageState extends State<StatisticPage> {
                                       Container(
                                         //width: 300,
                                         child: Text(
-                                          rankList[index].userName,
+                                          rankList[index].userName!,
                                           style: TextStyle(
                                             fontSize: 15,
                                             fontFamily: "Bellota-Regular",

@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:typed_data';
 
 class GymEntryRank{
-  final String profileId;
-  final String userName;
-  final Uint8List profilePicture;
+  final String? profileId;
+  final String? userName;
+  final Uint8List? profilePicture;
   final int numberOfEntries;
   final String timeSpend;
 
@@ -17,9 +18,11 @@ class GymEntryRank{
 
   factory GymEntryRank.fromJson(Map<String,dynamic> json){
     return GymEntryRank(
-        profileId: json['profileId'],
-        userName: json['userName'],
-        profilePicture: base64Decode(json['profilePicture']),
+        profileId: json['profileId'] ?? '',
+        userName: json['userName'] ?? '',
+        profilePicture: json['profilePicture'] != null
+            ? base64Decode(json['profilePicture'])
+            : Uint8List(0),
         numberOfEntries: json['numberOfEntries'],
         timeSpend: json['timeSpent']);
   }

@@ -58,4 +58,32 @@ class GymEntryApi{
     return [];
   }
 
+  Future<GymEntryRank> getWeekStats() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+      var response = await http.get(
+        Uri.parse('https://localhost:7286/api/GymEntry/get-week-stats'),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body)['data'];
+        print(jsonResponse);
+        print('Stats get successfully');
+        return GymEntryRank.fromJson(jsonResponse);
+      } else {
+        print('Stats get failed with status: ${response.statusCode}');
+        throw Exception('Stats get failed');
+      }
+    } catch (e) {
+
+      throw("tats get failed");
+      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
+    }
+
+  }
 }
