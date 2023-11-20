@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:firstproject/Model/ListClassModel.dart';
-import 'package:firstproject/Model/ProfilPictureDTO.dart';
+import 'package:firstproject/Model/ProfilPicture.dart';
 import 'package:firstproject/views/widget/SavedClasses_widget.dart';
 import 'package:firstproject/Bloc/profilPage_bloc.dart';
 import 'package:firstproject/services/classes_api.dart';

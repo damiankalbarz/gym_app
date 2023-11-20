@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'ProfilPictureDTO.dart';
+import 'ProfilPicture.dart';
 
 class User {
   final String id;

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../Model/ProfilPictureDTO.dart';
+import '../../Model/ProfilPicture.dart';
 import '../../Model/User.dart';
 import '../../services/user_api.dart';
 import '../settings_view.dart';
@@ -94,7 +94,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget>{
                       ),
                     ),
                     Positioned(
-                      child: StreamBuilder<ProfilePictureDTO>(
+                      child: StreamBuilder<ProfilePicture>(
                         stream: api.pictureStream,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {

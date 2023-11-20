@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Model/ProfilPictureDTO.dart';
+import '../Model/ProfilPicture.dart';
 import '../Model/User.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,9 +15,9 @@ class UserApi {
   final _userController = StreamController<User>();
 
   Stream<User> get userStream => _userController.stream;
-  final _pictureController = StreamController<ProfilePictureDTO>();
+  final _pictureController = StreamController<ProfilePicture>();
 
-  Stream<ProfilePictureDTO> get pictureStream => _pictureController.stream;
+  Stream<ProfilePicture> get pictureStream => _pictureController.stream;
 
   void dispose() {
     _userController.close();
@@ -100,7 +100,7 @@ class UserApi {
           var jsonResponse = json.decode(response.body);
           //print('Dane z serwera: $jsonResponse');
           var user = User.fromJson(jsonResponse);
-          var profilePictureDTO = ProfilePictureDTO.fromJson(jsonResponse);
+          var profilePictureDTO = ProfilePicture.fromJson(jsonResponse);
           _userController.sink.add(user);
           _pictureController.sink.add(profilePictureDTO);
         } else {

@@ -50,7 +50,7 @@ class _StatisticPageState extends State<StatisticPage> {
                       List<GymEntryRank> rankList = snapshot.data!;
                       return ListView.separated(
                         separatorBuilder: (BuildContext context, int index) =>
-                            SizedBox(height: 2),
+                            SizedBox(height: 0.5),
                         padding: EdgeInsets.zero,
                         itemCount: rankList.length,
                         shrinkWrap: true,
@@ -63,49 +63,74 @@ class _StatisticPageState extends State<StatisticPage> {
                                       ? Colors.white12
                                       : Colors.blue,
                                   borderRadius: BorderRadius.circular(10.0)),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.black, // Kolor ramki
-                                        width: 2.0, // Grubość ramki
+                              child: Table(
+                                defaultVerticalAlignment:
+                                    TableCellVerticalAlignment.middle,
+                                columnWidths: const <int, TableColumnWidth>{
+                                  0: IntrinsicColumnWidth(),
+                                  1: FixedColumnWidth(48),
+                                  2: FlexColumnWidth(),
+                                  3: FlexColumnWidth(),
+                                  4: FlexColumnWidth(),
+                                },
+                                children: <TableRow>[
+                                  TableRow(
+                                    children: <Widget>[
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.black, // Kolor ramki
+                                            width: 2.0, // Grubość ramki
+                                          ),
+                                        ),
+                                        child: Image.memory(
+                                          rankList[index].profilePicture,
+                                          width: 40,
+                                          height: 40,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
-                                    child: Image.memory(
-                                      rankList[index].profilePicture,
-                                      width: 40,
-                                      height: 40,
-                                      fit: BoxFit.cover,
-                                    ),
+                                      Center(
+                                      child: Text(
+                                        "${index + 1}",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: "Bellota-Regular",
+                                        ),
+                                      ),
+                                      ),
+                                      Container(
+                                        //width: 300,
+                                        child: Text(
+                                          rankList[index].userName,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Bellota-Regular",
+                                          ),
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          rankList[index]
+                                              .numberOfEntries
+                                              .toString(),
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Bellota-Regular",
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        rankList[index]
+                                            .timeSpend
+                                            .substring(0, 5),
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: "Bellota-Regular",
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    rankList[index].userName,
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Bellota-Regular",
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    rankList[index].numberOfEntries.toString(),
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Bellota-Regular",
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    rankList[index].timeSpend.substring(0, 5),
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Bellota-Regular",
-                                    ),
-                                  ),
-                                  Spacer(),
                                 ],
                               ),
                             ),
