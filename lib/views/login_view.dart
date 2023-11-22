@@ -45,6 +45,7 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: 16.0),
               TextFormField(
                 controller: _loginBloc.passwordController,
+                textAlign: TextAlign.center,
                 decoration: InputDecoration(
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(

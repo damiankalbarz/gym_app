@@ -73,6 +73,7 @@ flutter:
     - assets/logo.png
     - assets/images/app_icon.png
     - assets/przelewy24/Przelewy24_logo.png
+    - assets/GPay_Acceptance_Mark_800.png
 
   fonts:
     - family: Bellota-Regular
