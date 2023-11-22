@@ -43,6 +43,7 @@ dependencies:
 
 
 
+
   
 
 
@@ -71,6 +72,7 @@ flutter:
   assets:
     - assets/logo.png
     - assets/images/app_icon.png
+    - assets/przelewy24/Przelewy24_logo.png
 
   fonts:
     - family: Bellota-Regular

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:firstproject/Model/GymPass.dart';
 import 'package:firstproject/services/gymPass_api.dart';
+import 'package:firstproject/views/ExtensionOfGymPass_view.dart';
 import 'package:flutter/material.dart';
 
 import '../navigation.dart';
@@ -120,7 +121,10 @@ class _GymPassState extends State<GymPassScreen> {
                 duration: Duration(seconds: 1),
                 width: _buttonWidth,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ExtensionOfGymPassPage()));
+                  },
                   child: Text(
                     "Przedłuż karnet",
                     style: TextStyle(fontFamily: "Bellota-Regular"),
