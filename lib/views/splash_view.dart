@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void checkUserLoginStatus() async {
     bool isLoggedIn = await isUserLoggedIn();
 
-    if (isLoggedIn) {
+    if (isLoggedIn ) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => ProfilPage()),

@@ -9,10 +9,9 @@ class GymPassApi{
   Future<GymPass> getPass() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String? token = prefs.getString('token'); // Zmiana na typ String?
+      final String? token = prefs.getString('token');
 
       if (token != null && token.isNotEmpty) {
-        //print("$token");
         final response = await http.get(
           Uri.parse('https://localhost:7286/api/GymPass/get'),
           headers: <String, String>{
@@ -22,18 +21,15 @@ class GymPassApi{
         );
         if (response.statusCode == 200) {
           var jsonResponse = json.decode(response.body)['data'];
-          //print('Dane z serwera: $jsonResponse');
           return GymPass.fromJson(jsonResponse);
         } else {
-          print("Błąd");
           throw Exception('Failed to gymPass data');
         }
       } else {
         throw Exception('Brak tokenu w SharedPreferences');
       }
     } catch (e) {
-      print('Błąd: $e');
-      throw Exception('Failed to load qr');
+      throw Exception('Error $e');
     }
   }
 
@@ -44,7 +40,6 @@ class GymPassApi{
         final String? token = prefs.getString('token'); // Zmiana na typ String?
 
         if (token != null && token.isNotEmpty) {
-          //print("$token");
           final response = await http.get(
             Uri.parse('https://localhost:7286/api/GymPass/prices'),
             headers: <String, String>{
@@ -55,19 +50,15 @@ class GymPassApi{
           if (response.statusCode == 200) {
             var jsonResponse = json.decode(response.body)['data'];
             list = List<GymPassPrice>.from(jsonResponse.map((item) => GymPassPrice.fromJson(item)));
-            print('Dane z serwera: $jsonResponse');
             return list;
-
           } else {
-            print("Błąd");
-            throw Exception('Failed to gymPass data');
+            throw Exception('Failed to get price');
           }
         } else {
           throw Exception('Brak tokenu w SharedPreferences');
         }
       } catch (e) {
-        print('Błąd: $e');
-        throw Exception('Failed to load qr');
+        throw Exception('Failed to load price');
       }
 
   }
@@ -86,18 +77,14 @@ class GymPassApi{
       );
 
       if (response.statusCode == 200) {
-        print('classes add successfully');
+        print('extend pass successfully');
       } else {
-        print('classes add failed with status: ${response.statusCode}');
-        // Tutaj można umieścić logikę obsługi błędu
+        print('extend pass failed with status: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error during change classes: $e');
-      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
+      throw('Error during extend pass: $e');
     }
   }
-
-
 
 
 }

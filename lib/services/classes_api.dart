@@ -59,17 +59,15 @@ class ClassesApi {
         classes = List<ListClassModel>.from(
             jsonResponse.map((item) => ListClassModel.fromJson(item)));
         print('classes get successfully');
-        classes.forEach((element) => print(element.className));
         return classes;
       } else {
-        print('classes get failed with status: ${response.statusCode}');
-        // Tutaj można umieścić logikę obsługi błędu
+        throw('classes get failed with status: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error during get goal: $e');
-      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
+      throw('Error during get goal: $e');
+
     }
-    return [];
+
   }
 
   Future<void> addClasses(String id) async {
@@ -88,11 +86,9 @@ class ClassesApi {
         print('classes add successfully');
       } else {
         print('classes add failed with status: ${response.statusCode}');
-        // Tutaj można umieścić logikę obsługi błędu
       }
     } catch (e) {
-      print('Error during change classes: $e');
-      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
+      throw('Error during change classes: $e');
     }
   }
 
@@ -114,7 +110,7 @@ class ClassesApi {
         print('classes delete failed with status: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error during delete classes: $e');
+      throw('Error during delete classes: $e');
     }
   }
 }

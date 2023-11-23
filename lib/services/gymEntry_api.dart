@@ -49,13 +49,12 @@ class GymEntryApi{
         print('Rank get successfully');
         return rank;
       } else {
-        print('Rank get failed with status: ${response.statusCode}');
+        throw('Rank get failed with status: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error during get rank: $e');
-      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
+      throw('Error during get rank: $e');
     }
-    return [];
+
   }
 
   Future<GymEntryRank> getWeekStats() async {
@@ -82,7 +81,7 @@ class GymEntryApi{
     } catch (e) {
 
       throw("tats get failed");
-      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
+
     }
 
   }

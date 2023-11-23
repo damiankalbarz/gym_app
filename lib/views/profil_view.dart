@@ -1,22 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'dart:typed_data';
-
-import 'package:firstproject/Model/ListClassModel.dart';
-import 'package:firstproject/Model/ProfilPicture.dart';
 import 'package:firstproject/views/widget/SavedClasses_widget.dart';
-import 'package:firstproject/Bloc/profilPage_bloc.dart';
-import 'package:firstproject/services/classes_api.dart';
 import 'package:firstproject/services/goals_api.dart';
 import 'package:firstproject/services/user_api.dart';
 import 'package:firstproject/views/widget/welcome_widget.dart';
 import 'package:flutter/material.dart';
 import '../Model/Goal.dart';
-import '../Model/User.dart';
 import '../navigation.dart';
-import 'settings_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 
 class ProfilPage extends StatefulWidget {
@@ -29,8 +20,6 @@ class _ProfilPageState extends State<ProfilPage> {
   List<Goal> goals = [];
   TextEditingController goalController = TextEditingController();
   final UserApi api = UserApi();
-
-
 
 
   _loadGoals() async {
@@ -73,19 +62,7 @@ class _ProfilPageState extends State<ProfilPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.05,
-              ),
-              /*Align(
-              alignment: Alignment.topRight,
-              child: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SettingsView()),
-                    );
-                  },
-                  icon: Icon(Icons.settings)),
-            ),*/
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
               WelcomeWidget(),
               SizedBox(height: 0),
               Center(

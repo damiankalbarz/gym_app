@@ -28,7 +28,7 @@ class _UserStatisticWidgetState extends State<UserStatisticWidget> {
               textAlign: TextAlign.center,
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(height: 15,),
           FutureBuilder<GymEntryRank>(
             future: stats,
             builder: (context, snapshot) {
@@ -37,19 +37,25 @@ class _UserStatisticWidgetState extends State<UserStatisticWidget> {
               int hours = int.parse(timeSplit[0]);
               int minutes = int.parse(timeSplit[1]);
               int avgMinutes = (hours*60+minutes) ~/ snapshot.data!.numberOfEntries;
-              print(avgMinutes);
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return CircularProgressIndicator();
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else {
                 return Container(
+                  padding: EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white12
+                        : Colors.blue, // Dodaj kolor do kontenera
+                    borderRadius: BorderRadius.circular(10.0), // Dodaj zaokrąglenie rogów
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("W tym tygodni odbyłeś ${snapshot.data!.numberOfEntries} treningów",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 18),),
-                      Text("Spedziłeś na silowni łacznie ${time} godzin",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 18)),
-                      Text("Średnio na jeden trenig potrzebujesz $avgMinutes minut",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 18),),
+                      Text("W tym tygodni odbyłeś ${snapshot.data!.numberOfEntries} treningów",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 17),),
+                      Text("Spedziłeś na silowni łacznie ${time} godzin",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 17)),
+                      Text("Średnio na jeden trenig potrzebujesz $avgMinutes minut",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 17),),
                     ],
                   ),
                 );

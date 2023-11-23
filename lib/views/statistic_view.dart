@@ -38,7 +38,7 @@ class _StatisticPageState extends State<StatisticPage> {
                   style:
                       TextStyle(fontSize: 32, fontFamily: "Bellota-Regular")),
               SizedBox(
-                height: 0.05 * MediaQuery.of(context).size.height,
+                height:15,
               ),
               UserStatisticWidget(),
               Center(
@@ -47,7 +47,7 @@ class _StatisticPageState extends State<StatisticPage> {
                   style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 22),
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.015,),
+              SizedBox(height: 15),
               FutureBuilder<List<GymEntryRank>>(
                   future: rank,
                   builder: (context, snapshot) {

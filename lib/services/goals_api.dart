@@ -47,12 +47,12 @@ class GoalsApi {
       if (response.statusCode == 200) {
         print('toggle change successfully');
       } else {
-        print('toggle added failed with status: ${response.statusCode}');
-        // Tutaj można umieścić logikę obsługi błędu
+        throw('toggle added failed with status: ${response.statusCode}');
+
       }
     } catch (e) {
-      print('Error during change toggle: $e');
-      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
+      throw('Error during change toggle: $e');
+
     }
   }
 
@@ -71,12 +71,12 @@ class GoalsApi {
       if (response.statusCode == 200) {
         print('toggle delete successfully');
       } else {
-        print('toggle added failed with status: ${response.statusCode}');
-        // Tutaj można umieścić logikę obsługi błędu
+        throw('toggle added failed with status: ${response.statusCode}');
+
       }
     } catch (e) {
-      print('Error during change toggle: $e');
-      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
+      throw('Error during change toggle: $e');
+
     }
   }
 
@@ -98,17 +98,14 @@ class GoalsApi {
         var jsonResponse = json.decode(response.body)['data'];
         goals = List<Goal>.from(jsonResponse.map((item) => Goal.fromJson(item)));
         print('Goal get successfully');
-        //goals.forEach((element) => print(element.content));
-        //goals.forEach((element) => print(element.finished));
         return goals;
       } else {
-        print('Goal get failed with status: ${response.statusCode}');
-        // Tutaj można umieścić logikę obsługi błędu
+        throw('Goal get failed with status: ${response.statusCode}');
+
       }
     } catch (e) {
-      print('Error during get goal: $e');
-      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
+      throw('Error during get goal: $e');
     }
-    return [];
+
   }
 }

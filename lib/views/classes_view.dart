@@ -58,41 +58,26 @@ class _ClassesState extends State<Classes> {
   void classFiltering(String trainer, String sport, String day,
       List<ListClassModel> noSortedList) {
     finishList = [];
-    print(
-        trainer); /*
-    if(trainer == 'Wszyscy'){
-      print("www");
-    }
-    if(sport == 'Wszystkie'){
-      print("ddd");
-    }
-    if(day == 'Wszystkie'){
-      print("rrr");
-    }*/
 
     if (trainer == 'Wszyscy' && sport == 'Wszystkie' && day == 'Wszystkie') {
       finishList = noSortedList;
-      print("ggg");
     } else if (day == 'Wszystkie' && sport == 'Wszystkie') {
-      print("ddd");
+
       noSortedList.forEach((element) {
         if (element.Trainer == trainer) {
           finishList.add(element);
-          print("fdfd");
         }
       });
     } else if (trainer == 'Wszyscy' && day == 'Wszystkie') {
       noSortedList.forEach((element) {
         if (element.className == sport) {
           finishList.add(element);
-          print("sss");
         }
       });
     } else if (day == 'Wszystkie') {
       noSortedList.forEach((element) {
         if (element.className == sport && element.Trainer == trainer) {
           finishList.add(element);
-          print("sss");
         }
       });
     } else if (trainer == 'Wszyscy' && sport == 'Wszystkie') {
@@ -156,7 +141,6 @@ class _ClassesState extends State<Classes> {
               ("${element.name} ${element.surname}")));
         });
       });
-      print(list);
       finishList = list;
     });
   }
@@ -194,11 +178,11 @@ class _ClassesState extends State<Classes> {
                             icon: const Icon(Icons.arrow_drop_down),
                             elevation: 16,
                             style: const TextStyle(
-                              color: Colors.deepPurple,
+                              color: Colors.lightBlue,
                             ),
                             underline: Container(
                               height: 2,
-                              color: Colors.deepPurpleAccent,
+                              color: Colors.lightBlue,
                             ),
                             onChanged: (String? value) {
                               // This is called when the user selects an item.
@@ -206,7 +190,6 @@ class _ClassesState extends State<Classes> {
                                 dropdownValue2 = value!;
                                 classFiltering(dropdownValue2, dropdownValue3,
                                     dropdownValue1, list);
-                                print(dropdownValue2);
                               });
                             },
                             items: fullNameList
@@ -237,10 +220,10 @@ class _ClassesState extends State<Classes> {
                           value: dropdownValue3,
                           icon: Icon(Icons.arrow_drop_down),
                           elevation: 16,
-                          style: TextStyle(color: Colors.deepPurple),
+                          style: TextStyle(color: Colors.lightBlue),
                           underline: Container(
                             height: 2,
-                            color: Colors.deepPurpleAccent,
+                            color: Colors.lightBlue,
                           ),
                           onChanged: (String? value) {
                             // This is called when the user selects an item.
@@ -279,10 +262,10 @@ class _ClassesState extends State<Classes> {
                           value: dropdownValue1,
                           icon: const Icon(Icons.arrow_drop_down),
                           elevation: 16,
-                          style: const TextStyle(color: Colors.deepPurple),
+                          style: const TextStyle(color: Colors.lightBlue),
                           underline: Container(
                             height: 2,
-                            color: Colors.deepPurpleAccent,
+                            color: Colors.lightBlue,
                           ),
                           onChanged: (String? value) {
                             // This is called when the user selects an item.

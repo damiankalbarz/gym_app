@@ -44,14 +44,11 @@ class UserApi {
 
       if (response.statusCode == 200) {
         print('Password change successfully');
-        // Tutaj możesz dodać nawigację lub inne działania po usunięciu konta
       } else {
-        print('Passwor change failed with status: ${response.statusCode}');
-        // Tutaj możesz dodać obsługę błędów
+        throw('Passwor change failed with status: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error during account deletion: $e');
-      // Tutaj możesz dodać bardziej szczegółową obsługę błędów
+      throw('Error during account deletion: $e');
     }
   }
 
@@ -71,14 +68,11 @@ class UserApi {
 
       if (response.statusCode == 200) {
         print('Image uploaded successfully');
-        // Tutaj można umieścić logikę obsługi sukcesu
       } else {
         print('Image upload failed with status: ${response.statusCode}');
-        // Tutaj można umieścić logikę obsługi błędu
       }
     } catch (e) {
       print('Error during image upload: $e');
-      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
     }
   }
 
@@ -98,20 +92,17 @@ class UserApi {
         );
         if (response.statusCode == 200) {
           var jsonResponse = json.decode(response.body);
-          //print('Dane z serwera: $jsonResponse');
           var user = User.fromJson(jsonResponse);
           var profilePictureDTO = ProfilePicture.fromJson(jsonResponse);
           _userController.sink.add(user);
           _pictureController.sink.add(profilePictureDTO);
         } else {
-          print("Błąd");
           throw Exception('Failed to load user data');
         }
       } else {
         throw Exception('Brak tokenu w SharedPreferences');
       }
     } catch (e) {
-      print('Błąd: $e');
       throw Exception('Failed to load user data');
     }
   }
@@ -141,11 +132,10 @@ class UserApi {
         );
       } else {
         print('Account deletion failed with status: ${response.statusCode}');
-        // Tutaj możesz dodać obsługę błędów
       }
     } catch (e) {
-      print('Error during account deletion: $e');
-      // Tutaj możesz dodać bardziej szczegółową obsługę błędów
+      throw('Error during account deletion: $e');
+
     }
   }
 
@@ -169,14 +159,11 @@ class UserApi {
 
       if (response.statusCode == 200) {
         print('Data change successfully');
-        // Tutaj możesz dodać nawigację lub inne działania po usunięciu konta
       } else {
         print('Data change failed with status: ${response.statusCode}');
-        // Tutaj możesz dodać obsługę błędów
       }
     } catch (e) {
-      print('Error during account deletion: $e');
-      // Tutaj możesz dodać bardziej szczegółową obsługę błędów
+      throw('Error during account deletion: $e');
     }
   }
 }
