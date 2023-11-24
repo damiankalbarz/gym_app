@@ -31,7 +31,6 @@ class ClassesApi {
         return trainer;
       } else {
         print('Treiner get failed with status: ${response.statusCode}');
-        // Tutaj można umieścić logikę obsługi błędu
       }
     } catch (e) {
       print('Error during get trainer: $e');

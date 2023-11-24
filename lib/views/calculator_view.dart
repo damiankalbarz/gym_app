@@ -77,8 +77,13 @@ class _CalculatorPageState extends State<CalculatorPage> {
               //height: MediaQuery.of(context).size.height * 0.1,
               //color: Colors.lightGreen,
               decoration: BoxDecoration(
-                  color: Colors.amber,
-                  borderRadius: BorderRadius.circular(10.0)),
+                  border: Border.all(color: Colors.lightBlue),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white12
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(10.0),
+
+              ),
               child: Column(
                 children: [
                   SizedBox(height: 10,),
@@ -177,7 +182,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   padding: EdgeInsets.all(7.0),
                   width: 0.9 * MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white12
+                          : Colors.blue, // Dodaj kolor do kontenera,
                       borderRadius: BorderRadius.circular(10.0)),
                   child: Text(
                     ' Bmi: ${calculateBMI(weight as double, height as double).first.toStringAsFixed(2)} - ${calculateBMI(weight as double, height as double).last}\n'

@@ -22,7 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
 
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,10 +178,46 @@ class _RegisterPageState extends State<RegisterPage> {
                         phoneNumber: _phoneController.text,
                       ).then((success) {
                         if (success) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()),
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Pomyślnie utworzono konto', style: TextStyle(fontFamily: "Bellota-Regular", color: Colors.green),textAlign: TextAlign.center,),
+                                content:
+                                Text('Teraz zaloguj sie na swoje konto.', style: TextStyle(fontFamily: "Bellota-Regular"),textAlign: TextAlign.center,),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('OK', textAlign: TextAlign.center, style: TextStyle(fontFamily: "Bellota-Regular")),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => LoginPage()),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }else{
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Błąd rejestracji', style: TextStyle(fontFamily: "Bellota-Regular", color: Colors.red),textAlign: TextAlign.center,),
+                                content:
+                                Text('Nieudana rejestracja. Spróbuj ponownie.', style: TextStyle(fontFamily: "Bellota-Regular"),textAlign: TextAlign.center,),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('OK', textAlign: TextAlign.center, style: TextStyle(fontFamily: "Bellota-Regular")),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         }
                       });
@@ -211,7 +247,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         ),
       ),
-   
+
     );
   }
 }

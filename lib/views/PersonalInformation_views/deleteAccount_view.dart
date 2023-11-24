@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:firstproject/views/login_view.dart';
 
-import '../services/user_api.dart';
+import '../../services/user_api.dart';
 
 final _passwordController = TextEditingController();
 
@@ -57,10 +57,22 @@ AlertDialog deleteAccount(BuildContext context) {
                       "Usuń konto",
                       style: TextStyle(color: Colors.red),
                     ),
-                    onPressed: () {
-                      UserApi().deleteUserAccount(context,_passwordController.text);
-                      Navigator.of(context).pop(); // Zamknij okno dialogowe
-                    },
+                    onPressed: () async {
+                      if(UserApi().deleteUserAccount(context,_passwordController.text)== true)
+                      {
+                        final SharedPreferences prefs = await SharedPreferences.getInstance();
+                        prefs.remove('token');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginPage(),
+                          ),
+                        );
+                      }
+                      else{
+                        Navigator.of(context).pop(); // Zamknij okno dialogowe
+                      }
+                      }
                   ),
                 ),
               ),

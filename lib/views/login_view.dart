@@ -4,14 +4,11 @@ import 'package:firstproject/views/profil_view.dart';
 import 'package:firstproject/views/register_view.dart';
 import 'package:flutter/material.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../Bloc/login_bloc.dart';
+import '../services/authentication_api.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final LoginBloc _loginBloc = LoginBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +28,7 @@ class LoginPage extends StatelessWidget {
                 height: 200.0,
               ),
               TextFormField(
-                controller: _loginBloc.emailController,
+                controller: emailController,
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -44,7 +41,7 @@ class LoginPage extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               TextFormField(
-                controller: _loginBloc.passwordController,
+                controller: passwordController,
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                     alignLabelWithHint: true,
@@ -58,7 +55,7 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: 32.0),
               ElevatedButton(
                 onPressed: () async {
-                  bool success = await _loginBloc.login();
+                  bool success = await login(emailController.text, passwordController.text);
                   if (success) {
                     Navigator.push(
                       context,
@@ -69,12 +66,12 @@ class LoginPage extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Błąd logowania'),
+                          title: Text('Błąd logowania', style: TextStyle(fontFamily: "Bellota-Regular", color: Colors.red),textAlign: TextAlign.center,),
                           content:
-                              Text('Nieudane logowanie. Spróbuj ponownie.'),
+                              Text('Nieudane logowanie. Spróbuj ponownie.', style: TextStyle(fontFamily: "Bellota-Regular"),textAlign: TextAlign.center,),
                           actions: <Widget>[
                             TextButton(
-                              child: Text('OK'),
+                              child: Text('OK', textAlign: TextAlign.center, style: TextStyle(fontFamily: "Bellota-Regular")),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },

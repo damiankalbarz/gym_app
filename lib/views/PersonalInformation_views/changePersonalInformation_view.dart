@@ -1,6 +1,6 @@
 import 'package:firstproject/services/user_api.dart';
 import 'package:flutter/material.dart';
-import '../Model/User.dart';
+import '../../Model/User.dart';
 
 class PersonalInformation extends StatefulWidget {
   @override

@@ -107,7 +107,7 @@ class UserApi {
     }
   }
 
-  void deleteUserAccount(BuildContext context, String _password) async {
+  Future<bool> deleteUserAccount(BuildContext context, String _password) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? token = prefs.getString('token');
@@ -122,16 +122,10 @@ class UserApi {
 
       if (response.statusCode == 200) {
         print('Account deleted successfully');
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.remove('token');
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LoginPage(),
-          ),
-        );
+        return true;
       } else {
         print('Account deletion failed with status: ${response.statusCode}');
+        return false;
       }
     } catch (e) {
       throw('Error during account deletion: $e');
