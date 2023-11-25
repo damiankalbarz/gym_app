@@ -23,11 +23,9 @@ class GymEntryApi{
         print('Gym entry added successfully');
       } else {
         print('Gym entry added failed with status: ${response.statusCode}');
-        // Tutaj można umieścić logikę obsługi błędu
       }
     } catch (e) {
-      print('Error during added goal: $e');
-      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
+      throw('Error during added goal: $e');
     }
   }
 

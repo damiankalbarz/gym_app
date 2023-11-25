@@ -18,7 +18,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final _userNameController = TextEditingController();
   final _nameController = TextEditingController();
   final _surenameController = TextEditingController();
-  bool isChecked = false;
   final _formKey = GlobalKey<FormState>();
 
 
@@ -148,23 +147,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 },
                 obscureText: true,
               ),
-              Row(
-                children: [
-                  Checkbox(
-                    value: isChecked,
-                    activeColor: Colors.lightGreenAccent,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isChecked = value!;
-                      });
-                    },
-                  ),
-                  Text('Akceptuję regulamin',
-                    style: TextStyle(fontFamily: "Bellota-Regular"),
-                  ),
-                ],
-              ),
-              SizedBox(height: 13.0),
+              SizedBox(height: 16.0),
               Container(
                 child: ElevatedButton(
                   onPressed: () {

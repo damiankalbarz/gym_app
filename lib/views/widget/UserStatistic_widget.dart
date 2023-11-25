@@ -36,7 +36,13 @@ class _UserStatisticWidgetState extends State<UserStatisticWidget> {
               List<String> timeSplit = time.split(':');
               int hours = int.parse(timeSplit[0]);
               int minutes = int.parse(timeSplit[1]);
-              int avgMinutes = (hours*60+minutes) ~/ snapshot.data!.numberOfEntries;
+              int avgMinutes;
+              if(snapshot.data!.numberOfEntries!=0){
+                avgMinutes = (hours*60+minutes) ~/ snapshot.data!.numberOfEntries;
+              }
+              else{
+                avgMinutes = 0;
+              }
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return CircularProgressIndicator();
               } else if (snapshot.hasError) {
