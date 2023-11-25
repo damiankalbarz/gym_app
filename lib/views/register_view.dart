@@ -40,10 +40,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       fontSize: 28.0,
                       fontWeight: FontWeight.bold,
                       fontFamily: "Bellota-Regular")),
-              SizedBox(height: 26.0),
+              const SizedBox(height: 26.0),
               TextFormField(
                 controller: _userNameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
@@ -56,10 +56,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
@@ -75,7 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(height: 16.0),
               TextFormField(
                 controller: _surenameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
@@ -88,10 +88,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
@@ -111,7 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
               TextFormField(
                 controller: _phoneController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
@@ -127,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextFormField(
                 controller: _passwordController,
                 decoration: InputDecoration(

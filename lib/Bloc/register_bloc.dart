@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class RegisterBloc {
-
   Future<bool> registerUser({
     required String userName,
     required String password,
@@ -45,7 +44,7 @@ class RegisterBloc {
   }
 
   bool isValidPhone(String phone) {
-    final phonePattern = r'^\d{9,12}$';
+    const phonePattern = r'^\d{9,12}$';
     final regex = RegExp(phonePattern);
     return regex.hasMatch(phone);
   }

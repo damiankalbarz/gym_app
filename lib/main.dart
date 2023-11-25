@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Logowanie',
+      title: 'GymApp',
       theme: ThemeData.light(),
       // Jasny motyw
       darkTheme: ThemeData.dark(),

@@ -28,87 +28,16 @@ class EditDataPage extends StatefulWidget {
 class _EditDataPageState extends State<EditDataPage> {
   File? _image;
   Uint8List? _imageBytes;
-  final _passwordController = TextEditingController();
 
-
-
-
-
-
-  /*
-
-  Future<File> compressAndGetFile(File file) async {
-    final tempDir = await getTemporaryDirectory();
-    final path = tempDir.path;
-    img.Image? image = img.decodeImage(file.readAsBytesSync());
-    img.Image smallerImage = img.copyResize(image!, width: 500); // Możesz zmienić szerokość na odpowiednią dla Twojego przypadku
-
-    File compressedFile = new File('$path/img.jpg')
-      ..writeAsBytesSync(img.encodeJpg(smallerImage, quality: 85)); // Możesz dostosować jakość w zależności od Twoich wymagań
-
-    return compressedFile;
-  }
-
-
-
-
-
-  Future<File?> _cropImage(File imageFile) async {
-    File? croppedFile = await ImageCropper().cropImage(
-      sourcePath: imageFile.path,
-      aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-        CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
-      ],
-      androidUiSettings: AndroidUiSettings(
-          toolbarTitle: 'Cropper',
-          toolbarColor: Colors.deepOrange,
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false),
-      iosUiSettings: IOSUiSettings(
-        title: 'Cropper',
-        aspectRatioLockEnabled: true,
-        aspectRatioPickerButtonHidden: true,
-        minimumAspectRatio: 1.0,
-      ),
-    );
-    return croppedFile;
-  }
 
   Future getImage() async {
     var image = await ImagePicker().getImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      File? croppedImage = await _cropImage(File(image.path));
-      if (croppedImage != null) {
-        File? compressedImage = await compressAndGetFile(File(image.path));
-        File? croppedImage = await _cropImage(compressedImage!);
-        if (croppedImage != null) {
-          setState(() {
-            _image = croppedImage;
-            _imageBytes = _image!.readAsBytesSync();
-          });
-          print('${_imageBytes!.length} koniec');
-        }
-      }
-    }
-  }
-
-*/
-  Future getImage() async {
-    var image = await ImagePicker().getImage(source: ImageSource.gallery);
-
     if (image != null) {
       setState(() {
         _image = File(image.path);
         _imageBytes = _image!.readAsBytesSync();
         UserApi().sendImageToServer(_imageBytes!);
       });
-      //print('${_imageBytes!.length} koniec');
     }
   }
 
@@ -214,40 +143,7 @@ class _EditDataPageState extends State<EditDataPage> {
                   ),
 
                 ),
-              ),/*
-              Container(
-                child: Row(
-                  children: [
-                    Container(
-                      width: 0.6 * MediaQuery.of(context).size.width,
-                      height: 0.3 * MediaQuery.of(context).size.height,
-                      child: ElevatedButton(
-                        onPressed: getImage,
-                        child: Text('Zmień zdjęcie profilowe'),
-                      ),
-                    ),
-
-                    Container(
-                      width: 0.3 * MediaQuery.of(context).size.width,
-                      height: 0.3 * MediaQuery.of(context).size.height,
-                      child: _image == null
-                          ? Text('No image selected.')
-                          : Image.file(_image!),
-                    ),
-                  ],
-                ),
               ),
-
-              Container(
-                width: 0.9 * MediaQuery.of(context).size.width,
-                height: 0.1 * MediaQuery.of(context).size.height,
-                child: ElevatedButton(
-                  onPressed: () {
-                    sendImageToServer(_imageBytes!);
-                  },
-                  child: Text('Wyślij zdjęcie na serwer',style: TextStyle(fontFamily: "Bellota-regular"),),
-                ),
-              ),*/
             ],
           ),
         ),

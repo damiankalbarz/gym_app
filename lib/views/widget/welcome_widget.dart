@@ -6,11 +6,11 @@ import '../../Model/User.dart';
 import '../../services/user_api.dart';
 import '../settings_view.dart';
 
-class WelcomeWidget extends StatefulWidget{
+class WelcomeWidget extends StatefulWidget {
   _WelcomeWidgetState createState() => _WelcomeWidgetState();
 }
 
-class _WelcomeWidgetState extends State<WelcomeWidget>{
+class _WelcomeWidgetState extends State<WelcomeWidget> {
   final UserApi api = UserApi();
 
   @override
@@ -21,11 +21,10 @@ class _WelcomeWidgetState extends State<WelcomeWidget>{
 
   @override
   Widget build(BuildContext context) {
-    return  StreamBuilder<User>(
+    return StreamBuilder<User>(
       stream: api.userStream,
       builder: (context, snapshot) {
-        final isDarkMode =
-            Theme.of(context).brightness == Brightness.dark;
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
         final borderColor = isDarkMode ? Colors.white : Colors.black;
         if (snapshot.hasData) {
           return Column(
@@ -37,31 +36,22 @@ class _WelcomeWidgetState extends State<WelcomeWidget>{
                   children: [
                     Positioned(
                       top: 10,
-                      // dowolna wartość, aby przesunąć kontener w dół
                       left: 10,
                       right: 0,
-                      //child: Align(
-                      //alignment: AlignmentDirectional.center,
                       child: Container(
-                        width:
-                        MediaQuery.of(context).size.width * 0.75,
-                        height: MediaQuery.of(context).size.height *
-                            0.065,
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        height: MediaQuery.of(context).size.height * 0.065,
                         decoration: BoxDecoration(
                           color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.black26
-                              : Colors.blue, // Kolor tła kontenera
+                              : Colors.blue,
                           borderRadius: BorderRadius.circular(50.0),
-                          border: Border.all(
-                              color: borderColor,
-                              width: 2), // Zaokrąglenie brzegów
+                          border: Border.all(color: borderColor, width: 2),
                         ),
                         child: Row(
                           children: [
                             SizedBox(
-                              width:
-                              MediaQuery.of(context).size.width *
-                                  0.22,
+                              width: MediaQuery.of(context).size.width * 0.22,
                             ),
                             Column(
                               children: [
@@ -82,8 +72,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget>{
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              SettingsView()),
+                                          builder: (context) => SettingsView()),
                                     );
                                   },
                                   icon: Icon(Icons.settings)),
@@ -101,26 +90,14 @@ class _WelcomeWidgetState extends State<WelcomeWidget>{
                             return Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: borderColor,
-                                  // dostosuj kolor obramowania
-                                  width: 2,
-                                ),
+                                border: Border.all(color: borderColor, width: 2,),
                               ),
-                              // dostosuj szerokość obramowania
                               child: ClipOval(
                                 child: Image.memory(
                                   snapshot.data!.content,
-                                  width: MediaQuery.of(context)
-                                      .size
-                                      .width *
-                                      0.15,
-                                  height: MediaQuery.of(context)
-                                      .size
-                                      .width *
-                                      0.15,
-                                  fit: BoxFit
-                                      .cover, // dostosuj tryb dopasowania
+                                  width: MediaQuery.of(context).size.width * 0.15,
+                                  height: MediaQuery.of(context).size.width * 0.15,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             );
@@ -137,8 +114,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget>{
                 padding: EdgeInsets.only(top: 0.0),
                 child: Text(
                   'Witaj ${snapshot.data!.userName}!',
-                  style: TextStyle(
-                      fontFamily: "Bellota-Regular", fontSize: 32),
+                  style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 32),
                 ),
               ),
             ],
@@ -154,5 +130,4 @@ class _WelcomeWidgetState extends State<WelcomeWidget>{
       },
     );
   }
-
 }

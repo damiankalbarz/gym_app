@@ -12,11 +12,10 @@ import 'package:http/http.dart' as http;
 import '../views/login_view.dart';
 
 class UserApi {
-  final _userController = StreamController<User>();
 
+  final _userController = StreamController<User>();
   Stream<User> get userStream => _userController.stream;
   final _pictureController = StreamController<ProfilePicture>();
-
   Stream<ProfilePicture> get pictureStream => _pictureController.stream;
 
   void dispose() {
@@ -45,10 +44,10 @@ class UserApi {
       if (response.statusCode == 200) {
         print('Password change successfully');
       } else {
-        throw('Passwor change failed with status: ${response.statusCode}');
+        throw ('Passwor change failed with status: ${response.statusCode}');
       }
     } catch (e) {
-      throw('Error during account deletion: $e');
+      throw ('Error during account deletion: $e');
     }
   }
 
@@ -79,31 +78,25 @@ class UserApi {
   Future<void> getUser() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String? token = prefs.getString('token'); // Zmiana na typ String?
-
-      if (token != null && token.isNotEmpty) {
-        //print("$token");
-        final response = await http.get(
-          Uri.parse('https://localhost:7286/api/User/profile'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer $token',
-          },
-        );
-        if (response.statusCode == 200) {
-          var jsonResponse = json.decode(response.body);
-          var user = User.fromJson(jsonResponse);
-          var profilePictureDTO = ProfilePicture.fromJson(jsonResponse);
-          _userController.sink.add(user);
-          _pictureController.sink.add(profilePictureDTO);
-        } else {
-          throw Exception('Failed to load user data');
-        }
+      final String? token = prefs.getString('token');
+      final response = await http.get(
+        Uri.parse('https://localhost:7286/api/User/profile'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+        var user = User.fromJson(jsonResponse);
+        var profilePictureDTO = ProfilePicture.fromJson(jsonResponse);
+        _userController.sink.add(user);
+        _pictureController.sink.add(profilePictureDTO);
       } else {
-        throw Exception('Brak tokenu w SharedPreferences');
+        throw Exception('Failed to load user data');
       }
     } catch (e) {
-      throw Exception('Failed to load user data');
+      throw Exception('Failed to load user dat $e');
     }
   }
 
@@ -128,8 +121,7 @@ class UserApi {
         return false;
       }
     } catch (e) {
-      throw('Error during account deletion: $e');
-
+      throw ('Error during account deletion: $e');
     }
   }
 
@@ -157,7 +149,7 @@ class UserApi {
         print('Data change failed with status: ${response.statusCode}');
       }
     } catch (e) {
-      throw('Error during account deletion: $e');
+      throw ('Error during account deletion: $e');
     }
   }
 }

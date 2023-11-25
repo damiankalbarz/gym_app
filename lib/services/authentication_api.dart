@@ -33,10 +33,10 @@ Future<bool> login(String email, String password) async {
   }
 }
 
-Future<void> saveToken(String token) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('token', token);
-}
+    Future<void> saveToken(String token) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token);
+    }
 
 Future<bool> isUserLoggedIn() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
