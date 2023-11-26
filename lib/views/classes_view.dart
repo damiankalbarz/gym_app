@@ -130,15 +130,16 @@ class _ClassesState extends State<Classes> {
       });
       trainers.forEach((element) {
         element.sports.forEach((e) {
-          //String formattedTimeStart = e.startTime.substring(0, 16);
-          //String formattedTimeEnd = e.endTime.substring(11, 16);
           list.add(ListClassModel(
               e.id,
               e.className,
               e.startTime,
               e.endTime,
               convertToPolishDay(e.dayOfWeek),
-              ("${element.name} ${element.surname}")));
+              ("${element.name} ${element.surname}"),
+            e.maxUsers,
+            e.usersCount,
+          ));
         });
       });
       finishList = list;
@@ -321,7 +322,7 @@ class _ClassesState extends State<Classes> {
                                       height: 10,
                                     ),
                                     Text(
-                                      "${finishList[index].className}",
+                                      "${finishList[index].className}  ${finishList[index].usersCount}/${finishList[index].maxUsers}",
                                       style: TextStyle(
                                           fontFamily: "Bellota-Regular",
                                           fontWeight: FontWeight.w600,

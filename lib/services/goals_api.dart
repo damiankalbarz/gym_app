@@ -101,7 +101,6 @@ class GoalsApi {
         return goals;
       } else {
         throw('Goal get failed with status: ${response.statusCode}');
-
       }
     } catch (e) {
       throw('Error during get goal: $e');
