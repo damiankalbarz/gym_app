@@ -53,15 +53,13 @@ AlertDialog deleteAccount(BuildContext context) {
                 child: Container(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    child: Text(
+                    child: const Text(
                       "Usuń konto",
                       style: TextStyle(color: Colors.red),
                     ),
-                    onPressed: () async {
-                      if(UserApi().deleteUserAccount(context,_passwordController.text)== true)
+                    onPressed: () {
+                      if(UserApi().deleteUserAccount(context,_passwordController.text) == true)
                       {
-                        final SharedPreferences prefs = await SharedPreferences.getInstance();
-                        prefs.remove('token');
                         Navigator.push(
                           context,
                           MaterialPageRoute(

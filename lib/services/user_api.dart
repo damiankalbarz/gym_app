@@ -54,17 +54,15 @@ class UserApi {
   void sendImageToServer(Uint8List imageBytes) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String? token = prefs.getString('token'); // Zmiana na typ String?
-      //print(byteString.length);
+      final String? token = prefs.getString('token');
       var response = await http.put(
         Uri.parse('https://localhost:7286/api/User/change-picture'),
         headers: <String, String>{
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json; charset=UTF-8'
         },
-        body: jsonEncode(base64Encode(imageBytes!)),
+        body: jsonEncode(base64Encode(imageBytes)),
       );
-
       if (response.statusCode == 200) {
         print('Image uploaded successfully');
       } else {
@@ -114,6 +112,8 @@ class UserApi {
       );
 
       if (response.statusCode == 200) {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.remove('token');
         print('Account deleted successfully');
         return true;
       } else {

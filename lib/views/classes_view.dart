@@ -55,14 +55,12 @@ class _ClassesState extends State<Classes> {
   String dropdownValue2 = fullNameList.first;
   String dropdownValue3 = classesName.first;
 
-  void classFiltering(String trainer, String sport, String day,
-      List<ListClassModel> noSortedList) {
+  void classFiltering(String trainer, String sport, String day, List<ListClassModel> noSortedList) {
     finishList = [];
 
     if (trainer == 'Wszyscy' && sport == 'Wszystkie' && day == 'Wszystkie') {
       finishList = noSortedList;
     } else if (day == 'Wszystkie' && sport == 'Wszystkie') {
-
       noSortedList.forEach((element) {
         if (element.Trainer == trainer) {
           finishList.add(element);
@@ -168,40 +166,28 @@ class _ClassesState extends State<Classes> {
                   children: [
                     Column(
                       children: [
-                        Text(
+                        const Text(
                           "Trenerzy",
-                          style: TextStyle(
-                              fontSize: 14, fontFamily: "Bellota-Regular"),
+                          style: TextStyle(fontSize: 14, fontFamily: "Bellota-Regular"),
                         ),
                         Container(
                           child: DropdownButton<String>(
                             value: dropdownValue2,
                             icon: const Icon(Icons.arrow_drop_down),
                             elevation: 16,
-                            style: const TextStyle(
-                              color: Colors.lightBlue,
-                            ),
-                            underline: Container(
-                              height: 2,
-                              color: Colors.lightBlue,
+                            style: const TextStyle(color: Colors.lightBlue,),
+                            underline: Container(height: 2, color: Colors.lightBlue,
                             ),
                             onChanged: (String? value) {
-                              // This is called when the user selects an item.
                               setState(() {
                                 dropdownValue2 = value!;
-                                classFiltering(dropdownValue2, dropdownValue3,
-                                    dropdownValue1, list);
+                                classFiltering(dropdownValue2, dropdownValue3, dropdownValue1, list);
                               });
                             },
-                            items: fullNameList
-                                .map<DropdownMenuItem<String>>((String value) {
+                            items: fullNameList.map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
-                                child: Text(
-                                  value,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: "Bellota-Regular"),
+                                child: Text(value, style: const TextStyle(fontSize: 12, fontFamily: "Bellota-Regular"),
                                 ),
                               );
                             }).toList(),
@@ -300,7 +286,7 @@ class _ClassesState extends State<Classes> {
                       padding: EdgeInsets.zero,
                       itemCount: finishList.length,
                       separatorBuilder: (BuildContext context, int index) =>
-                          SizedBox(height: 2),
+                          const SizedBox(height: 2),
                       itemBuilder: (context, index) {
                         return Container(
                             height: 0.12 * MediaQuery.of(context).size.height,

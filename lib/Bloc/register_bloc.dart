@@ -5,6 +5,7 @@ class RegisterBloc {
   Future<bool> registerUser({
     required String userName,
     required String password,
+    required String confirmPassword,
     required String fullName,
     required String email,
     required String phoneNumber,
@@ -17,7 +18,7 @@ class RegisterBloc {
         body: jsonEncode({
           "userName": userName,
           "password": password,
-          "confirmPassword": password,
+          "confirmPassword": confirmPassword,
           "fullName": fullName,
           "email": email,
           "phoneNumber": phoneNumber,

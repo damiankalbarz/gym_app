@@ -23,7 +23,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        "Edycja danych personalnych",
+        "Podgląf/Edycja danych personalnych",
         style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 20),
         textAlign: TextAlign.center,
       ),
@@ -77,25 +77,18 @@ class _PersonalInformationState extends State<PersonalInformation> {
                   SizedBox(
                     height: 5,
                   ),
-                  Text(
-                    "Email",
-                    style:
-                        TextStyle(fontFamily: "Bellota-Regular", fontSize: 14),
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
+                  const Text("Email", style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 14)),
+                  const SizedBox(height: 2,),
                   TextFormField(
                     controller: _emailController,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       hintText: user.email,
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
+                      border: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Text(

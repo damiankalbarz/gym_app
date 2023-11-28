@@ -24,11 +24,9 @@ class GoalsApi {
         print('Goal added successfully');
       } else {
         print('Goal added failed with status: ${response.statusCode}');
-        // Tutaj można umieścić logikę obsługi błędu
       }
     } catch (e) {
       print('Error during added goal: $e');
-      // Tutaj można umieścić bardziej szczegółową logikę obsługi błędów
     }
   }
 
@@ -93,7 +91,6 @@ class GoalsApi {
           'Content-Type': 'application/json; charset=UTF-8'
         },
       );
-
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body)['data'];
         goals = List<Goal>.from(jsonResponse.map((item) => Goal.fromJson(item)));

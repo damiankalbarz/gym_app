@@ -15,6 +15,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _phoneController = TextEditingController();
   final _fullNameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   final _userNameController = TextEditingController();
   final _nameController = TextEditingController();
   final _surenameController = TextEditingController();
@@ -148,6 +149,26 @@ class _RegisterPageState extends State<RegisterPage> {
                 obscureText: true,
               ),
               SizedBox(height: 16.0),
+              TextFormField(
+                controller: _confirmPasswordController,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    labelText: 'Potwierdź hasło',
+                    labelStyle: TextStyle(fontFamily: "Bellota-Regular")),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Pole "Hasło" jest wymagane.';
+                  }
+                  if (_confirmPasswordController.text != _passwordController.text) {
+                    return 'Hasła nie są identyczne.';
+                  }
+                  return null;
+                },
+                obscureText: true,
+              ),
+              SizedBox(height: 16.0),
               Container(
                 child: ElevatedButton(
                   onPressed: () {
@@ -156,9 +177,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       _registerBloc.registerUser(
                         userName: _userNameController.text,
                         password: _passwordController.text,
+                        confirmPassword: _confirmPasswordController.text,
                         fullName: _fullNameController.text,
                         email: _emailController.text,
                         phoneNumber: _phoneController.text,
+
                       ).then((success) {
                         if (success) {
                           showDialog(
@@ -218,8 +241,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(
-                    'Masz już konto? Zaloguj się',
+                  child: Text('Masz już konto? Zaloguj się',
                     style: TextStyle(
                         fontFamily: "Bellota-Regular",
                         fontWeight: FontWeight.bold),

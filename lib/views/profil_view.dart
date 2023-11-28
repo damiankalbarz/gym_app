@@ -65,7 +65,7 @@ class _ProfilPageState extends State<ProfilPage> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
               WelcomeWidget(),
               SizedBox(height: 0),
-              Center(
+              const Center(
                 child: Text(
                   'OTO LISTA TWOICH CELÓW!',
                   style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 22),
@@ -84,7 +84,7 @@ class _ProfilPageState extends State<ProfilPage> {
                     Expanded(
                       child: TextField(
                         controller: goalController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Dodaj nowy cel',
                           hintStyle: TextStyle(fontFamily: 'Bellota-Regular'),
                           labelStyle: TextStyle(fontFamily: 'Bellota-Regular'),
@@ -106,7 +106,7 @@ class _ProfilPageState extends State<ProfilPage> {
                               _loadGoals();
                             });
                           }
-                        });
+                       });
                       },
                     ),
                   ],
@@ -119,10 +119,6 @@ class _ProfilPageState extends State<ProfilPage> {
                 ),
                 child: Container(
                   width: 0.9 * MediaQuery.of(context).size.width,
-                  //height: 0.2 * MediaQuery.of(context).size.height,
-                  /*decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(10.0)),*/
                   child: ListView.separated(
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
@@ -138,14 +134,10 @@ class _ProfilPageState extends State<ProfilPage> {
                               : (goals[index].finished
                               ? Colors.lightBlueAccent
                               : Colors.blue),
-                          /*goals[index].finished
-                              ? Colors.lightBlueAccent
-                              : Colors.blue,*/
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         child: ListTile(
                           title: Text(
-                            //goals[index].name,
                             goals[index].content,
                             style: TextStyle(
                                 fontFamily: 'Bellota-Regular',
@@ -158,7 +150,6 @@ class _ProfilPageState extends State<ProfilPage> {
                             onChanged: (value) {
                               setState(() {
                                 goals[index].finished = value!;
-                                print("x${goals[index].finished}x");
                                 GoalsApi().toggle(goals[index].id);
                                 Future.delayed(
                                     const Duration(milliseconds: 150), () {
