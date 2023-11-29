@@ -55,14 +55,11 @@ class _GymPassState extends State<GymPassScreen> {
             ),
             Center(
               child: Text(
-                'TWÓJ KARNET',
+                'Twój karnet',
                 style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 32),
               ),
             ),
-            SizedBox(
-              height: 0.07 * MediaQuery.of(context).size.height,
-            ),
-            SizedBox(height: 30),
+            const SizedBox(height: 50),
             FutureBuilder<GymPass>(
               future: gymPass,
               builder: (context, snapshot) {

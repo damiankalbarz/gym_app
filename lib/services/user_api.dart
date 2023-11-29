@@ -130,7 +130,7 @@ class UserApi {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? token = prefs.getString('token');
-      var response = await http.put(
+      var response = await http.patch(
         Uri.parse('https://localhost:7286/api/User/change-profile-data'),
         headers: <String, String>{
           'Authorization': 'Bearer $token',
