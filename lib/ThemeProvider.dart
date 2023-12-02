@@ -4,9 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ThemeProvider with ChangeNotifier {
   late SharedPreferences _prefs;
   bool _isDarkMode = false;
-
   bool get isDarkMode => _isDarkMode;
-
   ThemeProvider(this._isDarkMode);
 
   void toggleTheme() {

@@ -3,7 +3,7 @@ import 'package:firstproject/services/classes_api.dart';
 import 'package:flutter/material.dart';
 
 import '../Model/PersonalTrainer.dart';
-import '../navigation.dart';
+import '../navigation/navigation.dart';
 
 const List<String> daysOfWeek = <String>[
   "Wszystkie",

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../navigation.dart';
+import '../navigation/navigation.dart';
 
 class CalculatorPage extends StatefulWidget {
   @override
@@ -26,31 +26,33 @@ class _CalculatorPageState extends State<CalculatorPage> {
 
   List<dynamic> calculateBMI(double weight, double height) {
     bmi = weight / ((height * height) / 10000);
-    if (bmi < 16)
+    if (bmi < 16) {
       ratingBmi = 'wygłodzenie';
-    else if (bmi < 17)
+    } else if (bmi < 17) {
       ratingBmi = "wychudzenie";
-    else if (bmi < 18.49)
+    } else if (bmi < 18.49) {
       ratingBmi = "niedowaga";
-    else if (bmi < 25)
+    } else if (bmi < 25) {
       ratingBmi = "waga prawidłowa";
-    else if (bmi < 30)
+    } else if (bmi < 30) {
       ratingBmi = "nadwaga";
-    else if (bmi < 35)
+    } else if (bmi < 35) {
       ratingBmi = "I stopień otyłości";
-    else if (bmi < 40)
+    } else if (bmi < 40) {
       ratingBmi = "II stopień otyłości";
-    else
+    } else {
       ratingBmi = "otyłość skrajna";
+    }
     return [bmi, ratingBmi];
   }
 
   List<double> calculate(
       double weight, double height, double age, Gender gender) {
-    if (selectedGender == Gender.male)
+    if (selectedGender == Gender.male) {
       macronutrients = weight * 9.99 + ((6.25 * height) - (4.92 * age)) + 5;
-    else
+    } else {
       macronutrients = weight * 9.99 + ((6.25 * height) - (4.92 * age)) - 161;
+    }
     protein = 2 * weight;
     fats = 0.225 * macronutrients / 9;
     carbohydrates = (macronutrients - (protein * 4 + fats * 9)) / 4;
@@ -119,7 +121,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   ),
                   Text(
                     'Waga: ${weight.toStringAsFixed(0)} kg',
-                    style: TextStyle(fontFamily: "Bellota-Regular"),
+                    style: const TextStyle(fontFamily: "Bellota-Regular"),
                   ),
                   Slider(
                     value: weight,

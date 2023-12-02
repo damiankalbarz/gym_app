@@ -4,7 +4,7 @@ import 'package:firstproject/Model/GymEnteryRank.dart';
 import 'package:firstproject/services/gymEntry_api.dart';
 import 'package:firstproject/views/widget/UserStatistic_widget.dart';
 import 'package:flutter/material.dart';
-import '../navigation.dart';
+import '../navigation/navigation.dart';
 
 class StatisticPage extends StatefulWidget {
   @override
@@ -88,8 +88,8 @@ class _StatisticPageState extends State<StatisticPage> {
                                       Container(
                                         decoration: BoxDecoration(
                                           border: Border.all(
-                                            color: Colors.black, // Kolor ramki
-                                            width: 2.0, // Grubość ramki
+                                            color: Colors.black,
+                                            width: 2.0,
                                           ),
                                         ),
                                         child: Image.memory(
@@ -102,7 +102,7 @@ class _StatisticPageState extends State<StatisticPage> {
                                       Center(
                                       child: Text(
                                         "${index + 1}",
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 15,
                                           fontFamily: "Bellota-Regular",
                                         ),
@@ -112,7 +112,7 @@ class _StatisticPageState extends State<StatisticPage> {
                                         //width: 300,
                                         child: Text(
                                           rankList[index].userName!,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 15,
                                             fontFamily: "Bellota-Regular",
                                           ),

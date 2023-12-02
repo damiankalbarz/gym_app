@@ -39,19 +39,23 @@ Future<bool> login(String email, String password) async {
     }
 
 Future<bool> isUserLoggedIn() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? token = prefs.getString('token');
-  final response = await http.get(
-    Uri.parse('https://localhost:7286/api/User/profile'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $token',
-    },
-  );
-  if (response.statusCode == 200) {
-        return true;
-  } else {
-        return false;
+  try {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    final response = await http.get(
+      Uri.parse('https://localhost:7286/api/User/profile'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    ).timeout(const Duration(seconds: 10));
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }catch(e){
+    return false;
   }
 
 }

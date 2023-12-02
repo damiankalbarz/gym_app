@@ -4,7 +4,7 @@ import 'package:firstproject/views/statistic_view.dart';
 import 'package:firstproject/views/gymPass_view.dart';
 import 'package:flutter/material.dart';
 
-import 'views/calculator_view.dart';
+import '../views/calculator_view.dart';
 
 class BottomNavigationWidget extends StatelessWidget {
   final ValueChanged<int> onTabSelected;
@@ -31,7 +31,7 @@ class BottomNavigationWidget extends StatelessWidget {
                   builder: (context) => ProfilPage(),
                 ),
               );
-            }, // Indeks 0 dla przycisku "Home"
+            },
             color: currentIndex == 0 ? Colors.blue : Colors.grey,
           ),
           IconButton(
@@ -44,7 +44,7 @@ class BottomNavigationWidget extends StatelessWidget {
                   builder: (context) => CalculatorPage(),
                 ),
               );
-            }, // Indeks 1 dla przycisku "Search"
+            },
             color: currentIndex == 1 ? Colors.blue : Colors.grey,
           ),
           IconButton(
@@ -57,7 +57,7 @@ class BottomNavigationWidget extends StatelessWidget {
                   builder: (context) => GymPassScreen(),
                 ),
               );
-            }, // Indeks 2 dla przycisku "Add"
+            },
             color: currentIndex == 2 ? Colors.blue : Colors.grey,
           ),
           IconButton(
@@ -70,7 +70,7 @@ class BottomNavigationWidget extends StatelessWidget {
                   builder: (context) => StatisticPage(),
                 ),
               );
-            }, // Indeks 3 dla przycisku "Favorite"
+            },
             color: currentIndex == 3 ? Colors.blue : Colors.grey,
           ),
           IconButton(

@@ -14,7 +14,6 @@ class SettingsView extends StatelessWidget {
 
   void logout() async {
     await removeToken();
-
   }
 
   @override
@@ -36,12 +35,6 @@ class SettingsView extends StatelessWidget {
                   Provider.of<ThemeProvider>(context, listen: false)
                       .toggleTheme(); // Przełącz motyw
                 },
-                child: Text(
-                  'Przełącz motyw',
-                  style: TextStyle(
-                      fontSize: 0.04 * MediaQuery.of(context).size.height,
-                      fontFamily: "Bellota-Regular"),
-                ),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith<Color>(
                     (Set<MaterialState> states) {
@@ -50,6 +43,12 @@ class SettingsView extends StatelessWidget {
                           : Colors.blue;
                     },
                   ),
+                ),
+                child: Text(
+                  'Przełącz motyw',
+                  style: TextStyle(
+                      fontSize: 0.04 * MediaQuery.of(context).size.height,
+                      fontFamily: "Bellota-Regular"),
                 ),
               ),
             ),

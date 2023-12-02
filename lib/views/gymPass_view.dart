@@ -7,7 +7,7 @@ import 'package:firstproject/services/gymPass_api.dart';
 import 'package:firstproject/views/ExtensionOfGymPass_view.dart';
 import 'package:flutter/material.dart';
 
-import '../navigation.dart';
+import '../navigation/navigation.dart';
 import '../services/gymEntry_api.dart';
 
 class GymPassScreen extends StatefulWidget {
@@ -79,14 +79,13 @@ class _GymPassState extends State<GymPassScreen> {
                           onTap: (){
                             GymEntryApi().addEntry();
                             setState(() {
-                              sideLength == MediaQuery.of(context).size.width * 0.7 ? sideLength = MediaQuery.of(context).size.width * 0.85 : sideLength = MediaQuery.of(context).size.width * 0.7;
+                              sideLength == MediaQuery.of(context).size.width * 0.7 ? sideLength = MediaQuery.of(context).size.width * 0.85
+                                  : sideLength = MediaQuery.of(context).size.width * 0.7;
                             });
                           },
                           child: Image.memory(
                               base64Decode(snapshot.data!.qrCode),
-                              //height: MediaQuery.of(context).size.width * 0.7,
-                              //width: MediaQuery.of(context).size.width * 0.7
-                          ),
+                                ),
                         ),
                         ),
                         SizedBox(

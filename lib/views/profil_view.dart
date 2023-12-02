@@ -6,7 +6,7 @@ import 'package:firstproject/services/user_api.dart';
 import 'package:firstproject/views/widget/welcome_widget.dart';
 import 'package:flutter/material.dart';
 import '../Model/Goal.dart';
-import '../navigation.dart';
+import '../navigation/navigation.dart';
 
 
 

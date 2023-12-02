@@ -94,7 +94,7 @@ class GoalsApi {
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body)['data'];
         goals = List<Goal>.from(jsonResponse.map((item) => Goal.fromJson(item)));
-        print('Goal get successfully');
+        print('Goals get successfully');
         return goals;
       } else {
         throw('Goal get failed with status: ${response.statusCode}');
