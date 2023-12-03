@@ -33,8 +33,7 @@ class RegisterBloc {
         return false;
       }
     } catch (e) {
-      print('Wystąpił błąd: $e');
-      return false;
+      throw('Wystąpił błąd: $e');
     }
   }
 

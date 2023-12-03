@@ -32,22 +32,22 @@ class _UserStatisticWidgetState extends State<UserStatisticWidget> {
           FutureBuilder<GymEntryRank>(
             future: stats,
             builder: (context, snapshot) {
-              String time = snapshot.data!.timeSpend.substring(0,5);
-              List<String> timeSplit = time.split(':');
-              int hours = int.parse(timeSplit[0]);
-              int minutes = int.parse(timeSplit[1]);
-              int avgMinutes;
-              if(snapshot.data!.numberOfEntries!=0){
-                avgMinutes = (hours*60+minutes) ~/ snapshot.data!.numberOfEntries;
-              }
-              else{
-                avgMinutes = 0;
-              }
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return CircularProgressIndicator();
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else {
+                String time = snapshot.data!.timeSpend!.substring(0,5);
+                List<String> timeSplit = time.split(':');
+                int hours = int.parse(timeSplit[0]);
+                int minutes = int.parse(timeSplit[1]);
+                int avgMinutes;
+                if(snapshot.data!.numberOfEntries!=0){
+                  avgMinutes = (hours*60+minutes) ~/ snapshot.data!.numberOfEntries!;
+                }
+                else{
+                  avgMinutes = 0;
+                }
                 return Container(
                   padding: EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
@@ -59,7 +59,7 @@ class _UserStatisticWidgetState extends State<UserStatisticWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("W tym tygodni odbyłeś ${snapshot.data!.numberOfEntries} treningów",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 17),),
+                      Text("W tym tygodni odbyłeś ${snapshot.data!.numberOfEntries!} treningów",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 17),),
                       Text("Spedziłeś na silowni łacznie ${time} godzin",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 17)),
                       Text("Średnio na jeden trenig potrzebujesz $avgMinutes minut",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 17),),
                     ],

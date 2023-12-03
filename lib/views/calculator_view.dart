@@ -7,6 +7,47 @@ class CalculatorPage extends StatefulWidget {
   _CalculatorPageState createState() => _CalculatorPageState();
 }
 
+List<dynamic> calculateBMI(double weight, double height) {
+  double bmi = weight / ((height * height) / 10000);
+  String ratingBmi = "";
+  if (bmi < 16) {
+    ratingBmi = 'wygłodzenie';
+  } else if (bmi < 17) {
+    ratingBmi = "wychudzenie";
+  } else if (bmi < 18.49) {
+    ratingBmi = "niedowaga";
+  } else if (bmi < 25) {
+    ratingBmi = "waga prawidłowa";
+  } else if (bmi < 30) {
+    ratingBmi = "nadwaga";
+  } else if (bmi < 35) {
+    ratingBmi = "I stopień otyłości";
+  } else if (bmi < 40) {
+    ratingBmi = "II stopień otyłości";
+  } else {
+    ratingBmi = "otyłość skrajna";
+  }
+  return [bmi, ratingBmi];
+}
+
+List<double> calculate(
+    double weight, double height, double age, Gender gender) {
+  Gender? selectedGender = Gender.male;
+  double macronutrients = 0;
+  double protein = 0;
+  double carbohydrates = 0;
+  double fats = 0;
+  if (selectedGender == Gender.male) {
+    macronutrients = weight * 9.99 + ((6.25 * height) - (4.92 * age)) + 5;
+  } else {
+    macronutrients = weight * 9.99 + ((6.25 * height) - (4.92 * age)) - 161;
+  }
+  protein = 2 * weight;
+  fats = 0.225 * macronutrients / 9;
+  carbohydrates = (macronutrients - (protein * 4 + fats * 9)) / 4;
+  return [macronutrients, protein, fats, carbohydrates];
+}
+
 enum Gender { female, male } // Enumeracja reprezentująca wybór płci
 
 class _CalculatorPageState extends State<CalculatorPage> {
@@ -24,40 +65,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
   int _currentIndex = 1;
   late List<double> list;
 
-  List<dynamic> calculateBMI(double weight, double height) {
-    bmi = weight / ((height * height) / 10000);
-    if (bmi < 16) {
-      ratingBmi = 'wygłodzenie';
-    } else if (bmi < 17) {
-      ratingBmi = "wychudzenie";
-    } else if (bmi < 18.49) {
-      ratingBmi = "niedowaga";
-    } else if (bmi < 25) {
-      ratingBmi = "waga prawidłowa";
-    } else if (bmi < 30) {
-      ratingBmi = "nadwaga";
-    } else if (bmi < 35) {
-      ratingBmi = "I stopień otyłości";
-    } else if (bmi < 40) {
-      ratingBmi = "II stopień otyłości";
-    } else {
-      ratingBmi = "otyłość skrajna";
-    }
-    return [bmi, ratingBmi];
-  }
 
-  List<double> calculate(
-      double weight, double height, double age, Gender gender) {
-    if (selectedGender == Gender.male) {
-      macronutrients = weight * 9.99 + ((6.25 * height) - (4.92 * age)) + 5;
-    } else {
-      macronutrients = weight * 9.99 + ((6.25 * height) - (4.92 * age)) - 161;
-    }
-    protein = 2 * weight;
-    fats = 0.225 * macronutrients / 9;
-    carbohydrates = (macronutrients - (protein * 4 + fats * 9)) / 4;
-    return [macronutrients, protein, fats, carbohydrates];
-  }
 
   @override
   Widget build(BuildContext context) {

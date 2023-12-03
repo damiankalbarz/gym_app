@@ -19,7 +19,7 @@ class _StatisticPageState extends State<StatisticPage> {
   void initState() {
     super.initState();
     rank = GymEntryApi().getEntryRank().then((list) {
-      list.sort((a, b) => b.numberOfEntries.compareTo(a.numberOfEntries));
+      list.sort((a, b) => b.numberOfEntries!.compareTo(a.numberOfEntries!));
       return list;
     });
   }
@@ -131,7 +131,7 @@ class _StatisticPageState extends State<StatisticPage> {
                                       ),
                                       Text(
                                         rankList[index]
-                                            .timeSpend
+                                            .timeSpend!
                                             .substring(0, 5),
                                         style: TextStyle(
                                           fontSize: 15,

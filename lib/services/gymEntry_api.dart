@@ -69,7 +69,6 @@ class GymEntryApi{
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body)['data'];
-        print(jsonResponse);
         print('Stats get successfully');
         return GymEntryRank.fromJson(jsonResponse);
       } else {
