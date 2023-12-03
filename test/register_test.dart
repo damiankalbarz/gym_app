@@ -7,11 +7,11 @@ void main() {
     test('Successful registration should return true', () async {
       var registerBloc = RegisterBloc();
       var result = await registerBloc.registerUser(
-        userName: 'testUser2',
-        password: 'TestPassword1!',
-        confirmPassword: 'TestPassword1!',
-        fullName: 'John Doe',
-        email: 'johndoe@example.com',
+        userName: 'testUser21',
+        password: 'TestPassword4!',
+        confirmPassword: 'TestPassword4!',
+        fullName: 'John Drre',
+        email: 'john@example.com',
         phoneNumber: '123456789',
       );
 

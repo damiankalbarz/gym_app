@@ -5,8 +5,8 @@ class GymEntryRank{
   final String? profileId;
   final String? userName;
   final Uint8List? profilePicture;
-  final int? numberOfEntries;
-  final String? timeSpend;
+  final int numberOfEntries;
+  final String timeSpend;
 
   GymEntryRank({
   required this.profileId,
@@ -22,8 +22,8 @@ class GymEntryRank{
         profilePicture: json['profilePicture'] != null
             ? base64Decode(json['profilePicture'])
             : Uint8List(0),
-        numberOfEntries: json['numberOfEntries'] ?? 0,
-        timeSpend: json['timeSpent'] ?? "00:00:00"
+        numberOfEntries: json['numberOfEntries'],
+        timeSpend: json['timeSpent']
     );
   }
 }

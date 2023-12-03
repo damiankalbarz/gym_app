@@ -43,8 +43,10 @@ class GymEntryApi{
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body)['data'];
+        print(jsonResponse);
         List<GymEntryRank> rank = List<GymEntryRank>.from(jsonResponse.map((item) => GymEntryRank.fromJson(item)));
         print('Rank get successfully');
+
         return rank;
       } else {
         throw('Rank get failed with status: ${response.statusCode}');
