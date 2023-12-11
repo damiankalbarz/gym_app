@@ -5,6 +5,40 @@ import 'package:flutter/material.dart';
 
 import '../../Model/ListClassModel.dart';
 
+
+const List<String> daysOfWeek = <String>[
+  "Wszystkie",
+  "Poniedziałek",
+  "Wtorek",
+  "Środa",
+  "Czwartek",
+  "Piątek",
+  "Sobota",
+  "Niedziela"
+];
+
+String convertToPolishDay(String englishDay) {
+  switch (englishDay) {
+    case 'monday':
+      return 'Poniedziałek';
+    case 'tuesday':
+      return 'Wtorek';
+    case 'wednesday':
+      return 'Środa';
+    case 'thursday':
+      return 'Czwartek';
+    case 'friday':
+      return 'Piątek';
+    case 'saturday':
+      return 'Sobota';
+    case 'sunday':
+      return 'Niedziela';
+    default:
+      return 'Invalid day';
+  }
+}
+
+
 class SavedClassesWidget extends StatefulWidget {
   _SavedClassesWidgetState createState() => _SavedClassesWidgetState();
 }
@@ -58,7 +92,7 @@ class _SavedClassesWidgetState extends State<SavedClassesWidget> {
                                     fontSize: 16),
                               ),
                               Text(
-                                "${classesList[index].dayOfWeek} ${classesList[index].startTime} - ${classesList[index].endTime}",
+                                "${convertToPolishDay(classesList[index].dayOfWeek)} ${classesList[index].startTime} - ${classesList[index].endTime}",
                                 style: TextStyle(
                                     fontFamily: "Bellota-Regular",
                                     fontSize: 14),
@@ -97,7 +131,7 @@ class _SavedClassesWidgetState extends State<SavedClassesWidget> {
                                           ),
                                           Center(
                                             child: Text(
-                                                "${classesList[index].dayOfWeek} ${classesList[index].startTime} - ${classesList[index].endTime}"),
+                                                "${convertToPolishDay(classesList[index].dayOfWeek)} ${classesList[index].startTime} - ${classesList[index].endTime}"),
                                           ),
                                           SizedBox(
                                             height: 20,

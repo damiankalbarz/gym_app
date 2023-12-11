@@ -47,7 +47,7 @@ class _EditDataPageState extends State<EditDataPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edycja dancych'),
+        title: Text('Edycja danych'),
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -135,7 +135,7 @@ class _EditDataPageState extends State<EditDataPage> {
                         (Set<MaterialState> states) {
                       return Theme.of(context).brightness == Brightness.dark
                           ? Colors.white12
-                          : Colors.blue;
+                          : Colors.red;
                     },),),
                   child: Text(
                     'Usuń konto',

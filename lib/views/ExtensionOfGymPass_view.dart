@@ -65,7 +65,7 @@ class _ExtensionOfGymPassPageState extends State<ExtensionOfGymPassPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Przedłużenie karnetu'),
+        title: const Text('Przedłużenie karnetu', style: TextStyle(fontFamily: "Bellota-Regular")),
       ),
       body: Container(
         child: SingleChildScrollView(
@@ -122,50 +122,35 @@ class _ExtensionOfGymPassPageState extends State<ExtensionOfGymPassPage> {
                       }
                     }),
               ),
-              SizedBox(
-                height: 10,
+              const SizedBox(
+                height: 20,
               ),
-              Text(
-                "Wybierz metode płatności",
-                style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 22),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (selectedPassIndex != null) {
-                    GymPassApi().extendPass(convertTime(selectedLength!));
-                  }
-                },
-                child: Container(
-                  width: 300,
-                  height: 50,
-                  child: Image.asset(
-                    "assets/przelewy24/Przelewy24_logo.png",
-                    //fit: BoxFit.contain,
+              Container(
+                width: 0.9 * MediaQuery.of(context).size.width,
+                height: 45,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (selectedPassIndex != null) {
+                      GymPassApi().extendPass(convertTime(selectedLength!));
+                    }
+                  },
+                  child: Text(
+                    "Zapłać",
+                    style:
+                        TextStyle(fontSize: 28, fontFamily: "Bellota-Regular"),
                   ),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
-                      return Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white12
-                          : Colors.blue;
-                    },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                        return Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white12
+                            : Colors.blue;
+                      },
+                    ),
                   ),
                 ),
               ),
-              SizedBox(height: 10,),
-              TextButton(onPressed: (){}, child:  Image.asset(
-                  "assets/GPay_Acceptance_Mark_800.png",width: 150,
-                  height: 70,
-                  //fit: BoxFit.contain,
-                ),
-              ),
-
-
-
+              //SizedBox(height: 10,),
             ],
           ),
         ),

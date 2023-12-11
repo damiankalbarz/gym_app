@@ -34,7 +34,7 @@ class _StatisticPageState extends State<StatisticPage> {
               SizedBox(
                 height: 0.05 * MediaQuery.of(context).size.height,
               ),
-              const Text('Statystki',
+              const Text('Statystyki',
                   style:
                       TextStyle(fontSize: 32, fontFamily: "Bellota-Regular")),
               SizedBox(

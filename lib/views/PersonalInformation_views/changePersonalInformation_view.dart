@@ -23,7 +23,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        "Podgląf/Edycja danych personalnych",
+        "Podgląd/Edycja danych personalnych",
         style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 20),
         textAlign: TextAlign.center,
       ),

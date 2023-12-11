@@ -16,7 +16,7 @@ class GymEntryApi{
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json; charset=UTF-8'
         },
-        body: jsonEncode("20"),
+        body: jsonEncode("57"),
       );
 
       if (response.statusCode == 200) {
@@ -43,7 +43,7 @@ class GymEntryApi{
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body)['data'];
-        print(jsonResponse);
+        //print(jsonResponse);
         List<GymEntryRank> rank = List<GymEntryRank>.from(jsonResponse.map((item) => GymEntryRank.fromJson(item)));
         print('Rank get successfully');
 
@@ -72,6 +72,7 @@ class GymEntryApi{
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body)['data'];
         print('Stats get successfully');
+        print(jsonResponse);
         return GymEntryRank.fromJson(jsonResponse);
       } else {
         print('Stats get failed with status: ${response.statusCode}');

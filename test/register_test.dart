@@ -18,6 +18,21 @@ void main() {
       expect(result, true);
     });
 
+
+    test('Successful registration should return true', () async {
+      var registerBloc = RegisterBloc();
+      var result = await registerBloc.registerUser(
+        userName: 'testUser1',
+        password: 'TestPassword1!',
+        confirmPassword: 'TestPassword1!',
+        fullName: 'John Dao',
+        email: 'john@example.com',
+        phoneNumber: '123456789',
+      );
+
+      expect(result, true);
+    });
+
     test('Failed registration should return false', () async {
       var registerBloc = RegisterBloc();
       var result = await registerBloc.registerUser(

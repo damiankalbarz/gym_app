@@ -23,7 +23,7 @@ class _UserStatisticWidgetState extends State<UserStatisticWidget> {
         children: [
           Center(
             child: Text(
-              'Podsumowanie twojch treningow w tym tygogniu',
+              'Podsumowanie twoich treningów w tym tygodniu',
               style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 22),
               textAlign: TextAlign.center,
             ),
@@ -37,7 +37,8 @@ class _UserStatisticWidgetState extends State<UserStatisticWidget> {
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else {
-                String time = snapshot.data!.timeSpend!.substring(0,5);
+                String time = snapshot.data!.timeSpend.substring(0,5);
+                print(time);
                 List<String> timeSplit = time.split(':');
                 int hours = int.parse(timeSplit[0]);
                 int minutes = int.parse(timeSplit[1]);
@@ -48,8 +49,10 @@ class _UserStatisticWidgetState extends State<UserStatisticWidget> {
                 else{
                   avgMinutes = 0;
                 }
-                return Container(
-                  padding: EdgeInsets.all(16.0),
+                return Padding(
+                    padding: EdgeInsets.all(12.0),
+                  child: Container(
+                  padding: EdgeInsets.all(12.0),
                   decoration: BoxDecoration(
                     color: Theme.of(context).brightness == Brightness.dark
                         ? Colors.white12
@@ -59,10 +62,11 @@ class _UserStatisticWidgetState extends State<UserStatisticWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("W tym tygodni odbyłeś ${snapshot.data!.numberOfEntries!} treningów",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 17),),
-                      Text("Spedziłeś na silowni łacznie ${time} godzin",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 17)),
-                      Text("Średnio na jeden trenig potrzebujesz $avgMinutes minut",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 17),),
+                      Text("W tym tygodni odbyłeś ${snapshot.data!.numberOfEntries!} treningów!",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 17),),
+                      Text("Spedziłeś na silowni łacznie ${hours} godzin i $minutes minuty!",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 17)),
+                      Text("Średnio na jeden trening potrzebujesz $avgMinutes minut!",style: TextStyle(fontFamily: "Bellota-Regular", fontSize: 17),),
                     ],
+                  ),
                   ),
                 );
               }
