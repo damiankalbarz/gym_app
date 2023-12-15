@@ -9,9 +9,8 @@ void main() {
       home: ProfilPage(),
     ));
 
-    // Verify that the UI components are rendered.
     expect(find.text('OTO LISTA TWOICH CELÓW!'), findsOneWidget);
-    expect(find.byType(TextField), findsOneWidget); // Zaktualizuj tę linię
+    expect(find.byType(TextField), findsOneWidget);
     expect(find.byType(ListView), findsOneWidget);
     expect(find.text('TWOJE ZAJĘCIA:'), findsOneWidget);
 
