@@ -1,4 +1,4 @@
-import 'package:firstproject/ThemeProvider.dart';
+import 'package:firstproject/Providers/ThemeProvider.dart';
 import 'package:firstproject/views/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

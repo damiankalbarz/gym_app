@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../ThemeProvider.dart';
+import '../Providers/ThemeProvider.dart';
 import 'login_view.dart';
 
 class SettingsView extends StatelessWidget {

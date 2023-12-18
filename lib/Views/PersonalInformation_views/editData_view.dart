@@ -11,7 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'package:image_cropper/image_cropper.dart';
 
-import 'package:firstproject/ThemeProvider.dart';
+import 'package:firstproject/Providers/ThemeProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image/image.dart' as img;
